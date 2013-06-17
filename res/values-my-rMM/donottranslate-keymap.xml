@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+**
+** Copyright 2010, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+**
+**
+** 5-row layout for English QWERTY.
+**
+** See http://code.google.com/p/hackerskeyboard/wiki/AddingNewLayouts for
+** more information.
+*/
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="key_tlde_main">\"</string>
+    <string name="key_tlde_shift">\'</string>
+    <string name="key_tlde_alt">\'\"‘’“”</string>
+    
+    <string name="key_ae01_main">၁</string>
+    <string name="key_ae01_shift">ဍ</string>
+    <string name="key_ae01_alt">ၮ</string>
+
+    <string name="key_ae02_main">၂</string>
+    <string name="key_ae02_shift">႑</string>
+    <string name="key_ae02_alt"></string>
+    
+    <string name="key_ae03_main">၃</string>
+    <string name="key_ae03_shift">ဋ</string>
+    <string name="key_ae03_alt">&#x106C;&#x1097;</string>
+    
+    <string name="key_ae04_main">၄</string>
+    <string name="key_ae04_shift">၌</string>
+    <string name="key_ae04_alt">၎</string>
+    
+    <string name="key_ae05_main">၅</string>
+    <string name="key_ae05_shift">%</string>
+    <string name="key_ae05_alt">ဩဪ</string>
+    
+    <string name="key_ae06_main">၆</string>
+    <string name="key_ae06_shift">^</string>
+    <string name="key_ae06_alt">/\\</string>
+    
+    <string name="key_ae07_main">၇</string>
+    <string name="key_ae07_shift">&amp;</string>
+    <string name="key_ae07_alt"></string>
+    
+    <string name="key_ae08_main">၈</string>
+    <string name="key_ae08_shift">*</string>
+    <string name="key_ae08_alt"></string>
+    
+    <string name="key_ae09_main">၉</string>
+    <string name="key_ae09_shift">(</string>
+    <string name="key_ae09_alt"></string>
+    
+    <string name="key_ae10_main">၀</string>
+    <string name="key_ae10_shift">)</string>
+    <string name="key_ae10_alt"></string>
+    
+    <string name="key_ae11_main">-</string>
+    <string name="key_ae11_shift">×</string>
+    <string name="key_ae11_alt">÷</string>
+    
+    <string name="key_ae12_main">=</string>
+    <string name="key_ae12_shift">+</string>
+    <string name="key_ae12_alt"></string>
+
+
+    <string name="key_ad01_main">ဆ</string>
+    <string name="key_ad01_shift">၍</string>
+    <string name="key_ad01_alt">&#x1066;&#x1067;</string>
+    
+    <string name="key_ad02_main">တ</string>
+    <string name="key_ad02_shift">&#x1089;</string>
+    <string name="key_ad02_alt">&#x1071;&#x1072;&#x1096;</string>
+    
+    <string name="key_ad03_main">န</string>
+    <string name="key_ad03_shift">ႏ</string>
+    <string name="key_ad03_alt">&#x1077;</string>
+
+    <string name="key_ad04_main">မ</string>
+    <string name="key_ad04_shift">ဤ</string>
+    <string name="key_ad04_alt">&#x107C;</string>
+    
+    <string name="key_ad05_main">အ</string>
+    <string name="key_ad05_shift">&#x108A;</string>
+    <string name="key_ad05_alt">ဣ</string>
+    
+    <string name="key_ad06_main">ပ</string>
+    <string name="key_ad06_shift">&#x1094;</string>
+    <string name="key_ad06_alt">&#x1078;</string>
+
+    <string name="key_ad07_main">က</string>
+    <string name="key_ad07_shift">&#x1095;</string>
+    <string name="key_ad07_alt">&#x1060;</string>
+    
+    <string name="key_ad08_main">င</string>
+    <string name="key_ad08_shift">&#x1088;</string>
+    <string name="key_ad08_alt"></string>
+    
+    <string name="key_ad09_main">သ</string>
+    <string name="key_ad09_shift">ဥ</string>
+    <string name="key_ad09_alt">ႆၪဦ</string>
+    
+    <string name="key_ad10_main">စ</string>
+    <string name="key_ad10_shift">ဏ</string>
+    <string name="key_ad10_alt">&#x1065;&#x1070;</string>
+    
+    <string name="key_ad11_main">ဟ</string>
+    <string name="key_ad11_shift">ဧ</string>
+    <string name="key_ad11_alt"></string>
+    
+    <string name="key_ad12_main">ရ</string>
+    <string name="key_ad12_shift">႐</string>
+    <string name="key_ad12_alt"></string>
+
+    <string name="key_bksl_main">ဂ</string>
+    <string name="key_bksl_shift">ဎ</string>
+    <string name="key_bksl_alt">&#x1062;&#x106F;</string>
+    
+    
+    <string name="key_ac01_main">ေ</string>
+    <string name="key_ac01_shift">ဗ</string>
+    <string name="key_ac01_alt">&#x107A;</string>
+
+    <string name="key_ac02_main">&#x103A;</string>
+    <string name="key_ac02_shift">&#x103D;</string>
+    <string name="key_ac02_alt">&#x107D;&#x1087;</string>
+
+    <string name="key_ac03_main">&#x102D;</string>
+    <string name="key_ac03_shift">&#x102E;</string>
+    <string name="key_ac03_alt">&#x108B;&#x108C;&#x108E;</string>
+
+    <string name="key_ac04_main">&#x1039;</string>
+    <string name="key_ac04_shift">&#x1064;</string>
+    <string name="key_ac04_alt">&#x108D;</string>
+
+    <string name="key_ac05_main">&#x102B;</string>
+    <string name="key_ac05_shift">&#x103C;</string>
+    <string name="key_ac05_alt"></string>
+
+    <string name="key_ac06_main">&#x1037;</string>
+    <string name="key_ac06_shift">&#x1036;</string>
+    <string name="key_ac06_alt"></string>
+
+    <string name="key_ac07_main">&#x103B;</string>
+    <string name="key_ac07_shift">&#x1032;</string>
+    <string name="key_ac07_alt">&#x1081;&#x1083;</string>
+
+    <string name="key_ac08_main">&#x102F;</string>
+    <string name="key_ac08_shift">&#x1033;</string>
+    <string name="key_ac08_alt"></string>
+
+    <string name="key_ac09_main">&#x1030;</string>
+    <string name="key_ac09_shift">&#x1034;</string>
+    <string name="key_ac09_alt"></string>
+
+    <string name="key_ac10_main">&#x1038;</string>
+    <string name="key_ac10_shift">&#x105A;</string>
+    <string name="key_ac10_alt"></string>
+
+    <string name="key_ac11_main">ဒ</string>
+    <string name="key_ac11_shift">ဓ</string>
+    <string name="key_ac11_alt">&#x1075;&#x1076;</string>
+
+
+    <string name="key_lsgt_main">၏</string>
+    <string name="key_lsgt_shift">႒</string>
+    <string name="key_lsgt_alt"></string>
+
+    <string name="key_ab01_main">ဖ</string>
+    <string name="key_ab01_shift">ဇ</string>
+    <string name="key_ab01_alt">&#x1079;&#x1068;</string>
+
+    <string name="key_ab02_main">ထ</string>
+    <string name="key_ab02_shift">ဌ</string>
+    <string name="key_ab02_alt">&#x1073;&#x1074;&#x106D;</string>
+
+    <string name="key_ab03_main">ခ</string>
+    <string name="key_ab03_shift">ဃ</string>
+    <string name="key_ab03_alt">&#x1061;&#x1063;</string>
+
+    <string name="key_ab04_main">လ</string>
+    <string name="key_ab04_shift">ဠ</string>
+    <string name="key_ab04_alt">&#x1085;</string>
+
+    <string name="key_ab05_main">ဘ</string>
+    <string name="key_ab05_shift">&#x1080;</string>
+    <string name="key_ab05_alt">&#x107B;&#x1093;</string>
+
+    <string name="key_ab06_main">ည</string>
+    <string name="key_ab06_shift">&#x107F;</string>
+    <string name="key_ab06_alt">ၫဉ</string>
+
+    <string name="key_ab07_main">ာ</string>
+    <string name="key_ab07_shift">&#x107E;</string>
+    <string name="key_ab07_alt">&#x1082;&#x1084;</string>
+
+    <string name="key_ab08_main">ယ</string>
+    <string name="key_ab08_shift">ဝ</string>
+    <string name="key_ab08_alt"></string>
+
+    <string name="key_ab09_main">.</string>
+    <string name="key_ab09_shift">ဈ</string>
+    <string name="key_ab09_alt">&#x1069;</string>
+
+    <string name="key_ab10_main">။</string>
+    <string name="key_ab10_shift">၊</string>
+    <string name="key_ab10_alt"></string>
+</resources>

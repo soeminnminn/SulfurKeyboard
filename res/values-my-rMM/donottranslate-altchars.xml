@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+**
+** Copyright 2010, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the "License");
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an "AS IS" BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="alternates_for_a"></string>
+    <string name="alternates_for_b">&#x107B;&#x1093;&#x107A;</string>
+    <string name="alternates_for_c">&#x1061;</string>
+    <string name="alternates_for_d">&#x108B;&#x108C;&#x108E;</string>
+    <string name="alternates_for_e">&#x1077;</string>
+    <string name="alternates_for_f">&#x108D;</string>
+    <string name="alternates_for_g">&#x108A;</string>
+    <string name="alternates_for_h"></string>
+    <string name="alternates_for_i">&#x1070;</string>
+    <string name="alternates_for_j">&#x107F;&#x1081;&#x1083;</string>
+    <string name="alternates_for_k"></string>
+    <string name="alternates_for_l"></string>
+    <string name="alternates_for_m">&#x1080;&#x1082;&#x1084;</string>
+    <string name="alternates_for_n">&#x106B;</string>
+    <string name="alternates_for_o">&#x1029;&#x102A;</string>
+    <string name="alternates_for_p">&#x1065;&#x1069;</string>
+    <string name="alternates_for_q">&#x1066;&#x1067;</string>
+    <string name="alternates_for_r">&#x107C;&#x1063;</string>
+    <string name="alternates_for_s">&#x107D;&#x1087;</string>
+    <string name="alternates_for_t"></string>
+    <string name="alternates_for_u">&#x1060;</string>
+    <string name="alternates_for_v">&#x1085;</string>
+    <string name="alternates_for_w">&#x1071;&#x1072;&#x1096;&#x1062;</string>
+    <string name="alternates_for_x">&#x1073;&#x1074;&#x106D;</string>
+    <string name="alternates_for_y">&#x1078;</string>
+    <string name="alternates_for_z">&#x1079;&#x1068;</string>
+
+    <string name="alternates_for_a_umlaut">&#x1075;&#x1076;</string>
+    <string name="alternates_for_ae">&#x106C;</string>
+    <string name="alternates_for_cyrillic_e">&#x1089;</string>
+    <string name="alternates_for_cyrillic_soft_sign"></string>
+    <string name="alternates_for_o_umlaut"></string>
+    <string name="alternates_for_oe"></string>
+</resources>

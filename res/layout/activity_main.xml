@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="fill"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@drawable/ok_cancel"
+        android:paddingLeft="@dimen/actionbar_horizontal_margin"
+        android:paddingRight="@dimen/actionbar_horizontal_margin" >
+
+        <ImageView
+            android:id="@+id/ImageViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:contentDescription="@string/title_activity_input_test"
+            android:src="@drawable/ic_application" />
+
+        <TextView
+            android:id="@+id/mainTextViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center"
+            android:text="@string/english_ime_name"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
+
+        <Button
+            android:id="@+id/btnShowSettings"
+            style="@style/HoloButton"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="@string/action_settings" />
+
+        <Button
+            android:id="@+id/btnShowInputTest"
+            style="@style/HoloButton"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="@string/title_activity_input_test" />
+
+        <TextView
+            android:id="@+id/txtHelp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/english_ime_name" />
+
+    </LinearLayout>
+
+</LinearLayout>

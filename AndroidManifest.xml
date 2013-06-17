@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.android.inputmethod.skeyboard"
+    android:versionCode="6"
+    android:versionName="1.0.9">
+    <!-- android:installLocation="internalOnly" > -->
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="8" >
+    </uses-sdk>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_USER_DICTIONARY" />
+    <uses-permission android:name="android.permission.WRITE_USER_DICTIONARY" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:backupAgent="com.android.inputmethod.skeyboard.LatinIMEBackupAgent"
+        android:icon="@drawable/ic_application"
+        android:killAfterRestore="false"
+        android:label="@string/english_ime_name"
+        android:restoreAnyVersion="true"
+        android:theme="@android:style/Theme.Black" >
+        <service
+            android:name="com.android.inputmethod.skeyboard.LatinIME"
+            android:label="@string/english_ime_name"
+            android:permission="android.permission.BIND_INPUT_METHOD" >
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
+        </service>
+
+        <activity
+            android:name="com.android.inputmethod.skeyboard.MainActivity"
+            android:label="@string/english_ime_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.inputmethod.skeyboard.LatinIMESettings"
+            android:label="@string/english_ime_settings" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.inputmethod.skeyboard.LatinIMEDebugSettings"
+            android:label="@string/english_ime_debug_settings" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.inputmethod.skeyboard.InputLanguageSelection"
+            android:label="@string/language_selection_title" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="com.android.inputmethod.skeyboard.INPUT_LANGUAGE_SELECTION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.inputmethod.skeyboard.InputTestActivity"
+            android:label="@string/title_activity_input_test" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
