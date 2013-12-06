@@ -31,6 +31,8 @@ import com.android.inputmethod.skeyboard.R;
 
 public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+	private static final boolean VOICE_DEBUG = false;
+	
     public static final int MODE_NONE = 0;
     public static final int MODE_TEXT = 1;
     public static final int MODE_SYMBOLS = 2;
@@ -67,10 +69,10 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
 
     public static final String DEFAULT_LAYOUT_ID = "4";
     public static final String PREF_KEYBOARD_LAYOUT = "keyboard_layout";
-    private static final int[] THEMES = new int [] {
+    /*private static final int[] THEMES = new int [] {
         R.layout.input_basic, R.layout.input_stone, R.layout.input_white, 
         R.layout.input_iphone, R.layout.input_gingerbread, R.layout.input_holo, 
-        R.layout.input_galaxy };
+        R.layout.input_galaxy };*/
 
     // Tables which contains resource ids for each character theme color
     private static final int KBD_PHONE = R.xml.kbd_phone;
@@ -85,7 +87,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     private static final int SYMBOLS_MODE_STATE_BEGIN = 1;
     private static final int SYMBOLS_MODE_STATE_SYMBOL = 2;
 
-    private LatinKeyboardView mInputView;
+    private SoftKeyboardView mInputView;
     private static final int[] ALPHABET_MODES = {
         KEYBOARDMODE_NORMAL,
         KEYBOARDMODE_URL,
@@ -104,7 +106,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     private KeyboardId mSymbolsShiftedId;
 
     private KeyboardId mCurrentId;
-    private final HashMap<KeyboardId, SoftReference<LatinKeyboard>> mKeyboards;
+    private final HashMap<KeyboardId, SoftReference<SoftKeyboard>> mKeyboards;
 
     private int mMode = MODE_NONE; /** One of the MODE_XXX values */
     private int mImeOptions;
@@ -131,6 +133,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     private Locale mInputLocale;
 
     private int mLayoutId;
+    private KeyboardThemes mThemes;
 
     public KeyboardSwitcher(LatinIME ims) {
         mInputMethodService = ims;
@@ -140,9 +143,9 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         updateSettingsKeyState(prefs);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        mKeyboards = new HashMap<KeyboardId, SoftReference<LatinKeyboard>>();
-        mSymbolsId = makeSymbolsId(false);
-        mSymbolsShiftedId = makeSymbolsShiftedId(false);
+        mKeyboards = new HashMap<KeyboardId, SoftReference<SoftKeyboard>>();
+        mSymbolsId = makeSymbolsId(KBD_SYMBOLS, false);
+        mSymbolsShiftedId = makeSymbolsId(KBD_SYMBOLS_SHIFT, false);
     }
 
     /**
@@ -156,21 +159,15 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         mInputLocale = mLanguageSwitcher.getInputLocale();
     }
 
-    private KeyboardId makeSymbolsId(boolean hasVoice) {
-        return new KeyboardId(KBD_SYMBOLS, mHasSettingsKey ?
-                KEYBOARDMODE_SYMBOLS_WITH_SETTINGS_KEY : KEYBOARDMODE_SYMBOLS,
-                false, hasVoice);
-    }
-
-    private KeyboardId makeSymbolsShiftedId(boolean hasVoice) {
-        return new KeyboardId(KBD_SYMBOLS_SHIFT, mHasSettingsKey ?
+    private KeyboardId makeSymbolsId(int xml, boolean hasVoice) {
+        return new KeyboardId(xml, mHasSettingsKey ?
                 KEYBOARDMODE_SYMBOLS_WITH_SETTINGS_KEY : KEYBOARDMODE_SYMBOLS,
                 false, hasVoice);
     }
 
     public void makeKeyboards(boolean forceCreate) {
-        mSymbolsId = makeSymbolsId(mHasVoice && !mVoiceOnPrimary);
-        mSymbolsShiftedId = makeSymbolsShiftedId(mHasVoice && !mVoiceOnPrimary);
+        mSymbolsId = makeSymbolsId(KBD_SYMBOLS, mHasVoice && !mVoiceOnPrimary);
+        mSymbolsShiftedId = makeSymbolsId(KBD_SYMBOLS_SHIFT, mHasVoice && !mVoiceOnPrimary);
 
         if (forceCreate) mKeyboards.clear();
         // Configuration change is coming after the keyboard gets recreated. So don't rely on that.
@@ -183,7 +180,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     }
 
     /**
-     * Represents the parameters necessary to construct a new LatinKeyboard,
+     * Represents the parameters necessary to construct a new SoftKeyboard,
      * which also serve as a unique identifier for each keyboard type.
      */
     private static class KeyboardId {
@@ -234,6 +231,12 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         }
         mHasVoice = enableVoice;
         mVoiceOnPrimary = voiceOnPrimary;
+        
+        if(VOICE_DEBUG) {
+        	mHasVoice = true;
+        	mVoiceOnPrimary = true;
+        }
+        
         setKeyboardMode(mMode, mImeOptions, mHasVoice, mIsSymbols);
     }
 
@@ -250,7 +253,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         try {
             setKeyboardMode(mode, imeOptions, enableVoice, mPreferSymbols);
         } catch (RuntimeException e) {
-            LatinImeLogger.logOnException(mode + "," + imeOptions + "," + mPreferSymbols, e);
+        	IMELogger.logOnException(mode + "," + imeOptions + "," + mPreferSymbols, e);
         }
     }
 
@@ -266,43 +269,39 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
 
         mInputView.setPreviewEnabled(mInputMethodService.getPopupOn());
         KeyboardId id = getKeyboardId(mode, imeOptions, isSymbols);
-        LatinKeyboard keyboard = null;
+        SoftKeyboard keyboard = null;
         keyboard = getKeyboard(id);
-
-        if ((mode == MODE_PHONE) || (mode == MODE_NUMBER)) {
-            //mInputView.setPhoneKeyboard(keyboard);
-        	mInputView.setKeyPreview(false);
-        }
 
         mCurrentId = id;
         mInputView.setKeyboard(keyboard);
         keyboard.setShifted(false);
         keyboard.setShiftLocked(keyboard.isShiftLocked());
         keyboard.setImeOptions(mInputMethodService.getResources(), mMode, imeOptions);
-        keyboard.setIconsSet(mInputView.getIconsSet()); // SMM
-        keyboard.setColorOfSymbolIcons(mIsAutoCompletionActive, isBlackSym());
+        keyboard.setColorOfSymbolIcons(mIsAutoCompletionActive, 
+        		mInputView.getLanguagebarTextColor(), mInputView.getLanguagebarShadowColor());
         // Update the settings key state because number of enabled IMEs could have been changed
         updateSettingsKeyState(PreferenceManager.getDefaultSharedPreferences(mInputMethodService));
     }
 
-    private LatinKeyboard getKeyboard(KeyboardId id) {
-        SoftReference<LatinKeyboard> ref = mKeyboards.get(id);
-        LatinKeyboard keyboard = (ref == null) ? null : ref.get();
+    private SoftKeyboard getKeyboard(KeyboardId id) {
+        SoftReference<SoftKeyboard> ref = mKeyboards.get(id);
+        SoftKeyboard keyboard = (ref == null) ? null : ref.get();
         if (keyboard == null) {
             Resources orig = mInputMethodService.getResources();
             Configuration conf = orig.getConfiguration();
             Locale saveLocale = conf.locale;
             conf.locale = mInputLocale;
             orig.updateConfiguration(conf, null);
-            keyboard = new LatinKeyboard(mInputMethodService, id.mXml, id.mKeyboardMode);
+            keyboard = new SoftKeyboard(mInputMethodService, id.mXml, id.mKeyboardMode);
+            keyboard.setTheme(mThemes, mInputMethodService.getOrientation()); // SMM
             keyboard.setVoiceMode(hasVoiceButton(id.mXml == R.xml.kbd_symbols), mHasVoice);
-            keyboard.setIconsSet(mInputView.getIconsSet()); // SMM
-            keyboard.setLanguageSwitcher(mLanguageSwitcher, mIsAutoCompletionActive, isBlackSym());
+            keyboard.setLanguageSwitcher(mLanguageSwitcher, mIsAutoCompletionActive, 
+            		mInputView.getLanguagebarTextColor(), mInputView.getLanguagebarShadowColor());
 
             if (id.mEnableShiftLock) {
                 keyboard.enableShiftLock();
             }
-            mKeyboards.put(id, new SoftReference<LatinKeyboard>(keyboard));
+            mKeyboards.put(id, new SoftReference<SoftKeyboard>(keyboard));
 
             conf.locale = saveLocale;
             orig.updateConfiguration(conf, null);
@@ -327,7 +326,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         }
         switch (mode) {
             case MODE_NONE:
-                LatinImeLogger.logOnWarning(
+            	IMELogger.logOnWarning(
                         "getKeyboardId:" + mode + "," + imeOptions + "," + isSymbols);
                 /* fall through */
             case MODE_TEXT:
@@ -366,6 +365,10 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     	return mImeOptions;
     }
     
+    public KeyboardThemes getThemes() {
+    	return mThemes;
+    }
+    
     public boolean isAlphabetMode() {
         if (mCurrentId == null) {
             return false;
@@ -395,7 +398,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         if (isAlphabetMode())
             return;
         if (mCurrentId.equals(mSymbolsId) || !mCurrentId.equals(mSymbolsShiftedId)) {
-            LatinKeyboard symbolsShiftedKeyboard = getKeyboard(mSymbolsShiftedId);
+            SoftKeyboard symbolsShiftedKeyboard = getKeyboard(mSymbolsShiftedId);
             mCurrentId = mSymbolsShiftedId;
             mInputView.setKeyboard(symbolsShiftedKeyboard);
             // Symbol shifted keyboard has an ALT key that has a caps lock style indicator. To
@@ -406,7 +409,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
             symbolsShiftedKeyboard.setShiftLocked(true);
             symbolsShiftedKeyboard.setImeOptions(mInputMethodService.getResources(), mMode, mImeOptions);
         } else {
-            LatinKeyboard symbolsKeyboard = getKeyboard(mSymbolsId);
+            SoftKeyboard symbolsKeyboard = getKeyboard(mSymbolsId);
             mCurrentId = mSymbolsId;
             mInputView.setKeyboard(symbolsKeyboard);
             // Symbol keyboard has an ALT key that has a caps lock style indicator. To disable the
@@ -450,38 +453,39 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         return false;
     }
 
-    public LatinKeyboardView getInputView() {
+    public SoftKeyboardView getInputView() {
         return mInputView;
     }
 
     public void recreateInputView() {
-        changeLatinKeyboardView(mLayoutId, true);
+        changeSoftKeyboardView(mLayoutId, true);
     }
 
-    private void changeLatinKeyboardView(int newLayout, boolean forceReset) {
+    private void changeSoftKeyboardView(int newLayout, boolean forceReset) {
         if (mLayoutId != newLayout || mInputView == null || forceReset) {
             if (mInputView != null) {
                 mInputView.closing();
             }
-            if (THEMES.length <= newLayout) {
+            /*if (THEMES.length <= newLayout) {
                 newLayout = Integer.valueOf(DEFAULT_LAYOUT_ID);
-            }
+            }*/
+            mThemes = new KeyboardThemes(newLayout);
 
-            LatinIMEUtil.GCUtils.getInstance().reset();
+            IMEUtil.GCUtils.getInstance().reset();
             boolean tryGC = true;
-            for (int i = 0; i < LatinIMEUtil.GCUtils.GC_TRY_LOOP_MAX && tryGC; ++i) {
+            for (int i = 0; i < IMEUtil.GCUtils.GC_TRY_LOOP_MAX && tryGC; ++i) {
                 try {
-                    mInputView = (LatinKeyboardView) mInputMethodService.getLayoutInflater(
-                            ).inflate(THEMES[newLayout], null);
+                    //mInputView = (SoftKeyboardView) mInputMethodService.getLayoutInflater().inflate(THEMES[newLayout], null);
+                	mInputView = (SoftKeyboardView) mInputMethodService.getLayoutInflater().inflate(R.layout.input_view, null);
                     tryGC = false;
                 } catch (OutOfMemoryError e) {
-                    tryGC = LatinIMEUtil.GCUtils.getInstance().tryGCOrWait(
-                            mLayoutId + "," + newLayout, e);
+                    tryGC = IMEUtil.GCUtils.getInstance().tryGCOrWait(mLayoutId + "," + newLayout, e);
                 } catch (InflateException e) {
-                    tryGC = LatinIMEUtil.GCUtils.getInstance().tryGCOrWait(
-                            mLayoutId + "," + newLayout, e);
+                    tryGC = IMEUtil.GCUtils.getInstance().tryGCOrWait(mLayoutId + "," + newLayout, e);
                 }
             }
+            
+            mInputView.setTheme(mThemes);
             mInputView.setOnKeyboardActionListener(mInputMethodService);
             mLayoutId = newLayout;
         }
@@ -496,43 +500,24 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (PREF_KEYBOARD_LAYOUT.equals(key)) {
-            changeLatinKeyboardView(Integer.valueOf(sharedPreferences.getString(key, DEFAULT_LAYOUT_ID)), false);
-        } else if (LatinIMESettings.PREF_SETTINGS_KEY.equals(key)) {
+            changeSoftKeyboardView(Integer.valueOf(sharedPreferences.getString(key, DEFAULT_LAYOUT_ID)), false);
+        } else if (IMESettings.PREF_SETTINGS_KEY.equals(key)) {
             updateSettingsKeyState(sharedPreferences);
             recreateInputView();
         }
     }
 
-    public boolean isBlackSym () {
-        if (mInputView != null && mInputView.getSymbolColorScheme() == 1) {
-            return true;
-        }
-        return false;
-    }
-
     public void onAutoCompletionStateChanged(boolean isAutoCompletion) {
         if (isAutoCompletion != mIsAutoCompletionActive) {
-            LatinKeyboardView keyboardView = getInputView();
+            SoftKeyboardView keyboardView = getInputView();
             mIsAutoCompletionActive = isAutoCompletion;
-            keyboardView.invalidateKey(((LatinKeyboard) keyboardView.getKeyboard())
+            keyboardView.invalidateKey(((SoftKeyboard) keyboardView.getKeyboard())
                     .onAutoCompletionStateChanged(isAutoCompletion));
         }
     }
 
     private void updateSettingsKeyState(SharedPreferences prefs) {
         Resources resources = mInputMethodService.getResources();
-        /*final String settingsKeyMode = prefs.getString(LatinIMESettings.PREF_SETTINGS_KEY,
-                resources.getString(DEFAULT_SETTINGS_KEY_MODE));
-        // We show the settings key when 1) SETTINGS_KEY_MODE_ALWAYS_SHOW or
-        // 2) SETTINGS_KEY_MODE_AUTO and there are two or more enabled IMEs on the system
-        if (settingsKeyMode.equals(resources.getString(SETTINGS_KEY_MODE_ALWAYS_SHOW))
-                || (settingsKeyMode.equals(resources.getString(SETTINGS_KEY_MODE_AUTO))
-                        && LatinIMEUtil.hasMultipleEnabledIMEs(mInputMethodService))) {
-            mHasSettingsKey = true;
-        } else {
-            mHasSettingsKey = false;
-        }*/
-        
-        mHasSettingsKey = prefs.getBoolean(LatinIMESettings.PREF_SETTINGS_KEY, resources.getBoolean(R.bool.default_show_settings_key));
+        mHasSettingsKey = prefs.getBoolean(IMESettings.PREF_SETTINGS_KEY, resources.getBoolean(R.bool.default_show_settings_key));
     }
 }

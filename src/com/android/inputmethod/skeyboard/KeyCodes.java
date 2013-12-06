@@ -86,6 +86,8 @@ public final class KeyCodes {
     static final int KEYCODE_DONE = -4;
     static final int KEYCODE_DELETE = -5;
     static final int KEYCODE_ALT = -6;
+    static final int KEYCODE_TAB = 9;
+    static final int KEYCODE_RETURN = 10;
     
     // From LatinIME.java
     static final int KEYCODE_ENTER = '\n';

@@ -51,7 +51,7 @@ public class CandidateView extends View {
     private CharSequence mSelectedString;
     private int mSelectedIndex;
     private int mTouchX = OUT_OF_BOUNDS_X_COORD;
-    private final Drawable mSelectionHighlight;
+    private Drawable mSelectionHighlight;
     private boolean mTypedWordValid;
     
     private boolean mHaveMinimalSuggestion;
@@ -73,9 +73,9 @@ public class CandidateView extends View {
 
     private static final int X_GAP = 10;
     
-    private final int mColorNormal;
-    private final int mColorRecommended;
-    private final int mColorOther;
+    private int mColorNormal;
+    private int mColorRecommended;
+    private int mColorOther;
     private final Paint mPaint;
     private final int mDescent;
     private boolean mScrolled;
@@ -102,26 +102,27 @@ public class CandidateView extends View {
 
         LayoutInflater inflate =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         Resources res = context.getResources();
+        
         mPreviewPopup = new PopupWindow(context);
         mPreviewText = (TextView) inflate.inflate(R.layout.candidate_preview, null);
         mPreviewPopup.setWindowLayoutMode(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         mPreviewPopup.setContentView(mPreviewText);
         mPreviewPopup.setBackgroundDrawable(null);
         mPreviewPopup.setAnimationStyle(R.style.KeyPreviewAnimation);
+        
         mColorNormal = res.getColor(R.color.candidate_normal);
         mColorRecommended = res.getColor(R.color.candidate_recommended);
         mColorOther = res.getColor(R.color.candidate_other);
+        
         mDivider = res.getDrawable(R.drawable.keyboard_suggest_strip_divider);
         mAddToDictionaryHint = res.getString(R.string.hint_add_to_dictionary);
 
-        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/zawgyi.ttf"); // SMM
         mPaint = new Paint();
         mPaint.setColor(mColorNormal);
         mPaint.setAntiAlias(true);
         mPaint.setTextSize(mPreviewText.getTextSize());
         mPaint.setStrokeWidth(0);
         mPaint.setTextAlign(Align.CENTER);
-    	mPaint.setTypeface(typeface); // SMM
     	
         mDescent = (int) mPaint.descent();
         mMinTouchableWidth = (int)res.getDimension(R.dimen.candidate_min_touchable_width);
@@ -197,6 +198,23 @@ public class CandidateView extends View {
         mService = listener;
     }
     
+    public void setThemes(KeyboardThemes themes) {
+    	if((themes == null) || (themes.getTheme() == null)) return;
+    	
+    	final KeyboardThemes.Theme theme = themes.getTheme();
+    	mSelectionHighlight = theme.candidateSelection;
+    	mSelectionHighlight.setBounds(0, 0, mSelectionHighlight.getIntrinsicWidth(), mSelectionHighlight.getIntrinsicHeight());
+    	
+    	mColorNormal = theme.candidateTextColorNormal;
+        mColorRecommended = theme.candidateTextColorRecommended;
+        mColorOther = theme.candidateTextColorOther;
+        
+        mDivider = theme.candidateDivider;
+        mDivider.setBounds(0, 0, mDivider.getIntrinsicWidth(), mDivider.getIntrinsicHeight());
+        
+        invalidate();
+    }
+    
     @Override
     public int computeHorizontalScrollRange() {
         return mTotalWidth;
@@ -243,7 +261,7 @@ public class CandidateView extends View {
             paint.setColor(mColorNormal);
             if (mHaveMinimalSuggestion 
                     && ((i == 1 && !typedWordValid) || (i == 0 && typedWordValid))) {
-                //paint.setTypeface(Typeface.DEFAULT_BOLD); // SMM
+                paint.setTypeface(Typeface.DEFAULT_BOLD);
                 paint.setColor(mColorRecommended);
                 existsAutoCompletion = true;
             } else if (i != 0 || (wordLength == 1 && count > 1)) {
@@ -273,7 +291,12 @@ public class CandidateView extends View {
             }
 
             if (canvas != null) {
-                canvas.drawText(suggestion, 0, wordLength, x + wordWidth / 2, y, paint);
+            	if(ZawGyiCorrection.isMyChar(suggestion)) { // SMM
+            		paint.setTypeface(KeyboardThemes.getTypeFace(getContext()));
+            	}
+            	
+            	final String fixSuggestion = ZawGyiCorrection.ZawGyiDrawFix(suggestion).toString();
+                canvas.drawText(fixSuggestion, 0, wordLength, x + wordWidth / 2, y, paint);
                 paint.setColor(mColorOther);
                 canvas.translate(x + wordWidth, 0);
                 // Draw a divider unless it's after the hint
@@ -398,8 +421,7 @@ public class CandidateView extends View {
                     if (!mShowingCompletions) {
                         // This "acceptedSuggestion" will not be counted as a word because
                         // it will be counted in pickSuggestion instead.
-                        TextEntryState.acceptedSuggestion(mSuggestions.get(0),
-                                mSelectedString);
+                        TextEntryState.acceptedSuggestion(mSuggestions.get(0), mSelectedString);
                     }
                     mService.pickSuggestionManually(mSelectedIndex, mSelectedString);
                     mSelectedString = null;
@@ -415,8 +437,7 @@ public class CandidateView extends View {
                         clear();
                     } else {
                         if (!mShowingCompletions) {
-                            TextEntryState.acceptedSuggestion(mSuggestions.get(0),
-                                    mSelectedString);
+                            TextEntryState.acceptedSuggestion(mSuggestions.get(0), mSelectedString);
                         }
                         mService.pickSuggestionManually(mSelectedIndex, mSelectedString);
                     }
@@ -447,6 +468,9 @@ public class CandidateView extends View {
                 hidePreview();
             } else {
                 CharSequence word = altText != null? altText : mSuggestions.get(wordIndex);
+                if(ZawGyiCorrection.isMyChar(word)) { // SMM
+                	mPreviewText.setTypeface(KeyboardThemes.getTypeFace(getContext()));
+            	}
                 mPreviewText.setText(word);
                 mPreviewText.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), 
                         MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));

@@ -159,7 +159,7 @@ public class Tutorial implements OnTouchListener {
         }
     }
     
-    public Tutorial(LatinIME ime, LatinKeyboardView inputView) {
+    public Tutorial(LatinIME ime, SoftKeyboardView inputView) {
         Context context = inputView.getContext();
         mIme = ime;
         int inputWidth = inputView.getWidth();

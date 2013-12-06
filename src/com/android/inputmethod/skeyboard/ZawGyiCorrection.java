@@ -119,8 +119,7 @@ public class ZawGyiCorrection {
 										, "\u101E\u103C\u1031\u102C\u103A", "\u102A" };
 	};
 		
-	private ZawGyiCorrection()
-	{
+	private ZawGyiCorrection() {
 	}
 	
 	private static int[] toNormalChar(int code) {
@@ -414,6 +413,18 @@ public class ZawGyiCorrection {
 		return (code >= 0x1000 && code <= 0x1200);
 	}
 	
+	public static boolean isMyChar(CharSequence label) {
+		if(label == null) return false;
+		boolean isMyChar = false;
+    	for(int i = 0; i < label.length(); i++) {
+    		if(isMyChar(label.charAt(i))) {
+    			isMyChar = true;
+    			break;
+    		}
+    	}
+		return isMyChar;
+	}
+	
 	public static boolean isAlphabet(int code) {
 		int charIndex = getCharIndex(code);
 		switch(charIndex) {
@@ -593,6 +604,22 @@ public class ZawGyiCorrection {
 		return output;
 	}
 		
+	public static CharSequence ZawGyiDrawFix(CharSequence input) {
+		String output = input.toString();
+		int index = 0;
+		char[] chArray = new char[output.length()];
+		for(int i = 0; i < output.length(); i++) {
+			int ch = (int)output.charAt(i);
+			if((ch != NULL_CHAR) && (isMyChar(ch))) {
+				chArray[index++] = (char)(ch + 0xEA00);
+			}
+			else {
+				chArray[index++] = (char)ch;
+			}
+    	}
+		return String.valueOf(chArray);
+	}
+	
 	class Word {
 		private static final int WORD_LENGTH = 17;
         private int[] mWord = null;

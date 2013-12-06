@@ -18,21 +18,34 @@
 */
 -->
 <resources>
+    <color name="transparent">#00000000</color>
+    <color name="extension_background">#A0000000</color>
+    
     <color name="candidate_normal">#FFFFFFFF</color>
     <color name="candidate_recommended">#FFFCAE00</color>
     <color name="candidate_other">#FFFCAE00</color>
-    <color name="latinkeyboard_transparent">#00000000</color>
-    <color name="latinkeyboard_bar_language_shadow_light">#80000000</color>
-    <color name="latinkeyboard_bar_language_shadow_dark">#80FFFFFF</color>
-    <color name="latinkeyboard_bar_language_text_light">#FFC0C0C0</color>
-    <color name="latinkeyboard_bar_language_text_dark">#FF1A1A1A</color>
-    <color name="latinkeyboard_extension_background">#A0000000</color>
-    <color name="latinkeyboard_feedback_language_text">#FFFFFFFF</color>
-    <color name="latinkeyboard_key_color_white">#FFFFFFFF</color>
-    <color name="latinkeyboard_key_color_black">#FF000000</color>
     
-    <color name="latinkeyboard_key_text_color">#FFFFFFFF</color>
-    <color name="latinkeyboard_key_modifier_color">#FFFFFFFF</color>
-    <color name="latinkeyboard_key_hint_color">#FFBBBBBB</color>
-    <color name="latinkeyboard_key_cursor_color">#FFFFFFFF</color>
+    <color name="languagebar_shadow_light">#80FFFFFF</color>
+    <color name="languagebar_shadow_dark">#80000000</color>
+    <color name="languagebar_text_light">#FF1A1A1A</color>
+    <color name="languagebar_text_dark">#FFC0C0C0</color>
+    <color name="language_feedback_text">#FFFFFFFF</color>
+    
+    <color name="key_text_color_light">#FF000000</color>
+    <color name="key_text_color_dark">#FFFFFFFF</color>
+    
+    <color name="key_modifier_color_light">#FF000000</color>
+    <color name="key_modifier_color_dark">#FFFFFFFF</color>
+    
+    <color name="key_hint_color_light">#FF222222</color>
+    <color name="key_hint_color_dark">#FF222222</color>
+    
+    <color name="key_trail_color_light">#FF404040</color>
+    <color name="key_trail_color_dark">#FFC8C8C8</color>
+    
+    <color name="shadow_light">#80FFFFFF</color>
+    <color name="shadow_dark">#80000000</color>
+    
+    <color name="holo_blue_light">#ff33b5e5</color>
+    <color name="holo_blue_dark">#ff0099cc</color>
 </resources>

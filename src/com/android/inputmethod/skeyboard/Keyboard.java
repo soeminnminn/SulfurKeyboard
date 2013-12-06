@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import com.android.inputmethod.skeyboard.KeyboardIconsSet;
 import com.android.inputmethod.skeyboard.R;
 
 
@@ -79,69 +78,69 @@ public class Keyboard {
     public static final int EDGE_BOTTOM = 0x08;
 
     /** Keyboard label **/
-    @SuppressWarnings("unused")
-	private CharSequence mLabel;
+    protected CharSequence mLabel;
 
     /** Horizontal gap default for all rows */
-    private int mDefaultHorizontalGap;
+    protected int mDefaultHorizontalGap;
     
     /** Default key width */
-    private int mDefaultWidth;
+    protected int mDefaultWidth;
 
     /** Default key height */
-    private int mDefaultHeight;
+    protected int mDefaultHeight;
 
     /** Default gap between rows */
-    private int mDefaultVerticalGap;
+    protected int mDefaultVerticalGap;
+    
+    /** Default preview popup disable */
+    protected boolean mDefaultDisablePreview; // SMM
     
     /** Default Shift Locked mode **/
-    private boolean mDefaultShiftCaps; // SMM
+    protected boolean mDefaultShiftCapsMode; // SMM
 
     /** Is the keyboard in the shifted state */
-    private boolean mShifted;
+    protected boolean mShifted;
     
     /** Key instance for the shift key, if present */
-    private Key[] mShiftKeys = { null, null };
+    protected Key[] mShiftKeys = { null, null };
 
     /** Key index for the shift key, if present */
-    private int[] mShiftKeyIndices = {-1, -1};
+    protected int[] mShiftKeyIndices = {-1, -1};
 
     /** Current key width, while loading the keyboard */
-    @SuppressWarnings("unused")
-	private int mKeyWidth;
+    protected int mKeyWidth;
     
     /** Current key height, while loading the keyboard */
-    @SuppressWarnings("unused")
-	private int mKeyHeight;
+    protected int mKeyHeight;
     
     /** Total height of the keyboard, including the padding and keys */
-    private int mTotalHeight;
+    protected int mTotalHeight;
     
     /** 
      * Total width of the keyboard, including left side gaps and keys, but not any gaps on the
      * right side.
      */
-    private int mTotalWidth;
+    protected int mTotalWidth;
     
     /** List of keys in this keyboard */
-    private List<Key> mKeys;
+    protected List<Key> mKeys;
     
     /** List of modifier keys such as Shift & Alt, if any */
-    private List<Key> mModifierKeys;
+    protected List<Key> mModifierKeys;
     
     /** Width of the screen available to fit the keyboard */
-    private int mDisplayWidth;
+    protected int mDisplayWidth;
 
     /** Height of the screen */
-    private int mDisplayHeight;
+    protected int mDisplayHeight;
 
     /** Keyboard mode, or zero, if none.  */
-    private int mKeyboardMode;
+    protected int mKeyboardMode;
     
     /** Key text weight, def 2.  */
-    private int mKeyTextWeight;
+    protected int mKeyTextWeight;
     
-    protected KeyboardIconsSet mIconsSet;
+    //protected KeyboardIconsSet mIconsSet;
 
     // Variables for pre-computing nearest keys.
     
@@ -252,6 +251,8 @@ public class Keyboard {
         /** Label to display */
         public CharSequence label;
         public CharSequence shiftLabel;
+        public CharSequence hintLabel;
+        public CharSequence trailLabel;
         
         public int iconId;
         /** Icon to display instead of a label. Icon takes precedence over a label */
@@ -266,8 +267,6 @@ public class Keyboard {
         public int gap;
         /** Whether this key is sticky, i.e., a toggle key */
         public boolean sticky;
-        /** Whether this key is cursor */
-        public boolean cursor;
         /** X coordinate of the key in the keyboard layout */
         public int x;
         /** Y coordinate of the key in the keyboard layout */
@@ -280,6 +279,15 @@ public class Keyboard {
         public CharSequence text;
         /** Popup characters */
         public CharSequence popupCharacters;
+        /** Disable text size. */
+        public boolean fullTextSize;
+        /** Used Iconic font. */
+        public boolean iconic;
+        
+        /** Iconic Key. */
+        public boolean iconKey;
+        
+        public float iconSizeAdjust;
 
         /** 
          * Flags that specify the anchoring to edges of the keyboard for detecting touch events
@@ -335,6 +343,8 @@ public class Keyboard {
             width = parent.defaultWidth;
             gap = parent.defaultHorizontalGap;
             edgeFlags = parent.rowEdgeFlags;
+            
+            iconSizeAdjust = 0.6f;
         }
         
         /** Create a key with the given top-left coordinate and extract its attributes from
@@ -377,7 +387,6 @@ public class Keyboard {
                 codes = parseCSV(codesValue.string.toString());
             }
             
-            // SMM {
             TypedValue shiftCodesValue = new TypedValue();
             a.getValue(R.styleable.Keyboard_Key_shiftCodes, shiftCodesValue);
             if (shiftCodesValue.type == TypedValue.TYPE_INT_DEC 
@@ -386,7 +395,6 @@ public class Keyboard {
             } else if (shiftCodesValue.type == TypedValue.TYPE_STRING) {
             	shiftCodes = parseCSV(shiftCodesValue.string.toString());
             }
-            // }
             
             iconPreview = a.getDrawable(R.styleable.Keyboard_Key_iconPreview);
             if (iconPreview != null) {
@@ -398,7 +406,6 @@ public class Keyboard {
             repeatable = a.getBoolean(R.styleable.Keyboard_Key_isRepeatable, false);
             modifier = a.getBoolean(R.styleable.Keyboard_Key_isModifier, false);
             sticky = a.getBoolean(R.styleable.Keyboard_Key_isSticky, false);
-            cursor = a.getBoolean(R.styleable.Keyboard_Key_isCursor, false);
             edgeFlags = a.getInt(R.styleable.Keyboard_Key_keyEdgeFlags, 0);
             edgeFlags |= parent.rowEdgeFlags;
 
@@ -409,18 +416,29 @@ public class Keyboard {
             }
             label = a.getText(R.styleable.Keyboard_Key_keyLabel);
             shiftLabel = a.getText(R.styleable.Keyboard_Key_shiftLabel);
+            trailLabel = a.getText(R.styleable.Keyboard_Key_trailLabel);
             text = a.getText(R.styleable.Keyboard_Key_keyOutputText);
+            
+            fullTextSize = a.getBoolean(R.styleable.Keyboard_Key_fullTextSize, false);
+            iconic = a.getBoolean(R.styleable.Keyboard_Key_isIconic, false);
             
             if (codes == null && !TextUtils.isEmpty(label)) {
                 codes = new int[] { label.charAt(0) };
             }
             
             a.recycle();
-            // SMM {
+            
             if(shiftCodes == null && !TextUtils.isEmpty(shiftLabel)) { 
             	shiftCodes = new int[] { shiftLabel.charAt(0) };
             }
-            // } SMM
+            
+            if(popupCharacters != null && !TextUtils.isEmpty(popupCharacters)) {
+            	if(KeyboardBaseView.isAsciiDigit(popupCharacters.charAt(0))) {
+            		hintLabel = String.valueOf(popupCharacters.charAt(0));
+            	} else if(KeyboardBaseView.isAsciiDigit(popupCharacters.charAt(popupCharacters.length() - 1))) {
+            		hintLabel = String.valueOf(popupCharacters.charAt(popupCharacters.length() - 1));
+            	} 
+            }
         }
         
         /**
@@ -532,20 +550,24 @@ public class Keyboard {
             return states;
         }
         
-        // SMM {
 		public boolean isShifted() {
             return keyboard.isShifted();
         }
 		
-		public CharSequence getCaseLabel() {
+		public CharSequence getLabel(boolean adjustCase) {
 			CharSequence retLabel = label != null ? label : null;
-	    	if (keyboard.isShifted() && label != null && label.length() < 3) {
+	    	if (adjustCase && keyboard.isShifted() && label != null && label.length() < 3) {
 	    		if(shiftLabel != null) {
 	    			retLabel = shiftLabel; 
 	    		} else if(Character.isLowerCase(label.charAt(0))) {
 	    			retLabel = label.toString().toUpperCase();	
 	    		}
 	        }
+	    	
+	    	if(retLabel != null && retLabel.length() == 1) {
+	    		retLabel = DeadAccentSequence.getSpacing(retLabel.charAt(0));
+	    	}
+	    	
 	        return retLabel;
 		}
 		
@@ -563,7 +585,6 @@ public class Keyboard {
         	}
         	return codes;
         }
-        // } SMM
     }
     
     /**
@@ -756,27 +777,17 @@ public class Keyboard {
     	return mKeyTextWeight;
     }
     
-    public boolean getShiftCaps() {
-        return mDefaultShiftCaps;
+    public boolean getShiftCapsMode() {
+        return mDefaultShiftCapsMode;
+    }
+    
+    public boolean getDisablePreview() {
+        return mDefaultDisablePreview;
     }
     
     protected void setShiftCaps(boolean value) {
-        mDefaultShiftCaps = value;
+        mDefaultShiftCapsMode = value;
     }
-    
-    public void setIconsSet(final KeyboardIconsSet iconsSet) {
-    	if(iconsSet == null) return;
-    	mIconsSet = iconsSet;
-    	if(mKeys == null) return;
-    	for(int i = 0; i < mKeys.size(); i++) {
-    		Key key = mKeys.get(i);
-    		if(key.iconId != KeyboardIconsSet.ICON_UNDEFINED) {
-	    		key.icon = iconsSet.getIcon(key.iconId);
-	    		mKeys.set(i, key);
-    		}
-    	}
-    }
-    // }
 
     /**
      * Returns the total height of the keyboard
@@ -876,10 +887,6 @@ public class Keyboard {
     private void loadKeyboard(Context context, XmlResourceParser parser) {
         boolean inKey = false;
         boolean inRow = false;
-        @SuppressWarnings("unused")
-		boolean leftMostKey = false;
-        @SuppressWarnings("unused")
-		int row = 0;
         int x = 0;
         int y = 0;
         Key key = null;
@@ -934,7 +941,6 @@ public class Keyboard {
                         inRow = false;
                         y += currentRow.verticalGap;
                         y += currentRow.defaultHeight;
-                        row++;
                     } else {
                         // TODO: error or extend?
                     }
@@ -994,7 +1000,8 @@ public class Keyboard {
                 mDisplayHeight, 0);
         
         mKeyTextWeight = a.getInt(R.styleable.Keyboard_keyTextWeight, 2); // SMM
-        mDefaultShiftCaps = a.getBoolean(R.styleable.Keyboard_shiftCaps, false); // SMM
+        mDefaultShiftCapsMode = a.getBoolean(R.styleable.Keyboard_shiftCapsMode, false); // SMM
+        mDefaultDisablePreview = a.getBoolean(R.styleable.Keyboard_disablePreview, false); // SMM
         mProximityThreshold = (int) (mDefaultWidth * SEARCH_DISTANCE);
         mProximityThreshold = mProximityThreshold * mProximityThreshold; // Square it for comparison
         a.recycle();
@@ -1006,14 +1013,6 @@ public class Keyboard {
         
         mDefaultHeight = Math.max(mDefaultHeight, minHeight / 4);
         mDefaultHeight = Math.min(mDefaultHeight, maxHeight / 4);
-        
-        /* if(res.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-        	mDefaultHeight = Math.max(mDefaultHeight, (((mDisplayHeight / 10) * 3) / 4)); // (DisplayHeight % 30) / 4
-        	mDefaultHeight = Math.min(mDefaultHeight, (((mDisplayHeight / 10) * 5) / 4)); // (DisplayHeight % 50) / 4
-        } else {
-        	mDefaultHeight = Math.max(mDefaultHeight, mDisplayHeight / 10); // (DisplayHeight % 40) / 4
-        	mDefaultHeight = Math.min(mDefaultHeight, (((mDisplayHeight / 10) * 6) / 4)); // (DisplayHeight % 60) / 4
-        } */
         // } SMM
     }
     

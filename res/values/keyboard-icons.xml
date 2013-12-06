@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2011 The Android Open Source Project
+<!-- Copyright (C) 2010 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,30 +15,18 @@
 -->
 
 <resources>
-    <style name="KeyboardIcons">
-		<item name="icon123micKey" >@drawable/sym_keyboard_123_mic</item>
-		<item name="iconMicKey" >@drawable/sym_keyboard_mic</item>
-		<item name="iconSettingsKey" >@drawable/sym_keyboard_settings</item>
-		<item name="iconShiftKey" >@drawable/sym_keyboard_shift</item>
-		<item name="iconShiftLockedKey" >@drawable/sym_keyboard_shift_locked</item>
-		<item name="iconSpaceKey" >@drawable/sym_keyboard_space</item>
-		<item name="iconTabKey" >@drawable/sym_keyboard_tab</item>
-		<item name="iconReturnKey" >@drawable/sym_keyboard_return</item>
-		<item name="iconSearchKey" >@drawable/sym_keyboard_search</item>
-		<item name="iconDeleteKey" >@drawable/sym_keyboard_delete</item>
-		<item name="iconDoneKey" >@drawable/sym_keyboard_done</item>
-		<item name="iconNum0Key" >@drawable/sym_keyboard_num0</item>
-		<item name="iconNum1Key" >@drawable/sym_keyboard_num1</item>
-		<item name="iconNum2Key" >@drawable/sym_keyboard_num2</item>
-		<item name="iconNum3Key" >@drawable/sym_keyboard_num3</item>
-		<item name="iconNum4Key" >@drawable/sym_keyboard_num4</item>
-		<item name="iconNum5Key" >@drawable/sym_keyboard_num5</item>
-		<item name="iconNum6Key" >@drawable/sym_keyboard_num6</item>
-		<item name="iconNum7Key" >@drawable/sym_keyboard_num7</item>
-		<item name="iconNum8Key" >@drawable/sym_keyboard_num8</item>
-		<item name="iconNum9Key" >@drawable/sym_keyboard_num9</item>
-		<item name="iconNumAltKey" >@drawable/sym_keyboard_numalt</item>
-		<item name="iconNumPoundKey" >@drawable/sym_keyboard_numpound</item>
-		<item name="iconNumStarKey" >@drawable/sym_keyboard_numstar</item>
-	</style>
+
+    <integer name="icon_keyboard_123mic">0</integer>
+    <integer name="icon_keyboard_mic">1</integer>
+    <integer name="icon_keyboard_settings">2</integer>
+    <integer name="icon_keyboard_shift">3</integer>
+    <integer name="icon_keyboard_shift_locked">4</integer>
+    <integer name="icon_keyboard_space">5</integer>
+    <integer name="icon_keyboard_tab">6</integer>
+    <integer name="icon_keyboard_return">7</integer>
+    <integer name="icon_keyboard_search">8</integer>
+    <integer name="icon_keyboard_delete">9</integer>
+    <integer name="icon_keyboard_done">10</integer>
+    <integer name="icon_keyboard_hint_popup">11</integer>
+
 </resources>

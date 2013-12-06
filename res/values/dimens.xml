@@ -37,6 +37,8 @@
     <dimen name="max_height_for_fullscreen">2.5in</dimen>
     <dimen name="key_text_size">16dip</dimen>
     <dimen name="key_label_text_size">12dip</dimen>
+    <dimen name="key_hint_text_size">10dip</dimen>
+    <dimen name="key_trail_text_size">12dip</dimen>
     <dimen name="key_preview_text_size_large">30sp</dimen>
     <dimen name="key_preview_offset">0.000in</dimen>
     <!-- key_preview_text_size_large x 2 -->
@@ -59,5 +61,4 @@
     
     <fraction name="keyboard_max_height">50%</fraction>
     <fraction name="keyboard_min_height">30%</fraction>
-
 </resources>
