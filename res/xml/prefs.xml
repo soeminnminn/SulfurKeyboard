@@ -91,6 +91,15 @@
             android:defaultValue="@string/layout_gingerbread_value"
             />
     	
+    	<ListPreference
+            android:key="key_text_size"
+            android:title="@string/keyboard_text_size"
+            android:persistent="true"
+            android:entryValues="@array/keyboard_text_size_modes_values"
+            android:entries="@array/keyboard_text_size_modes"
+            android:defaultValue="@string/text_size_median_value"
+            />
+    	
     	<CheckBoxPreference
             android:key="fullscreen_override"
             android:title="@string/title_fullscreen_override"

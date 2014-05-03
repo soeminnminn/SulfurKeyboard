@@ -18,11 +18,14 @@
 package com.android.inputmethod.skeyboard;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import android.content.res.Resources;
 
 public class ZawGyiCorrection {
 	private static final int NULL_CHAR = 0x00;
-	private static final int JBFIX_CHAR = 0xFEFF; // 0x200C;
+	private static final int JBFIX_CHAR = 0x200C; // 0x200C || 0xFEFF;
 	
 	private static final int CHARINDEX_ThaWaiHtoe = 0;
 	private static final int CHARINDEX_RaRitt = 1;
@@ -42,85 +45,9 @@ public class ZawGyiCorrection {
 	private static final int CHARINDEX_WittSaPout = 15;
 	private static final int CHARINDEX_Other = 16;
 	
-	private static final String[] patterns;
-	static {
-		patterns = new String[] { "\u106A", "\u1009"
-										, "\u1025(?=[\u1039\u102C])", "\u1009"
-										, "\u1025\u102E", "\u1026"
-										, "\u106B", "\u100A"
-										, "\u1090", "\u101B"
-										, "\u1040", "\u1040"
-										, "\u108F", "\u1014"
-										, "\u1012", "\u1012"
-										, "\u1013", "\u1013"
-										, "[\u103D\u1087]", "\u103E"
-										, "\u103C", "\u103D"
-										, "[\u103B\u107E\u107F\u1080\u1081\u1082\u1083\u1084]", "\u103C"
-										, "[\u103A\u107D]", "\u103B"
-										, "\u103E\u103B", "\u103B\u103E"
-										, "\u108A", "\u103D\u103E"
-										, "\u103E\u103D", "\u103D\u103E"
-										, "(\u1031)?(\u103C)?([\u1000-\u1021])\u1064", "\u1064$1$2$3"
-										, "(\u1031)?(\u103C)?([\u1000-\u1021])\u108B", "\u1064$1$2$3\u102D"
-										, "(\u1031)?(\u103C)?([\u1000-\u1021])\u108C", "\u1064$1$2$3\u102E"
-										, "(\u1031)?(\u103C)?([\u1000-\u1021])\u108D", "\u1064$1$2$3\u1036"
-										, "\u105A", "\u102B\u103A"
-										, "\u108E", "\u102D\u1036"
-										, "\u1033", "\u102F"
-										, "\u1034", "\u1030"
-										, "\u1088", "\u103E\u102F"
-										, "\u1089", "\u103E\u1030"
-										, "\u1039", "\u103A"
-										, "[\u1094\u1095]", "\u1037"
-										, "([\u1000-\u1021])([\u102C\u102D\u102E\u1032\u1036]){1,2}([\u1060\u1061\u1062\u1063\u1065\u1066\u1067\u1068\u1069\u1070\u1071\u1072\u1073\u1074\u1075\u1076\u1077\u1078\u1079\u107A\u107B\u107C\u1085])", "$1$3$2"
-										, "\u1064", "\u1004\u103A\u1039"
-										, "\u104E", "\u104E\u1004\u103A\u1038"
-										, "\u1086", "\u103F"
-										, "\u1060", "\u1039\u1000"
-										, "\u1061", "\u1039\u1001"
-										, "\u1062", "\u1039\u1002"
-										, "\u1063", "\u1039\u1003"
-										, "\u1065", "\u1039\u1005"
-										, "[\u1066\u1067]", "\u1039\u1006"
-										, "\u1068", "\u1039\u1007"
-										, "\u1069", "\u1039\u1008"
-										, "\u106C", "\u1039\u100B"
-										, "\u1070", "\u1039\u100F"
-										, "[\u1071\u1072]", "\u1039\u1010"
-										, "[\u1073\u1074]", "\u1039\u1011"
-										, "\u1075", "\u1039\u1012"
-										, "\u1076", "\u1039\u1013"
-										, "\u1077", "\u1039\u1014"
-										, "\u1078", "\u1039\u1015"
-										, "\u1079", "\u1039\u1016"
-										, "\u107A", "\u1039\u1017"
-										, "\u107B", "\u1039\u1018"
-										, "\u107C", "\u1039\u1019"
-										, "\u1085", "\u1039\u101C"
-										, "\u106D", "\u1039\u100C"
-										, "\u1091", "\u100F\u1039\u100D"
-										, "\u1092", "\u100B\u1039\u100C"
-										, "\u1097", "\u100B\u1039\u100B"
-										, "\u106F", "\u100E\u1039\u100D"
-										, "\u106E", "\u100D\u1039\u100D"
-										, "(\u103C)([\u1000-\u1021])(\u1039[\u1000-\u1021])?", "$2$3$1"
-										, "(\u103E)(\u103D)([\u103B\u103C])", "$3$2$1"
-										, "(([\u1000-\u101C\u101E-\u102A\u102C\u102E-\u103F\u104C-\u109F]))(\u1040)", "$1\u101D"
-										, "([\u1000-\u101C\u101E-\u102A\u102C\u102E-\u103F\u104C-\u109F ])(\u1047)", "$1\u101B"
-										, "(\u1047)([\u1000-\u101C\u101E-\u102A\u102C\u102E-\u103F\u104C-\u109F ])", "\u101B$2"
-										, "(\u103E)([\u103B\u103C])", "$2$1"
-										, "(\u103D)([\u103B\u103C])", "$2$1"
-										, "(\u1047)( ? = [\u1000 - \u101C\u101E - \u102A\u102C\u102E - \u103F\u104C - \u109F ])", "\u101B"
-										, "(\u1031)?([\u1000-\u1021])(\u1039[\u1000-\u1021])?([\u102D\u102E\u1032])?([\u1036\u1037\u1038]{0,2})([\u103B-\u103E]{0,3})([\u102F\u1030])?([\u1036\u1037\u1038]{0,2})([\u102D\u102E\u1032])?", "$2$3$6$1$4$9$7$5$8"
-										, "\u1036\u102F", "\u102F\u1036"
-										, "(\u103A)(\u1037)", "$2$1"
-										, "\u1005\u103B", "\u1008"
-										, "\u101E\u103C", "\u1029"
-										, "\u101E\u103C\u1031\u102C\u103A", "\u102A" };
-	};
-		
-	private ZawGyiCorrection()
-	{
+	private static String[] patterns;
+	
+	private ZawGyiCorrection() {
 	}
 	
 	private static int[] toNormalChar(int code) {
@@ -410,8 +337,81 @@ public class ZawGyiCorrection {
 		return result;
 	}
 	
+	private static CharSequence RegexReplace(CharSequence data, CharSequence find, CharSequence replacement) {
+		if ((data == null) || (data == "")) return data;
+		StringBuffer result = new StringBuffer();
+		Pattern pattern = Pattern.compile(find.toString());
+		Matcher m = pattern.matcher(data);
+		while(m.find()) {
+			StringBuffer replacementBuffer = new StringBuffer();
+			boolean foundGroup = false;
+			for(int c = 0; c < replacement.length(); c++) {
+				char ch = replacement.charAt(c);
+				if(foundGroup) {
+					switch(ch) {
+						case '1':
+							replacementBuffer.append((m.group(1) == null ? "" : "$1"));
+							break;
+						case '2':
+							replacementBuffer.append((m.group(2) == null ? "" : "$2"));
+							break;
+						case '3':
+							replacementBuffer.append((m.group(3) == null ? "" : "$3"));
+							break;
+						case '4':
+							replacementBuffer.append((m.group(4) == null ? "" : "$4"));
+							break;
+						case '5':
+							replacementBuffer.append((m.group(5) == null ? "" : "$5"));
+							break;
+						case '6':
+							replacementBuffer.append((m.group(6) == null ? "" : "$6"));
+							break;
+						case '7':
+							replacementBuffer.append((m.group(7) == null ? "" : "$7"));
+							break;
+						case '8':
+							replacementBuffer.append((m.group(8) == null ? "" : "$8"));
+							break;
+						case '9':
+							replacementBuffer.append((m.group(9) == null ? "" : "$9"));
+							break;
+						default:
+							break;
+					}
+					
+					foundGroup = false;
+					continue;
+				}
+				
+				if (ch == '$') {
+					foundGroup = true;
+					continue;
+				}
+				
+				replacementBuffer.append(ch);
+			}
+			
+			m.appendReplacement(result, replacementBuffer.toString());
+		}
+		m.appendTail(result);
+		return result.toString();
+	}
+	
 	public static boolean isMyChar(int code) {
-		return (code >= 0x1000 && code <= 0x1200);
+		return (code >= 0x1000 && code <= 0x109F) || (code >= 0xAA60 && code <= 0xAA7B);
+	}
+	
+	public static boolean isMyChar(CharSequence label) {
+		if(label == null) return false;
+		boolean isMyChar = false;
+    	for(int i = 0; i < label.length(); i++) {
+    		if(isMyChar(label.charAt(i))) {
+    			isMyChar = true;
+    			break;
+    		}
+    	}
+		return isMyChar;
 	}
 	
 	public static boolean isAlphabet(int code) {
@@ -565,34 +565,78 @@ public class ZawGyiCorrection {
 		return sb.toString();
 	}
 	*/
-	public static CharSequence getZawGyiToUni(CharSequence zString) {
-		String output = zString.toString();
+	public static CharSequence getZawGyiToUni(CharSequence zString, Resources res) {
+		
+		if(patterns == null) {
+			patterns = res.getStringArray(R.array.zawgyi_unicode);
+		}
+		
+		/*String output = zString.toString();
 		String[] strPatterns = patterns;
 		int patCount = strPatterns.length / 2;
 		for (int i = 0; i < patCount; i++) {
 			int idx = i * 2;
 			output = Pattern.compile(strPatterns[idx]).matcher(output).replaceAll(strPatterns[(idx + 1)]);
+			// output = output.replace("null", "");
 		}
-		return output;
-		/*int index = 0;
-		char[] chArray = new char[output.length() + 1];
-		for(int i = 0; i < output.length(); i++) {
-			int ch = (int)output.charAt(i);
-			if(ch != NULL_CHAR) {
-				chArray[index++] = (char)ch;
-			}
-    	}
-		chArray[index] = '\0';
-		return String.valueOf(chArray);	*/
+		return output;*/
+		
+		CharSequence data = zString;
+		final String[] strPatterns = patterns;
+		final int patCount = strPatterns.length / 2;
+		for (int i = 0; i < patCount; i++) {
+			final int idx = i * 2;
+			data = RegexReplace(data, strPatterns[idx], strPatterns[(idx + 1)]);
+		}
+	
+		return data;
 	}
 	
 	public static CharSequence getJellyBeanFix(CharSequence input) {
-		String output = input.toString();
-		output = output.replaceAll("\u1031", String.valueOf((char)JBFIX_CHAR) + "\u1031");
-		output = output.replaceAll("\u1039", "\u1039" + String.valueOf((char)JBFIX_CHAR));
-		return output;
+		ArrayList<Integer> resultList = new ArrayList<Integer>();
+		
+		for(int i = 0; i < input.length(); i++) {
+    		int iValue = (int)input.charAt(i);
+    		if(iValue == 0x1031) {
+    			resultList.add(JBFIX_CHAR);
+    			resultList.add(iValue);
+    		} else if(iValue == 0x1039) {
+    			resultList.add(iValue);
+    			resultList.add(JBFIX_CHAR);
+    		} else {
+    			resultList.add(iValue);
+    		}
+    	}
+		
+		char[] chArray = new char[resultList.size()];
+		int count = 0;
+		for(Integer ch : resultList) {
+			chArray[count++] = (char)ch.intValue();
+		}
+		
+		return String.valueOf(chArray);
+		//String output = input.toString();
+		//output = output.replaceAll("\u1031", String.valueOf((char)JBFIX_CHAR) + "\u1031");
+		//output = output.replaceAll("\u1039", "\u1039" + String.valueOf((char)JBFIX_CHAR));
+		//return output;
 	}
 		
+	public static CharSequence ZawGyiDrawFix(CharSequence input) {
+		String output = input.toString();
+		int index = 0;
+		char[] chArray = new char[output.length()];
+		for(int i = 0; i < output.length(); i++) {
+			int ch = (int)output.charAt(i);
+			if((ch != NULL_CHAR) && (isMyChar(ch))) {
+				chArray[index++] = (char)(ch + 0xEA00);
+			}
+			else {
+				chArray[index++] = (char)ch;
+			}
+    	}
+		return String.valueOf(chArray);
+	}
+	
 	class Word {
 		private static final int WORD_LENGTH = 17;
         private int[] mWord = null;

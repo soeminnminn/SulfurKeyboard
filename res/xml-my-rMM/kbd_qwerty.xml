@@ -24,7 +24,7 @@
     android:horizontalGap="0px"
     android:verticalGap="@dimen/key_bottom_gap"
     android:keyHeight="@dimen/key_height"
-	android:shiftCaps="true"
+	android:shiftCapsMode="true"
 >
     <Row
         android:rowEdgeFlags="top"
@@ -140,6 +140,7 @@
         <Key
             android:codes="@integer/key_shift"
             android:keyIconId="@integer/icon_keyboard_shift"
+			android:iconPreview="@drawable/sym_keyboard_feedback_shift"
             android:keyWidth="15%p"
             android:isModifier="true"
 			android:isSticky="true"

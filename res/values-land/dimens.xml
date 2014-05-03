@@ -32,6 +32,8 @@
     <dimen name="mini_keyboard_slide_allowance">0.459in</dimen>
     <!-- popup_key_height x 1.0 -->
     <dimen name="mini_keyboard_vertical_correction">-0.270in</dimen>
+    
+    <!-- <dimen name="key_text_size">0.138in</dimen> -->
 
     <fraction name="keyboard_max_height">60%</fraction>
     <fraction name="keyboard_min_height">40%</fraction>

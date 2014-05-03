@@ -25,6 +25,7 @@
     android:verticalGap="@dimen/key_bottom_gap"
     android:keyHeight="@dimen/key_height"
     android:keyTextWeight="large"
+	android:disablePreview="true"
 >
     <Row
         android:rowEdgeFlags="top"
@@ -78,8 +79,9 @@
     >
         <Key
             android:codes="@integer/key_symbol"
-            android:keyIconId="@integer/icon_keyboard_numalt"
-            android:iconPreview="@drawable/sym_keyboard_feedback_numalt"
+            android:keyLabel="@string/label_num_alt_key"
+            android:fullTextSize="true"
+            android:isIconic="true"
             android:keyEdgeFlags="left" />
         <Key
             android:keyLabel="0" />

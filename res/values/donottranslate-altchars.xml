@@ -43,4 +43,15 @@
     <string name="alternates_for_cyrillic_soft_sign"></string>
     <string name="alternates_for_a_umlaut"></string>
     <string name="alternates_for_o_umlaut"></string>
+    
+    <string name="trail_for_num0">+</string>
+    <string name="trail_for_num1"></string>
+    <string name="trail_for_num2">ABC</string>
+    <string name="trail_for_num3">DEF</string>
+    <string name="trail_for_num4">GHI</string>
+    <string name="trail_for_num5">JKL</string>
+    <string name="trail_for_num6">MNO</string>
+    <string name="trail_for_num7">PQRS</string>
+    <string name="trail_for_num8">TUV</string>
+    <string name="trail_for_num9">WXYZ</string>
 </resources>

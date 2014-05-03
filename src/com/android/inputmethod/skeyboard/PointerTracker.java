@@ -16,8 +16,8 @@
 
 package com.android.inputmethod.skeyboard;
 
-import com.android.inputmethod.skeyboard.LatinKeyboardBaseView.OnKeyboardActionListener;
-import com.android.inputmethod.skeyboard.LatinKeyboardBaseView.UIHandler;
+import com.android.inputmethod.skeyboard.KeyboardBaseView.OnKeyboardActionListener;
+import com.android.inputmethod.skeyboard.KeyboardBaseView.UIHandler;
 import com.android.inputmethod.skeyboard.R;
 
 import com.android.inputmethod.skeyboard.Keyboard.Key;
@@ -45,7 +45,7 @@ public class PointerTracker {
     private final int mMultiTapKeyTimeout;
 
     // Miscellaneous constants
-    private static final int NOT_A_KEY = LatinKeyboardBaseView.NOT_A_KEY;
+    private static final int NOT_A_KEY = KeyboardBaseView.NOT_A_KEY;
     private static final int[] KEY_DELETE = { KeyCodes.KEYCODE_DELETE };
 
     private final UIProxy mProxy;
@@ -478,7 +478,7 @@ public class PointerTracker {
     /**
      * Handle multi-tap keys by producing the key label for the current multi-tap state.
      */
-    public CharSequence getPreviewText(Key key) {
+    public CharSequence getPreviewText(Key key, boolean adjustCase) {
         if (mInMultiTap) {
             // Multi-tap
             mPreviewLabel.setLength(0);
@@ -486,7 +486,7 @@ public class PointerTracker {
             return mPreviewLabel;
         } else {
             //return key.label;
-        	return key.getCaseLabel(); // SMM
+        	return key.getLabel(adjustCase); // SMM
         }
     }
 

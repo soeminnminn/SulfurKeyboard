@@ -42,24 +42,41 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin" >
 
-        <Button
-            android:id="@+id/btnShowSettings"
-            style="@style/HoloButton"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:text="@string/action_settings" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/btnShowInputTest"
-            style="@style/HoloButton"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:text="@string/title_activity_input_test" />
+            <Button
+                android:id="@+id/btnShowSettings"
+                style="@style/HoloButton"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="@string/action_settings" />
+
+            <Button
+                android:id="@+id/btnShowInputTest"
+                style="@style/HoloButton"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+				android:layout_below="@+id/btnShowSettings"                
+                android:text="@string/title_activity_input_test" />
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/btnShowSettings"
+                android:gravity="right"
+                android:text="@string/resource_mode"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/txtHelp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="@string/english_ime_name" />
 
     </LinearLayout>

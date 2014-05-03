@@ -26,13 +26,13 @@
         android:paddingLeft="16dip"
         android:paddingRight="16dip"
         >
-    <com.android.inputmethod.skeyboard.LatinKeyboardBaseView
+    <com.android.inputmethod.skeyboard.SoftKeyboardView
             xmlns:latin="http://schemas.android.com/apk/res/com.android.inputmethod.skeyboard"
-            android:id="@+id/LatinKeyboardBaseView"
+            android:id="@+id/KeyboardBaseView"
             android:layout_alignParentBottom="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/latinkeyboard_transparent"
+            android:background="@color/transparent"
 
             latin:keyBackground="@drawable/btn_keyboard_key_popup_gingerbread"
             latin:keyHysteresisDistance="0dip"

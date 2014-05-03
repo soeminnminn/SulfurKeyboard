@@ -24,20 +24,25 @@
     android:horizontalGap="0px"
     android:verticalGap="@dimen/key_bottom_gap"
     android:keyHeight="@dimen/key_height"
+    android:keyTextWeight="large"
+	android:disablePreview="true"
 >
     <Row
         android:rowEdgeFlags="top"
     >
         <Key
             android:codes="49"
-            android:keyIconId="@integer/icon_keyboard_num1"
+	    	android:keyLabel = "1"
+            android:trailLabel="@string/trail_for_num1"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="50"
-            android:keyIconId="@integer/icon_keyboard_num2" />
+	    	android:keyLabel = "2"
+            android:trailLabel="@string/trail_for_num2" />
         <Key
             android:codes="51"
-            android:keyIconId="@integer/icon_keyboard_num3" />
+	    	android:keyLabel = "3"
+            android:trailLabel="@string/trail_for_num3" />
         <Key
             android:keyLabel="-"
             android:keyWidth="20%p"
@@ -47,14 +52,17 @@
     <Row>
         <Key
             android:codes="52"
-            android:keyIconId="@integer/icon_keyboard_num4"
+	    	android:keyLabel = "4"
+            android:trailLabel="@string/trail_for_num4"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="53"
-            android:keyIconId="@integer/icon_keyboard_num5" />
+	    	android:keyLabel = "5"
+            android:trailLabel="@string/trail_for_num5" />
         <Key
             android:codes="54"
-            android:keyIconId="@integer/icon_keyboard_num6" />
+	    	android:keyLabel = "6"
+            android:trailLabel="@string/trail_for_num6" />
         <Key
             android:keyLabel="."
             android:keyWidth="20%p"
@@ -64,14 +72,17 @@
     <Row>
         <Key
             android:codes="55"
-            android:keyIconId="@integer/icon_keyboard_num7"
+	    	android:keyLabel = "7"
+            android:trailLabel="@string/trail_for_num7"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="56"
-            android:keyIconId="@integer/icon_keyboard_num8" />
+	    	android:keyLabel = "8"
+            android:trailLabel="@string/trail_for_num8" />
         <Key
             android:codes="57"
-            android:keyIconId="@integer/icon_keyboard_num9" />
+	    	android:keyLabel = "9"
+            android:trailLabel="@string/trail_for_num9" />
         <Key
             android:codes="@integer/key_delete"
             android:keyIconId="@integer/icon_keyboard_delete"
@@ -86,12 +97,14 @@
     >
         <Key
             android:codes="@integer/key_symbol"
-            android:keyIconId="@integer/icon_keyboard_numalt"
-            android:iconPreview="@drawable/sym_keyboard_feedback_numalt"
+            android:keyLabel="@string/label_phone_alt_key"
+            android:fullTextSize="true"
+            android:isIconic="true"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="48"
-            android:keyIconId="@integer/icon_keyboard_num0" />
+	    	android:keyLabel = "0"
+            android:trailLabel="@string/trail_for_num0" />
         <Key
             android:codes="@integer/key_space"
             android:keyIconId="@integer/icon_keyboard_space"

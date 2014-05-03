@@ -205,12 +205,18 @@
     <string name="label_send_key">Send</string>
     <!-- Label for "switch to symbols" key.  Must be short to fit on key! -->
     <string name="label_symbol_key">\?123</string>
+    <!-- Label for "switch to symbols" key.  Must be short to fit on key! -->
+    <string name="label_symbol_mic_key">123\uF002</string>
     <!-- Label for "switch to numeric" key.  Must be short to fit on key! -->
     <string name="label_phone_key">123</string>
     <!-- Label for "switch to alphabetic" key.  Must be short to fit on key! -->
     <string name="label_alpha_key">ABC</string>
     <!-- Label for ALT modifier key.  Must be short to fit on key! -->
     <string name="label_alt_key">ALT</string>
+    <!-- Label for Phone ALT modifier key.  Must be short to fit on key! -->
+    <string name="label_phone_alt_key">\uF0DC\uF0DD</string>
+    <!-- Label for Num ALT modifier key.  Must be short to fit on key! -->
+    <string name="label_num_alt_key">+ %</string>
 
     <!-- Voice related labels -->
 
@@ -393,6 +399,7 @@
     <string name="layout_gingerbread" translatable="false">Gingerbread</string>
     <string name="layout_ics" translatable="false">Ice cream sandwich</string>
     <string name="layout_galaxy" translatable="false">Galaxy</string>
+    <string name="layout_pink" translatable="false">Pink</string>
 
     <string-array name="keyboard_layout_modes" translatable="false">
         <item>@string/layout_basic</item>
@@ -402,6 +409,7 @@
         <item>@string/layout_gingerbread</item>
         <item>@string/layout_ics</item>
         <item>@string/layout_galaxy</item>
+        <item>@string/layout_pink</item>
     </string-array>
 
     <!-- Don't translate -->
@@ -412,6 +420,7 @@
     <string name="layout_gingerbread_value" translatable="false">4</string>
     <string name="layout_ics_value" translatable="false">5</string>
     <string name="layout_galaxy_value" translatable="false">6</string>
+    <string name="layout_pink_value" translatable="false">7</string>
 
     <string-array name="keyboard_layout_modes_values" translatable="false">
         <item>@string/layout_basic_value</item>
@@ -421,6 +430,31 @@
         <item>@string/layout_gingerbread_value</item>
         <item>@string/layout_ics_value</item>
         <item>@string/layout_galaxy_value</item>
+        <item>@string/layout_pink_value</item>
+    </string-array>
+    
+    <!-- Description for keyboard font size switcher -->
+    <string name="keyboard_text_size">Key Text Size</string>
+    <string name="text_size_small" translatable="false">Small</string>
+    <string name="text_size_median" translatable="false">Medium</string>
+    <string name="text_size_large" translatable="false">Large</string>
+    <string name="text_size_huge" translatable="false">Huge</string>
+    <string-array name="keyboard_text_size_modes" translatable="false">
+        <item>@string/text_size_small</item>
+        <item>@string/text_size_median</item>
+        <item>@string/text_size_large</item>
+        <item>@string/text_size_huge</item>
+    </string-array>
+    
+    <string name="text_size_small_value" translatable="false">1</string>
+    <string name="text_size_median_value" translatable="false">2</string>
+    <string name="text_size_large_value" translatable="false">3</string>
+    <string name="text_size_huge_value" translatable="false">4</string>
+    <string-array name="keyboard_text_size_modes_values" translatable="false">
+        <item>@string/text_size_small_value</item>
+        <item>@string/text_size_median_value</item>
+        <item>@string/text_size_large_value</item>
+        <item>@string/text_size_huge_value</item>
     </string-array>
     
     <!-- Option to enable suggestions in landscape mode -->
@@ -519,4 +553,6 @@
         </blockquote>
       "]]>
     </Data></string>
+    
+    <string name="resource_mode">default</string>
 </resources>

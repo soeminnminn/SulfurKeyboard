@@ -21,18 +21,18 @@
     <item android:state_single="true" android:state_pressed="true"
           android:drawable="@drawable/btn_keyboard_key_pressed_white" />
     <item android:state_single="true"
-          android:drawable="@drawable/btn_keyboard_key_opt_white" />
+          android:drawable="@drawable/btn_keyboard_key_mod_white" />
 
     <!-- Toggle keys. Use checkable/checked state. -->
 
     <item android:state_checkable="true" android:state_checked="true" android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_opt_on_white" />
+          android:drawable="@drawable/btn_keyboard_key_active_white" />
     <item android:state_checkable="true" android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_opt_off_white" />
+          android:drawable="@drawable/btn_keyboard_key_mod_white" />
     <item android:state_checkable="true" android:state_checked="true"
-          android:drawable="@drawable/btn_keyboard_key_opt_on_white" />
+          android:drawable="@drawable/btn_keyboard_key_active_white" />
     <item android:state_checkable="true"
-          android:drawable="@drawable/btn_keyboard_key_opt_off_white" />
+          android:drawable="@drawable/btn_keyboard_key_mod_white" />
 
     <!-- Normal keys -->
 

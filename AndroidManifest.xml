@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.inputmethod.skeyboard"
     android:versionCode="6"
-    android:versionName="1.0.9">
+    android:versionName="1.1.0">
     <!-- android:installLocation="internalOnly" > -->
 
     <uses-sdk
@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
-        android:backupAgent="com.android.inputmethod.skeyboard.LatinIMEBackupAgent"
+        android:backupAgent="com.android.inputmethod.skeyboard.IMEBackupAgent"
         android:icon="@drawable/ic_application"
         android:killAfterRestore="false"
         android:label="@string/english_ime_name"
@@ -37,7 +37,7 @@
         </service>
 
         <activity
-            android:name="com.android.inputmethod.skeyboard.MainActivity"
+            android:name="com.s16.android.MainActivity"
             android:label="@string/english_ime_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,14 +46,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.inputmethod.skeyboard.LatinIMESettings"
+            android:name="com.android.inputmethod.skeyboard.IMESettings"
             android:label="@string/english_ime_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.inputmethod.skeyboard.LatinIMEDebugSettings"
+            android:name="com.android.inputmethod.skeyboard.IMEDebugSettings"
             android:label="@string/english_ime_debug_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,7 +70,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.inputmethod.skeyboard.InputTestActivity"
+            android:name="com.s16.android.InputTestActivity"
             android:label="@string/title_activity_input_test" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

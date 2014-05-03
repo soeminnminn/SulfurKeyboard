@@ -85,7 +85,7 @@ abstract class KeyDetector {
      */
     public int[] newCodeArray() {
         int[] codes = new int[getMaxNearbyKeys()];
-        Arrays.fill(codes, LatinKeyboardBaseView.NOT_A_KEY);
+        Arrays.fill(codes, KeyboardBaseView.NOT_A_KEY);
         return codes;
     }
 

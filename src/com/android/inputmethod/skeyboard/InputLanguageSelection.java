@@ -46,6 +46,10 @@ public class InputLanguageSelection extends PreferenceActivity {
     private static final String[] BLACKLIST_LANGUAGES = {
         "ko", "ja", "zh", "el"
     };
+	
+	private static final String[] MUST_BE_ADD_LANGUAGES = {
+        "en_US", "my_MM"
+    };
     
     // Languages for which auto-caps should be disabled
     public static final Set<String> NOCAPS_LANGUAGES = new HashSet<String>();
@@ -102,18 +106,58 @@ public class InputLanguageSelection extends PreferenceActivity {
         String[] languageList = mSelectedLanguages.split(",");
         mAvailableLanguages = getUniqueLocales();
         PreferenceGroup parent = getPreferenceScreen();
+		// SMM {
+		ArrayList<String> mustBeAddLocale = new ArrayList<String>();
+		for (int i = 0; i < MUST_BE_ADD_LANGUAGES.length; i++) {
+			mustBeAddLocale.add(MUST_BE_ADD_LANGUAGES[i]);
+		}
+		// } SMM
         for (int i = 0; i < mAvailableLanguages.size(); i++) {
-            CheckBoxPreference pref = new CheckBoxPreference(this);
-            Locale locale = mAvailableLanguages.get(i).locale;
+            final CheckBoxPreference pref = new CheckBoxPreference(this);
+            final Locale locale = mAvailableLanguages.get(i).locale;
+			// SMM { 
+			final String localeCode = get5Code(locale);
+			if (arrayContains(MUST_BE_ADD_LANGUAGES, localeCode)) {
+				mustBeAddLocale.remove(localeCode);
+			}
+			pref.setTitle(getLocaleName(locale)); 
+			// } SMM
             //pref.setTitle(LanguageSwitcher.toTitleCase(locale.getDisplayName(locale)));
-			pref.setTitle(getLocaleName(locale)); // SMM
-            boolean checked = isLocaleIn(locale, languageList);
+            final boolean checked = isLocaleIn(locale, languageList);
             pref.setChecked(checked);
             if (hasDictionary(locale)) {
                 pref.setSummary(R.string.has_dictionary);
             }
             parent.addPreference(pref);
         }
+		
+		// SMM {
+		if (mustBeAddLocale.size() > 0) {
+			for (int i = 0; i < mustBeAddLocale.size(); i++) {
+				final String localeCode = mustBeAddLocale.get(i);
+				String[] partList = localeCode.split("_");
+				Locale locale = null;
+				if (partList.length == 2) {
+					locale = new Locale(partList[0], partList[1]);
+				} else if (partList.length == 3) {
+					locale = new Locale(partList[0], partList[1], partList[3]);
+				} else {
+					locale = new Locale(partList[0]);
+				}
+				
+				if (locale != null) {
+					final CheckBoxPreference pref = new CheckBoxPreference(this);
+					pref.setTitle(getLocaleName(locale));
+					final boolean checked = isLocaleIn(locale, languageList);
+					pref.setChecked(checked);
+					if (hasDictionary(locale)) {
+						pref.setSummary(R.string.has_dictionary);
+					}
+					parent.addPreference(pref);
+				}
+			}
+		}
+		// } SMM
     }
 
     private boolean isLocaleIn(Locale locale, String[] list) {

@@ -16,7 +16,7 @@
 
 package com.android.inputmethod.skeyboard;
 
-import com.android.inputmethod.skeyboard.LatinIMEUtil.RingCharBuffer;
+import com.android.inputmethod.skeyboard.IMEUtil.RingCharBuffer;
 
 import com.android.inputmethod.voice.FieldContext;
 import com.android.inputmethod.voice.SettingsUtil;
@@ -80,7 +80,7 @@ import java.util.Map;
  * Input method implementation for Qwerty'ish keyboard.
  */
 public class LatinIME extends InputMethodService
-        implements LatinKeyboardBaseView.OnKeyboardActionListener,
+        implements KeyboardBaseView.OnKeyboardActionListener,
         VoiceInput.UiListener,
         SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "LatinIME";
@@ -117,6 +117,7 @@ public class LatinIME extends InputMethodService
     private static final String PREF_VOICE_MODE = "voice_mode";
     private static final String PREF_FULLSCREEN_OVERRIDE = "fullscreen_override";
     private static final String PREF_FORCE_KEYBOARD_ON = "force_keyboard_on";
+    private static final String PREF_KEY_TEXT_SIZE = "key_text_size";
 
     // Whether or not the user has used voice input before (and thus, whether to show the
     // first-run warning dialog or not).
@@ -156,7 +157,7 @@ public class LatinIME extends InputMethodService
     private static final int SUGGESTIONS_ONLY_PORTRAIT = 1;
     private static final int SUGGESTIONS_HIDE = 2;
 
-    //private LatinKeyboardView mInputView;
+    //private SoftKeyboardView mInputView;
     private LinearLayout mCandidateViewContainer;
     private CandidateView mCandidateView;
     private Suggest mSuggest;
@@ -199,7 +200,7 @@ public class LatinIME extends InputMethodService
     private boolean mAutoCorrectEnabled;
     private boolean mReCorrectionEnabled;
     // Bigram Suggestion is disabled in this version.
-    private final boolean mBigramSuggestionEnabled = false;
+    private boolean mBigramSuggestionEnabled = false;
     private boolean mAutoCorrectOn;
     // TODO move this state variable outside LatinIME
     private boolean mCapsLock;
@@ -219,6 +220,7 @@ public class LatinIME extends InputMethodService
     private int     mCorrectionMode;
     private boolean mUsedUnicode;
     private boolean mJellyBeanFix;
+    private int     mKeyTextSizeScale;
     private boolean mEnableVoice = true;
     private boolean mVoiceOnPrimary;
     private int     mOrientation;
@@ -352,7 +354,7 @@ public class LatinIME extends InputMethodService
     
     @Override
     public void onCreate() {
-        LatinImeLogger.init(this);
+        IMELogger.init(this);
         super.onCreate();
         //setStatusIcon(R.drawable.ime_qwerty);
         mResources = getResources();
@@ -388,14 +390,14 @@ public class LatinIME extends InputMethodService
         registerReceiver(mPluginManager, pFilter);
         // } SMM
         
-        LatinIMEUtil.GCUtils.getInstance().reset();
+        IMEUtil.GCUtils.getInstance().reset();
         boolean tryGC = true;
-        for (int i = 0; i < LatinIMEUtil.GCUtils.GC_TRY_LOOP_MAX && tryGC; ++i) {
+        for (int i = 0; i < IMEUtil.GCUtils.GC_TRY_LOOP_MAX && tryGC; ++i) {
             try {
                 initSuggest(inputLanguage);
                 tryGC = false;
             } catch (OutOfMemoryError e) {
-                tryGC = LatinIMEUtil.GCUtils.getInstance().tryGCOrWait(inputLanguage, e);
+                tryGC = IMEUtil.GCUtils.getInstance().tryGCOrWait(inputLanguage, e);
             }
         }
 
@@ -516,8 +518,8 @@ public class LatinIME extends InputMethodService
         if (VOICE_INSTALLED && mVoiceInput != null) {
             mVoiceInput.destroy();
         }
-        LatinImeLogger.commit();
-        LatinImeLogger.onDestroy();
+        IMELogger.commit();
+        IMELogger.onDestroy();
         super.onDestroy();
     }
 
@@ -574,6 +576,7 @@ public class LatinIME extends InputMethodService
                 R.layout.candidates, null);
         mCandidateView = (CandidateView) mCandidateViewContainer.findViewById(R.id.candidates);
         mCandidateView.setService(this);
+        //mCandidateView.setThemes(mKeyboardSwitcher.getThemes()); // SMM
         setCandidatesViewShown(true);
         return mCandidateViewContainer;
     }
@@ -584,9 +587,9 @@ public class LatinIME extends InputMethodService
     		Log.i(TAG, "onStartInputView");
     	}
     	
-    	LatinIMESettings.AlertForInstallLocation(getBaseContext(), null); // SMM
+    	IMESettings.AlertForInstallLocation(getBaseContext(), null); // SMM
     	
-        LatinKeyboardView inputView = mKeyboardSwitcher.getInputView();
+        SoftKeyboardView inputView = mKeyboardSwitcher.getInputView();
         // In landscape mode, this method gets called without the input view being created.
         if (inputView == null) {
             return;
@@ -751,7 +754,7 @@ public class LatinIME extends InputMethodService
     public void onFinishInput() {
         super.onFinishInput();
 
-        LatinImeLogger.commit();
+        IMELogger.commit();
         onAutoCompletionStateChanged(false);
 
         if (VOICE_INSTALLED && !mConfigurationChanging) {
@@ -905,7 +908,7 @@ public class LatinIME extends InputMethodService
 
     @Override
     public void hideWindow() {
-        LatinImeLogger.commit();
+        IMELogger.commit();
         onAutoCompletionStateChanged(false);
 
         if (TRACE) Debug.stopMethodTracing();
@@ -960,8 +963,13 @@ public class LatinIME extends InputMethodService
     private void setCandidatesViewShownInternal(boolean shown, boolean needsInputViewShown) {
         // TODO: Remove this if we support candidates with hard keyboard
         if (onEvaluateInputViewShown()) {
-            super.setCandidatesViewShown(shown && mKeyboardSwitcher.getInputView() != null
-                    && (needsInputViewShown ? mKeyboardSwitcher.getInputView().isShown() : true));
+        	final boolean isShown = shown && mKeyboardSwitcher.getInputView() != null
+                    && (needsInputViewShown ? mKeyboardSwitcher.getInputView().isShown() : true);
+            super.setCandidatesViewShown(isShown);
+            
+            if(mCandidateView != null && isShown) {
+        		mCandidateView.setThemes(mKeyboardSwitcher.getThemes());
+        	}
         }
     }
 
@@ -1035,7 +1043,7 @@ public class LatinIME extends InputMethodService
                 if (mTutorial != null) {
                     return true;
                 }
-                LatinKeyboardView inputView = mKeyboardSwitcher.getInputView();
+                SoftKeyboardView inputView = mKeyboardSwitcher.getInputView();
                 // Enable shift key and DPAD to do selections
                 if (inputView != null && inputView.isShown()
                         && inputView.isShifted()) {
@@ -1089,12 +1097,16 @@ public class LatinIME extends InputMethodService
 	    	output = ZawGyiCorrection.getWord(text).toString();
     	}
     	if(mUsedUnicode) {
-    		return ZawGyiCorrection.getZawGyiToUni(output);
+    		return ZawGyiCorrection.getZawGyiToUni(output, getResources());
     	}
     	if(mJellyBeanFix) {
     		return ZawGyiCorrection.getJellyBeanFix(output);
     	}
     	return output;
+    }
+    
+    public int getOrientation() {
+    	return mOrientation;
     }
     // } SMM
 
@@ -1243,7 +1255,7 @@ public class LatinIME extends InputMethodService
 
     private void onOptionKeyPressed() {
         if (!isShowingOptionDialog()) {
-            if (LatinIMEUtil.hasMultipleEnabledIMEs(this)) {
+            if (IMEUtil.hasMultipleEnabledIMEs(this)) {
                 showOptionsMenu();
             } else {
                 launchSettings();
@@ -1253,7 +1265,7 @@ public class LatinIME extends InputMethodService
 
     private void onOptionKeyLongPressed() {
         if (!isShowingOptionDialog()) {
-            if (LatinIMEUtil.hasMultipleEnabledIMEs(this)) {
+            if (IMEUtil.hasMultipleEnabledIMEs(this)) {
                 showInputMethodPicker();
             } else {
                 launchSettings();
@@ -1282,7 +1294,7 @@ public class LatinIME extends InputMethodService
             case KeyCodes.KEYCODE_DELETE:
                 handleBackspace();
                 mDeleteCount++;
-                LatinImeLogger.logOnDelete();
+                IMELogger.logOnDelete();
                 break;
             case KeyCodes.KEYCODE_SHIFT:
                 // Shift key is handled in onPress() when device has distinct multi-touch panel.
@@ -1363,7 +1375,7 @@ public class LatinIME extends InputMethodService
                     mJustAddedAutoSpace = false;
                 }
                 RingCharBuffer.getInstance().push((char)primaryCode, x, y);
-                LatinImeLogger.logOnInputChar();
+                IMELogger.logOnInputChar();
                 if (isWordSeparator(primaryCode)) {
                     handleSeparator(primaryCode);
                 } else {
@@ -1489,14 +1501,14 @@ public class LatinIME extends InputMethodService
     private void handleShiftInternal(boolean forceNormal) {
         mHandler.removeMessages(MSG_UPDATE_SHIFT_STATE);
         KeyboardSwitcher switcher = mKeyboardSwitcher;
-        LatinKeyboardView inputView = switcher.getInputView();
+        SoftKeyboardView inputView = switcher.getInputView();
         if (switcher.isAlphabetMode()) {
         	if (mCapsLock || forceNormal) {
                 mCapsLock = false;
                 switcher.setShifted(false);
             } else if (inputView != null) { 
-            	LatinKeyboard keyboard = (LatinKeyboard)inputView.getKeyboard(); 
-            	if(keyboard.getShiftCaps()) {
+            	SoftKeyboard keyboard = (SoftKeyboard)inputView.getKeyboard(); 
+            	if(keyboard.getShiftCapsMode()) {
             		mCapsLock = true;
             		keyboard.enableShiftLock();
             		//switcher.setShifted(true);
@@ -1684,7 +1696,7 @@ public class LatinIME extends InputMethodService
         }
         requestHideSelf(0);
         if (mKeyboardSwitcher != null) {
-            LatinKeyboardView inputView = mKeyboardSwitcher.getInputView();
+            SoftKeyboardView inputView = mKeyboardSwitcher.getInputView();
             if (inputView != null) {
                 inputView.closing();
             }
@@ -1944,8 +1956,8 @@ public class LatinIME extends InputMethodService
     }
 
     private void updateSuggestions() {
-        LatinKeyboardView inputView = mKeyboardSwitcher.getInputView();
-        ((LatinKeyboard) inputView.getKeyboard()).setPreferredLetters(null);
+        SoftKeyboardView inputView = mKeyboardSwitcher.getInputView();
+        ((SoftKeyboard) inputView.getKeyboard()).setPreferredLetters(null);
 
         // Check if we have a suggestion engine attached.
         if ((mSuggest == null || !isPredictionOn()) && !mVoiceInputHighlighted) {
@@ -1967,7 +1979,7 @@ public class LatinIME extends InputMethodService
 
     private void showCorrections(WordAlternatives alternatives) {
         List<CharSequence> stringList = alternatives.getAlternatives();
-        ((LatinKeyboard) mKeyboardSwitcher.getInputView().getKeyboard()).setPreferredLetters(null);
+        ((SoftKeyboard) mKeyboardSwitcher.getInputView().getKeyboard()).setPreferredLetters(null);
         showSuggestions(stringList, alternatives.getOriginalWord(), false, false);
     }
 
@@ -1984,7 +1996,7 @@ public class LatinIME extends InputMethodService
 
         int[] nextLettersFrequencies = mSuggest.getNextLettersFrequencies();
 
-        ((LatinKeyboard) mKeyboardSwitcher.getInputView().getKeyboard()).setPreferredLetters(
+        ((SoftKeyboard) mKeyboardSwitcher.getInputView().getKeyboard()).setPreferredLetters(
                 nextLettersFrequencies);
 
         boolean correctionAvailable = !mInputTypeNoAutoCorrect && mSuggest.hasMinimalCorrection();
@@ -2083,12 +2095,12 @@ public class LatinIME extends InputMethodService
         if (suggestion.length() == 1 && (isWordSeparator(suggestion.charAt(0))
                 || isSuggestedPunctuation(suggestion.charAt(0)))) {
             // Word separators are suggested before the user inputs something.
-            // So, LatinImeLogger logs "" as a user's input.
-            LatinImeLogger.logOnManualSuggestion(
+            // So, IMELogger logs "" as a user's input.
+            IMELogger.logOnManualSuggestion(
                     "", suggestion.toString(), index, suggestions);
             final char primaryCode = suggestion.charAt(0);
-            onKey(primaryCode, new int[]{primaryCode}, LatinKeyboardBaseView.NOT_A_TOUCH_COORDINATE,
-                    LatinKeyboardBaseView.NOT_A_TOUCH_COORDINATE);
+            onKey(primaryCode, new int[]{primaryCode}, KeyboardBaseView.NOT_A_TOUCH_COORDINATE,
+            		KeyboardBaseView.NOT_A_TOUCH_COORDINATE);
             if (ic != null) {
                 ic.endBatchEdit();
             }
@@ -2102,7 +2114,7 @@ public class LatinIME extends InputMethodService
         } else {
             addToBigramDictionary(suggestion, 1);
         }
-        LatinImeLogger.logOnManualSuggestion(mComposing.toString(), suggestion.toString(),
+        IMELogger.logOnManualSuggestion(mComposing.toString(), suggestion.toString(),
                 index, suggestions);
         TextEntryState.acceptedSuggestion(mComposing.toString(), suggestion);
         // Follow it with a space
@@ -2168,7 +2180,7 @@ public class LatinIME extends InputMethodService
     	if(DEBUG) {
     		Log.i(TAG, "pickSuggestion");
     	}
-        LatinKeyboardView inputView = mKeyboardSwitcher.getInputView();
+        SoftKeyboardView inputView = mKeyboardSwitcher.getInputView();
         if (mCapsLock) {
             suggestion = suggestion.toString().toUpperCase();
         } else if (preferCapitalization()
@@ -2186,7 +2198,7 @@ public class LatinIME extends InputMethodService
         saveWordInHistory(suggestion);
         mPredicting = false;
         mCommittedLength = suggestion.length();
-        ((LatinKeyboard) inputView.getKeyboard()).setPreferredLetters(null);
+        ((SoftKeyboard) inputView.getKeyboard()).setPreferredLetters(null);
         // If we just corrected a word, then don't show punctuations
         if (!correcting) {
             setNextSuggestions();
@@ -2426,10 +2438,10 @@ public class LatinIME extends InputMethodService
     		Log.i(TAG, "toggleLanguage");
     	}
     	
-    	final LatinKeyboardView keyboard = mKeyboardSwitcher.getInputView();
+    	final SoftKeyboardView keyboard = mKeyboardSwitcher.getInputView();
     	boolean isLanguageSwitchEnabled = true;
     	if(keyboard != null) {
-    		isLanguageSwitchEnabled = ((LatinKeyboard)keyboard.getKeyboard()).isLanguageSwitchEnabled();
+    		isLanguageSwitchEnabled = ((SoftKeyboard)keyboard.getKeyboard()).isLanguageSwitchEnabled();
     	}
     	
         if (reset) {
@@ -2481,13 +2493,16 @@ public class LatinIME extends InputMethodService
         } else if (PREF_FORCE_KEYBOARD_ON.equals(key)) {
             mForceKeyboardOn = sharedPreferences.getBoolean(PREF_FORCE_KEYBOARD_ON,
             		res.getBoolean(R.bool.default_force_keyboard_on));
+        } else if (PREF_KEY_TEXT_SIZE.equals(key)) {
+            mKeyTextSizeScale = Integer.valueOf(sharedPreferences.getString(PREF_KEY_TEXT_SIZE,
+            		res.getString(R.string.text_size_median_value)));
         }
     	
     	reloadKeyboards();
     }
 
     public void swipeRight() {
-        if (LatinKeyboardView.DEBUG_AUTO_PLAY) {
+        if (SoftKeyboardView.DEBUG_AUTO_PLAY) {
             ClipboardManager cm = ((ClipboardManager)getSystemService(CLIPBOARD_SERVICE));
             CharSequence text = cm.getText();
             if (!TextUtils.isEmpty(text)) {
@@ -2525,7 +2540,7 @@ public class LatinIME extends InputMethodService
 
     public void onRelease(int primaryCode) {
         // Reset any drag flags in the keyboard
-        ((LatinKeyboard) mKeyboardSwitcher.getInputView().getKeyboard()).keyReleased();
+        ((SoftKeyboard) mKeyboardSwitcher.getInputView().getKeyboard()).keyReleased();
         //vibrate();
         final boolean distinctMultiTouch = mKeyboardSwitcher.hasDistinctMultitouch();
         if (distinctMultiTouch && primaryCode == KeyCodes.KEYCODE_SHIFT) {
@@ -2662,9 +2677,26 @@ public class LatinIME extends InputMethodService
     		return true;
     	}
     }
+    
+    public float getKeyTextSizeScale() {
+    	float textSizeScale = 1.0f;
+    	switch(mKeyTextSizeScale) {
+    	case 1:
+    		textSizeScale = 0.85f;
+    		break;
+    	case 3:
+    		textSizeScale = 1.2f;
+    		break;
+    	case 4:
+    		textSizeScale = 1.8f;
+    		break;
+		default:
+			break;
+    	}
+    	return textSizeScale;
+    }
     // } SMM
     
-    @SuppressWarnings("unused")
 	private void updateCorrectionMode() {
         mHasDictionary = mSuggest != null ? mSuggest.hasMainDictionary() : false;
         mAutoCorrectOn = (mAutoCorrectEnabled || mQuickFixes)
@@ -2687,11 +2719,11 @@ public class LatinIME extends InputMethodService
     }
 
     protected void launchSettings() {
-        launchSettings(LatinIMESettings.class);
+        launchSettings(IMESettings.class);
     }
 
     public void launchDebugSettings() {
-        launchSettings(LatinIMEDebugSettings.class);
+        launchSettings(IMEDebugSettings.class);
     }
 
     protected void launchSettings (Class<? extends PreferenceActivity> settingsClass) {
@@ -2756,6 +2788,8 @@ public class LatinIME extends InputMethodService
         
         mJellyBeanFix = sp.getBoolean(PREF_USED_JBFIX, 
         		mResources.getBoolean(R.bool.default_used_jbfix)) & mQuickFixes;
+        
+        mKeyTextSizeScale = Integer.valueOf(sp.getString(PREF_KEY_TEXT_SIZE, getString(R.string.text_size_median_value)));
         
         updateCorrectionMode();
         updateAutoTextEnabled(mResources.getConfiguration().locale);

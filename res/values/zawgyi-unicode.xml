@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+**
+** Copyright 2008, The Android Open Source Project
+**
+** Licensed under the Apache License, Version 2.0 (the </item>License</item>);
+** you may not use this file except in compliance with the License.
+** You may obtain a copy of the License at
+**
+**     http://www.apache.org/licenses/LICENSE-2.0
+**
+** Unless required by applicable law or agreed to in writing, software
+** distributed under the License is distributed on an </item>AS IS</item> BASIS,
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+** See the License for the specific language governing permissions and
+** limitations under the License.
+*/
+
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+	<string-array name="zawgyi_unicode">
+		<item>&#x106A;</item><item>&#x1009;</item>
+		<item>&#x1025;(?=[&#x1039;&#x102C;])</item><item>&#x1009;</item>
+		<item>&#x1025;&#x102E;</item><item>&#x1026;</item>
+		<item>&#x106B;</item><item>&#x100A;</item>
+		<item>&#x1090;</item><item>&#x101B;</item>
+		<item>&#x108F;</item><item>&#x1014;</item>
+		<!-- <item>&#x1040;</item><item>&#x1040;</item> -->
+		<!-- <item>&#x1012;</item><item>&#x1012;</item> -->
+		<!-- <item>&#x1013;</item><item>&#x1013;</item> -->
+		<item>[&#x103D;&#x1087;]</item><item>&#x103E;</item>
+		<item>&#x103C;</item><item>&#x103D;</item>
+		<item>[&#x103B;&#x107E;&#x107F;&#x1080;&#x1081;&#x1082;&#x1083;&#x1084;]</item><item>&#x103C;</item>
+		<item>[&#x103A;&#x107D;]</item><item>&#x103B;</item>
+		<item>&#x103E;&#x103B;</item><item>&#x103B;&#x103E;</item>
+		<item>&#x108A;</item><item>&#x103D;&#x103E;</item>
+		<item>&#x103E;&#x103D;</item><item>&#x103D;&#x103E;</item>
+		<item>(&#x1031;)?(&#x103C;)?([&#x1000;-&#x1021;])&#x1064;</item><item>&#x1064;$1$2$3</item>
+		<item>(&#x1031;)?(&#x103C;)?([&#x1000;-&#x1021;])&#x108B;</item><item>&#x1064;$1$2$3&#x102D;</item>
+		<item>(&#x1031;)?(&#x103C;)?([&#x1000;-&#x1021;])&#x108C;</item><item>&#x1064;$1$2$3&#x102E;</item>
+		<item>(&#x1031;)?(&#x103C;)?([&#x1000;-&#x1021;])&#x108D;</item><item>&#x1064;$1$2$3&#x1036;</item>
+		<item>&#x105A;</item><item>&#x102B;&#x103A;</item>
+		<item>&#x108E;</item><item>&#x102D;&#x1036;</item>
+		<item>&#x1033;</item><item>&#x102F;</item>
+		<item>&#x1034;</item><item>&#x1030;</item>
+		<item>&#x1088;</item><item>&#x103E;&#x102F;</item>
+		<item>&#x1089;</item><item>&#x103E;&#x1030;</item>
+		<item>&#x1039;</item><item>&#x103A;</item>
+		<item>[&#x1094;&#x1095;]</item><item>&#x1037;</item>
+		<item>([&#x1000;-&#x1021;])([&#x102C;&#x102D;&#x102E;&#x1032;&#x1036;]){1,2}([&#x1060;&#x1061;&#x1062;&#x1063;&#x1065;&#x1066;&#x1067;&#x1068;&#x1069;&#x1070;&#x1071;&#x1072;&#x1073;&#x1074;&#x1075;&#x1076;&#x1077;&#x1078;&#x1079;&#x107A;&#x107B;&#x107C;&#x1085;])</item><item>$1$3$2</item>
+		<item>&#x1064;</item><item>&#x1004;&#x103A;&#x1039;</item>
+		<item>&#x104E;</item><item>&#x104E;&#x1004;&#x103A;&#x1038;</item>
+		<item>&#x1086;</item><item>&#x103F;</item>
+		<item>&#x1060;</item><item>&#x1039;&#x1000;</item>
+		<item>&#x1061;</item><item>&#x1039;&#x1001;</item>
+		<item>&#x1062;</item><item>&#x1039;&#x1002;</item>
+		<item>&#x1063;</item><item>&#x1039;&#x1003;</item>
+		<item>&#x1065;</item><item>&#x1039;&#x1005;</item>
+		<item>[&#x1066;&#x1067;]</item><item>&#x1039;&#x1006;</item>
+		<item>&#x1068;</item><item>&#x1039;&#x1007;</item>
+		<item>&#x1069;</item><item>&#x1039;&#x1008;</item>
+		<item>&#x106C;</item><item>&#x1039;&#x100B;</item>
+		<item>&#x1070;</item><item>&#x1039;&#x100F;</item>
+		<item>[&#x1071;&#x1072;]</item><item>&#x1039;&#x1010;</item>
+		<item>[&#x1073;&#x1074;]</item><item>&#x1039;&#x1011;</item>
+		<item>&#x1075;</item><item>&#x1039;&#x1012;</item>
+		<item>&#x1076;</item><item>&#x1039;&#x1013;</item>
+		<item>&#x1077;</item><item>&#x1039;&#x1014;</item>
+		<item>&#x1078;</item><item>&#x1039;&#x1015;</item>
+		<item>&#x1079;</item><item>&#x1039;&#x1016;</item>
+		<item>&#x107A;</item><item>&#x1039;&#x1017;</item>
+		<item>&#x107B;</item><item>&#x1039;&#x1018;</item>
+		<item>&#x107C;</item><item>&#x1039;&#x1019;</item>
+		<item>&#x1085;</item><item>&#x1039;&#x101C;</item>
+		<item>&#x106D;</item><item>&#x1039;&#x100C;</item>
+		<item>&#x1091;</item><item>&#x100F;&#x1039;&#x100D;</item>
+		<item>&#x1092;</item><item>&#x100B;&#x1039;&#x100C;</item>
+		<item>&#x1097;</item><item>&#x100B;&#x1039;&#x100B;</item>
+		<item>&#x106F;</item><item>&#x100E;&#x1039;&#x100D;</item>
+		<item>&#x106E;</item><item>&#x100D;&#x1039;&#x100D;</item>
+		<item>(&#x103C;)([&#x1000;-&#x1021;])(&#x1039;[&#x1000;-&#x1021;])?</item><item>$2$3$1</item>
+		<item>(&#x103E;)(&#x103D;)([&#x103B;&#x103C;])</item><item>$3$2$1</item>
+		<item>([&#x1000;-&#x101C;&#x101E;-&#x102A;&#x102C;&#x102E;-&#x103F;&#x104C;-&#x109F;])(&#x1040;)</item><item>$1&#x101D;</item>
+		<item>([&#x1000;-&#x101C;&#x101E;-&#x102A;&#x102C;&#x102E;-&#x103F;&#x104C;-&#x109F;])(&#x1047;)</item><item>$1&#x101B;</item>
+		<item>(&#x1047;)([&#x1000;-&#x101C;&#x101E;-&#x102A;&#x102C;&#x102E;-&#x103F;&#x104C;-&#x109F;])</item><item>&#x101B;$2</item>
+		<item>(&#x103E;)([&#x103B;&#x103C;])</item><item>$2$1</item>
+		<item>(&#x103D;)([&#x103B;&#x103C;])</item><item>$2$1</item>
+		<item>(&#x1047;)(?=[&#x1000;-&#x101C;&#x101E;-&#x102A;&#x102C;&#x102E;-&#x103F;&#x104C;-&#x109F;])</item><item>&#x101B;</item>
+		<item>(&#x1031;)?([&#x1000;-&#x1021;])(&#x1039;[&#x1000;-&#x1021;])?([&#x102D;&#x102E;&#x1032;])?([&#x1036;&#x1037;&#x1038;]{0,2})([&#x103B;-&#x103E;]{0,3})([&#x102F;&#x1030;])?([&#x1036;&#x1037;&#x1038;]{0,2})([&#x102D;&#x102E;&#x1032;])?</item><item>$2$3$6$1$4$9$7$5$8</item>
+		<item>&#x1036;&#x102F;</item><item>&#x102F;&#x1036;</item>
+		<!-- <item>&#x103A;&#x1037;</item><item>&#x1037;&#x103A;</item> -->
+		<item>&#x1005;&#x103B;</item><item>&#x1008;</item>
+		<item>&#x101E;&#x103C;</item><item>&#x1029;</item>
+		<item>&#x101E;&#x103C;&#x1031;&#x102C;&#x103A;</item><item>&#x102A;</item>
+	</string-array>
+</resources>

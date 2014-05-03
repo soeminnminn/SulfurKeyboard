@@ -10,7 +10,8 @@
         <!-- Default vertical gap between rows of keys. Added to key size. -->
         <attr name="verticalGap" format="dimension|fraction" />
         <!-- Added by SMM -->
-        <attr name="shiftCaps" format="boolean" />
+        <attr name="shiftCapsMode" format="boolean" />
+        <attr name="disablePreview" format="boolean" />
         <attr name="keyTextWeight">
             <flag name="small" value="1" />
             <flag name="normal" value="2" />
@@ -44,12 +45,16 @@
         <attr name="keyLabel" format="string" />
         <!-- The label to display on the shifted key. -->
         <attr name="shiftLabel" format="string" />
+        <!-- The trail label to display on the key. -->
+        <attr name="trailLabel" format="string" />
         <!-- The icon to show in the popup preview. -->
         <attr name="iconPreview" format="reference" />
         <!-- Whether this is a toggle key. -->
         <attr name="isSticky" format="boolean" />
-        <!-- Whether this is a cursor key (modifies styling). -->
-        <attr name="isCursor" format="boolean" />
+        <!-- Disable text size. -->
+        <attr name="fullTextSize" format="boolean" />
+        <!-- Used Iconic font. -->
+        <attr name="isIconic" format="boolean" />
         <!-- Whether long-pressing on this key will make it repeat. -->
         <attr name="isRepeatable" format="boolean" />
         <!-- Whether this is a modifier key such as Alt or Shift. -->

@@ -24,6 +24,8 @@
     android:horizontalGap="0px"
     android:verticalGap="@dimen/key_bottom_gap"
     android:keyHeight="@dimen/key_height"
+    android:keyTextWeight="large"
+	android:disablePreview="true"
 >
     <Row
         android:rowEdgeFlags="top"
@@ -61,7 +63,8 @@
     <Row>
         <Key
             android:codes="42"
-            android:keyIconId="@integer/icon_keyboard_numstar"
+            android:keyLabel="\uF0DC"
+            android:isIconic="true"
             android:keyEdgeFlags="left" />
         <!-- Wait is a semicolon. -->
         <Key
@@ -69,7 +72,8 @@
             android:keyLabel="Wait" />
         <Key
             android:codes="35"
-            android:keyIconId="@integer/icon_keyboard_numpound" />
+            android:keyLabel="\uF0DD"
+            android:isIconic="true" />
         <Key
             android:codes="@integer/key_delete"
             android:keyIconId="@integer/icon_keyboard_delete"
@@ -85,6 +89,8 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_phone_key"
+            android:fullTextSize="true"
+            android:isIconic="true"
             android:keyEdgeFlags="left" />
         <Key
             android:keyLabel="+" />

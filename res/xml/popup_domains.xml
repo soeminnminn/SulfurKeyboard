@@ -29,18 +29,21 @@
         android:rowEdgeFlags="top|bottom"
     >
         <Key
-            android:keyLabel="@string/popular_domain_1"
-            android:keyOutputText="@string/popular_domain_1"
+            android:keyLabel="@string/popular_domain_4"
+            android:keyOutputText="@string/popular_domain_4"
             android:keyEdgeFlags="left" />
-        <Key
-            android:keyLabel="@string/popular_domain_2"
-            android:keyOutputText="@string/popular_domain_2" />
         <Key
             android:keyLabel="@string/popular_domain_3"
             android:keyOutputText="@string/popular_domain_3" />
         <Key
-            android:keyLabel="@string/popular_domain_4"
-            android:keyOutputText="@string/popular_domain_4"
+            android:keyLabel="@string/popular_domain_2"
+            android:keyOutputText="@string/popular_domain_2" />
+        <Key
+            android:keyLabel="@string/popular_domain_1"
+            android:keyOutputText="@string/popular_domain_1" />
+        <Key
+            android:keyLabel="@string/popular_domain_0"
+            android:keyOutputText="@string/popular_domain_0"
             android:keyEdgeFlags="right" />
     </Row>
 </Keyboard>
