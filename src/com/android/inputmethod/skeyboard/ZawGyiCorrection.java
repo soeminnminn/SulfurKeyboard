@@ -708,7 +708,8 @@ public class ZawGyiCorrection {
 			if ((this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x100A) 
 			    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x106B)) // ည
 			{
-				if(this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
+				if((this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
+				  || (this.mWord[(int)CHARINDEX_LowerConsonant] != NULL_CHAR))
 				{
 					this.mWord[(int)CHARINDEX_DoubleConsonant] = 0x106B;
 				}
@@ -751,7 +752,8 @@ public class ZawGyiCorrection {
 			if ((this.mWord[(int)CHARINDEX_Consonant] == 0x1025) 
 			    || (this.mWord[(int)CHARINDEX_Consonant] == 0x106A)) // ဥ
 			{
-				if(this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
+				if((this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
+				  || (this.mWord[(int)CHARINDEX_LowerConsonant] != NULL_CHAR))
 				{
 					this.mWord[(int)CHARINDEX_Consonant] = 0x106A;
 				}
@@ -1002,7 +1004,8 @@ public class ZawGyiCorrection {
                 && (this.mWord[(int)CHARINDEX_ChangNyin] == NULL_CHAR)
 		    	))
 			{
-				if (this.mWord[(int)CHARINDEX_AThart] != NULL_CHAR)
+				if ((this.mWord[(int)CHARINDEX_YeeKhya] != NULL_CHAR)
+                    && (this.mWord[(int)CHARINDEX_AThart] == 0x1039))
 				{
 					this.mWord[(int)CHARINDEX_YeeKhya] = 0x105A;
                     this.mWord[(int)CHARINDEX_AThart] = NULL_CHAR;

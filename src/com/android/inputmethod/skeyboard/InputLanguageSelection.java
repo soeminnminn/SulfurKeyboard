@@ -46,15 +46,11 @@ public class InputLanguageSelection extends PreferenceActivity {
     private static final String[] BLACKLIST_LANGUAGES = {
         "ko", "ja", "zh", "el"
     };
-	
-	private static final String[] MUST_BE_ADD_LANGUAGES = {
-        "en_US", "my_MM"
-    };
     
     // Languages for which auto-caps should be disabled
     public static final Set<String> NOCAPS_LANGUAGES = new HashSet<String>();
     static {
-        NOCAPS_LANGUAGES.add("ar");
+    	NOCAPS_LANGUAGES.add("ar");
         NOCAPS_LANGUAGES.add("iw");
         NOCAPS_LANGUAGES.add("th");
 		NOCAPS_LANGUAGES.add("my");
@@ -71,7 +67,7 @@ public class InputLanguageSelection extends PreferenceActivity {
     // Languages which should not auto-add space after completions
     public static final Set<String> NOAUTOSPACE_LANGUAGES = new HashSet<String>();
     static {
-        NOAUTOSPACE_LANGUAGES.add("th");
+    	NOAUTOSPACE_LANGUAGES.add("th");
 		NOAUTOSPACE_LANGUAGES.add("my");
     }
 
@@ -106,58 +102,18 @@ public class InputLanguageSelection extends PreferenceActivity {
         String[] languageList = mSelectedLanguages.split(",");
         mAvailableLanguages = getUniqueLocales();
         PreferenceGroup parent = getPreferenceScreen();
-		// SMM {
-		ArrayList<String> mustBeAddLocale = new ArrayList<String>();
-		for (int i = 0; i < MUST_BE_ADD_LANGUAGES.length; i++) {
-			mustBeAddLocale.add(MUST_BE_ADD_LANGUAGES[i]);
-		}
-		// } SMM
         for (int i = 0; i < mAvailableLanguages.size(); i++) {
-            final CheckBoxPreference pref = new CheckBoxPreference(this);
-            final Locale locale = mAvailableLanguages.get(i).locale;
-			// SMM { 
-			final String localeCode = get5Code(locale);
-			if (arrayContains(MUST_BE_ADD_LANGUAGES, localeCode)) {
-				mustBeAddLocale.remove(localeCode);
-			}
-			pref.setTitle(getLocaleName(locale)); 
-			// } SMM
-            //pref.setTitle(LanguageSwitcher.toTitleCase(locale.getDisplayName(locale)));
-            final boolean checked = isLocaleIn(locale, languageList);
+            CheckBoxPreference pref = new CheckBoxPreference(this);
+            final Loc loc = mAvailableLanguages.get(i);
+            final Locale locale = loc.locale;
+			pref.setTitle(loc.toString()); // SMM
+            boolean checked = isLocaleIn(locale, languageList);
             pref.setChecked(checked);
             if (hasDictionary(locale)) {
                 pref.setSummary(R.string.has_dictionary);
             }
             parent.addPreference(pref);
         }
-		
-		// SMM {
-		if (mustBeAddLocale.size() > 0) {
-			for (int i = 0; i < mustBeAddLocale.size(); i++) {
-				final String localeCode = mustBeAddLocale.get(i);
-				String[] partList = localeCode.split("_");
-				Locale locale = null;
-				if (partList.length == 2) {
-					locale = new Locale(partList[0], partList[1]);
-				} else if (partList.length == 3) {
-					locale = new Locale(partList[0], partList[1], partList[3]);
-				} else {
-					locale = new Locale(partList[0]);
-				}
-				
-				if (locale != null) {
-					final CheckBoxPreference pref = new CheckBoxPreference(this);
-					pref.setTitle(getLocaleName(locale));
-					final boolean checked = isLocaleIn(locale, languageList);
-					pref.setChecked(checked);
-					if (hasDictionary(locale)) {
-						pref.setSummary(R.string.has_dictionary);
-					}
-					parent.addPreference(pref);
-				}
-			}
-		}
-		// } SMM
     }
 
     private boolean isLocaleIn(Locale locale, String[] list) {
@@ -225,19 +181,7 @@ public class InputLanguageSelection extends PreferenceActivity {
     private static String getLocaleName(Locale l) {
         String lang = l.getLanguage();
         String country = l.getCountry();
-        if (lang.equals("en") && country.equals("DV")) {
-            return "English (Dvorak)";
-        } else if (lang.equals("en") && country.equals("EX")) {
-                return "English (4x11)";
-        } else if (lang.equals("es") && country.equals("LA")) {
-            return "Español (Latinoamérica)";
-        } else if (lang.equals("cs") && country.equals("QY")) {
-            return "Čeština (QWERTY)";
-        } else if (lang.equals("sk") && country.equals("QY")) {
-            return "Slovenčina (QWERTY)";
-        } else if (lang.equals("ru") && country.equals("PH")) {
-            return "Русский (Phonetic)";
-        } else if (lang.equals("my") && country.equals("MM")) {
+        if (lang.equals("my") && country.equals("MM")) {
             return "Myanmar (Zawgyi-one)";
         } else {
             return LanguageSwitcher.toTitleCase(l.getDisplayName(l));
@@ -245,7 +189,7 @@ public class InputLanguageSelection extends PreferenceActivity {
     }
 
     ArrayList<Loc> getUniqueLocales() {
-        String[] locales = getAssets().getLocales();
+        String[] locales = getResources().getStringArray(R.array.available_languages);
         Arrays.sort(locales);
         ArrayList<Loc> uniqueLocales = new ArrayList<Loc>();
 
@@ -259,13 +203,12 @@ public class InputLanguageSelection extends PreferenceActivity {
                 String language = s.substring(0, 2);
                 String country = s.substring(3, 5);
                 Locale l = new Locale(language, country);
-
+                
                 // Exclude languages that are not relevant to LatinIME
                 if (arrayContains(BLACKLIST_LANGUAGES, language)) continue;
 
                 if (finalSize == 0) {
-                    preprocess[finalSize++] =
-                            new Loc(LanguageSwitcher.toTitleCase(l.getDisplayName(l)), l);
+                    preprocess[finalSize++] = new Loc(getLocaleName(l), l);
                 } else {
                     // check previous entry:
                     //  same lang and a country -> upgrade to full name and
@@ -275,10 +218,8 @@ public class InputLanguageSelection extends PreferenceActivity {
                     	preprocess[finalSize-1].label = getLocaleName(preprocess[finalSize-1].locale);
                         preprocess[finalSize++] = new Loc(getLocaleName(l), l);
                     } else {
-                        String displayName;
-                        if (s.equals("zz_ZZ")) {
-                        } else {
-                        	displayName = getLocaleName(l);
+                        if (!s.equals("zz_ZZ")) {
+                        	String displayName = getLocaleName(l);
                             preprocess[finalSize++] = new Loc(displayName, l);
                         }
                     }

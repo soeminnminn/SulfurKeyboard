@@ -849,7 +849,6 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     
     public void setTextSizeScale(final float textSizeScale) {
     	mKeyTextSizeScale = textSizeScale;
-    	Log.i(TAG, "setTextSizeScale : " + textSizeScale);
     }
     // } SMM 
     
@@ -1012,7 +1011,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
                 	final int iconicTextSize = (int)(Math.min(key.height, key.width) * key.iconSizeAdjust);
                 	labelSize = Math.max(iconicTextSize, mKeyTextSize);
                 } else if (label.length() > 1 && key.codes.length < 2 && !key.fullTextSize && !DeadAccentSequence.isDeadAccent(label)) {
-                    labelSize = mLabelTextSize;
+                    labelSize = (int)(mLabelTextSize * mKeyTextSizeScale);
                 } else {
 	                if(textWeight < 2) {
 	                	labelSize = mKeyTextSize - (mKeyTextSize / 4); 
@@ -1209,6 +1208,9 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         Key key = tracker.getKey(keyIndex);
         if (key == null)
             return;
+        
+        if (key.iconKey && key.iconPreview == null) // SMM 
+        	return;
         
         // Should not draw hint icon in key preview
         if ((key.icon != null || key.iconPreview != null) && !shouldDrawLabelAndIcon(key)) {
@@ -1423,7 +1425,6 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     protected boolean onLongPress(Key popupKey) {
         // TODO if popupKey.popupCharacters has only one letter, send it as key without opening
         // mini keyboard.
-    	Log.i("KeyboardBaseView", "onLongPress");
         if (popupKey.popupResId == 0)
             return false;
 

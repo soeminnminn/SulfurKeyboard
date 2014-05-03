@@ -19,7 +19,7 @@
 
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-	<string-array name="zawgyi_unicode">
+	<string-array name="zawgyi_unicode" translatable="false">
 		<item>&#x106A;</item><item>&#x1009;</item>
 		<item>&#x1025;(?=[&#x1039;&#x102C;])</item><item>&#x1009;</item>
 		<item>&#x1025;&#x102E;</item><item>&#x1026;</item>

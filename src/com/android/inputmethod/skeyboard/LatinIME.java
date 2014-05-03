@@ -1320,6 +1320,9 @@ public class LatinIME extends InputMethodService
             case KeyCodes.KEYCODE_OPTIONS_LONGPRESS:
                 onOptionKeyLongPressed();
                 break;
+            case KeyCodes.KEYCODE_LANGUAGE:
+                toggleLanguage(false, true);
+                break;
             case KeyCodes.KEYCODE_NEXT_LANGUAGE:
                 toggleLanguage(false, true);
                 break;

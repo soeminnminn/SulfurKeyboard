@@ -29,6 +29,7 @@
     <integer name="key_delete">-5</integer>
     <!-- Keycode for F1 (function) key. This one switches between language switch & comma/.com -->
     <integer name="key_settings">-176</integer>
+    <integer name="key_language">-177</integer>
     <integer name="key_voice">-94</integer>
     <integer name="key_charset">-95</integer>
     <integer name="key_f1">-188</integer>

@@ -62,6 +62,8 @@ public class SoftKeyboard extends Keyboard {
     private Drawable mShiftLockPreviewIcon;
     private Drawable mSpacePreviewIcon;
     private Drawable mMicPreviewIcon;
+    private Drawable mSettingsPreviewIcon;
+    private Drawable mLanguagePreviewIcon;
     
     private final Drawable mButtonArrowLeftIcon;
     private final Drawable mButtonArrowRightIcon;
@@ -132,6 +134,8 @@ public class SoftKeyboard extends Keyboard {
     private KeyboardThemes mThemes;
     private static final float ICON_SIZE_ADJUST = 0.6f;
     private float mIconSizeAdjust;
+    
+    private int mLanguageSwitchMode; 
 
     public SoftKeyboard(Context context, int xmlLayoutResId) {
         this(context, xmlLayoutResId, 0);
@@ -149,6 +153,10 @@ public class SoftKeyboard extends Keyboard {
         mSpacePreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_space);
         mMicPreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_mic);
         setDefaultBounds(mMicPreviewIcon);
+        mSettingsPreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_settings);
+        setDefaultBounds(mSettingsPreviewIcon);
+        mLanguagePreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_language);
+        setDefaultBounds(mLanguagePreviewIcon);
         mButtonArrowLeftIcon = res.getDrawable(R.drawable.sym_keyboard_language_arrows_left);
         mButtonArrowRightIcon = res.getDrawable(R.drawable.sym_keyboard_language_arrows_right);
         sSpacebarVerticalCorrection = res.getDimensionPixelOffset(R.dimen.spacebar_vertical_correction);
@@ -202,6 +210,7 @@ public class SoftKeyboard extends Keyboard {
         	mDeleteKey = key;
         	break;
         case KeyCodes.KEYCODE_OPTIONS:
+        case KeyCodes.KEYCODE_LANGUAGE:
         	mSettingsKey = key;
         	break;
         case KeyCodes.KEYCODE_TAB:
@@ -412,7 +421,8 @@ public class SoftKeyboard extends Keyboard {
         
         setIconicKey(mDeleteKey, KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_DELETE_KEY), mIconSizeAdjust);
         setIconicKey(mTabKey, KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_TAB_KEY), ICON_SIZE_ADJUST);
-        setIconicKey(mSettingsKey, KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SETTINGS_KEY), ICON_SIZE_ADJUST);
+        //setIconicKey(mSettingsKey, KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SETTINGS_KEY), ICON_SIZE_ADJUST);
+        updateSettingsKey();
         
         if(mKeys != null && mThemes != null) {
         	for(int i = 0; i < mKeys.size(); i++) {
@@ -539,6 +549,30 @@ public class SoftKeyboard extends Keyboard {
         key.iconPreview = null;
     }
     
+    private void updateSettingsKey() {
+    	if (mSettingsKey == null) return;
+    	
+		mSettingsKey.iconic = true;
+		mSettingsKey.iconKey = true;
+		mSettingsKey.iconSizeAdjust = ICON_SIZE_ADJUST;
+		
+    	if (isLanguageSwitchToggleEnabled()) {
+    		mSettingsKey.icon = mThemes.getTheme().keyHintPopup;
+    		mSettingsKey.iconId = KeyboardThemes.ICON_HINT_POPUP;
+    		mSettingsKey.iconPreview = mLanguagePreviewIcon;
+    		mSettingsKey.popupResId = R.xml.popup_settings;
+    		mSettingsKey.codes = new int[] { KeyCodes.KEYCODE_LANGUAGE };
+    		mSettingsKey.label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_LANGUAGE_KEY);
+    	} else {
+    		mSettingsKey.icon = null;
+    		mSettingsKey.iconId = KeyboardThemes.ICON_UNDEFINED;
+    		mSettingsKey.iconPreview = mSettingsPreviewIcon;
+    		mSettingsKey.popupResId = 0;
+    		mSettingsKey.codes = new int[] { KeyCodes.KEYCODE_OPTIONS };
+    		mSettingsKey.label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SETTINGS_KEY);
+    	}
+    }
+    
     private void setIconicKey(Key key, String label, float iconSizeAdjust) {
     	if(key == null) return;
     	
@@ -582,6 +616,18 @@ public class SoftKeyboard extends Keyboard {
     }
     
     // SMM {
+    public boolean isLanguageSwitchSlideEnabled() {
+    	return (isLanguageSwitchEnabled() && 
+    			((mLanguageSwitchMode == KeyboardSwitcher.LANGUAGE_SWICH_SLIDE) 
+    			|| (mLanguageSwitchMode == KeyboardSwitcher.LANGUAGE_SWICH_BOTH)));
+    }
+    
+    public boolean isLanguageSwitchToggleEnabled() {
+    	return (isLanguageSwitchEnabled() && 
+    			((mLanguageSwitchMode == KeyboardSwitcher.LANGUAGE_SWICH_TOGGLE) 
+    			|| (mLanguageSwitchMode == KeyboardSwitcher.LANGUAGE_SWICH_BOTH)));
+    }
+    
     public Locale getLocale() {
     	return mLocale;
     }
@@ -700,7 +746,7 @@ public class SoftKeyboard extends Keyboard {
         canvas.drawColor(mRes.getColor(R.color.transparent), PorterDuff.Mode.CLEAR);
 
         // If application locales are explicitly selected.
-        if (isLanguageSwitchEnabled()) {
+        if (isLanguageSwitchEnabled()) { // SMM
             final Paint paint = new Paint();
             paint.setAlpha(opacity);
             paint.setAntiAlias(true);
@@ -721,7 +767,8 @@ public class SoftKeyboard extends Keyboard {
             canvas.drawText(language, width / 2, baseline - descent, paint);
 
             // Put arrows that are already layed out on either side of the text
-            if (mLanguageSwitcher.getLocaleCount() > 1) {
+            if (isLanguageSwitchSlideEnabled() 
+            		&& mLanguageSwitcher.getLanguageSwitchEnabled()) {
                 mButtonArrowLeftIcon.draw(canvas);
                 mButtonArrowRightIcon.draw(canvas);
             }
@@ -748,6 +795,7 @@ public class SoftKeyboard extends Keyboard {
     }
 
     private void updateLocaleDrag(int diff) {
+    	if (!isLanguageSwitchSlideEnabled()) return; // SMM
         if (mSlidingLocaleIcon == null) {
             final int width = Math.max(mSpaceKey.width,
                     (int)(getMinWidth() * SPACEBAR_POPUP_MIN_RATIO));
@@ -764,7 +812,7 @@ public class SoftKeyboard extends Keyboard {
         }
         mSpaceKey.iconPreview.invalidateSelf();
     }
-
+    
     public int getLanguageChangeDirection() {
         if (mSpaceKey == null || mLanguageSwitcher.getLocaleCount() < 2
                 || Math.abs(mSpaceDragLastDiff) < mSpaceKey.width * SPACEBAR_DRAG_THRESHOLD ) {
@@ -773,7 +821,8 @@ public class SoftKeyboard extends Keyboard {
         return mSpaceDragLastDiff > 0 ? 1 : -1;
     }
 
-    public void setLanguageSwitcher(LanguageSwitcher switcher, boolean isAutoCompletion, int textColor, int shadowColor) {
+    public void setLanguageSwitcher(LanguageSwitcher switcher, boolean isAutoCompletion
+    		, int textColor, int shadowColor, int languageSwitchMode) {
         mLanguageSwitcher = switcher;
         Locale locale = mLanguageSwitcher.getLocaleCount() > 0
                 ? mLanguageSwitcher.getInputLocale()
@@ -785,6 +834,8 @@ public class SoftKeyboard extends Keyboard {
                    .equalsIgnoreCase(locale.getLanguage())) {
             locale = null;
         }
+        
+        mLanguageSwitchMode = languageSwitchMode;
         mLocale = locale;
         setColorOfSymbolIcons(isAutoCompletion, textColor, shadowColor);
     }

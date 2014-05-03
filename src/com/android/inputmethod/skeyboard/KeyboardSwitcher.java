@@ -86,6 +86,10 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     private static final int SYMBOLS_MODE_STATE_NONE = 0;
     private static final int SYMBOLS_MODE_STATE_BEGIN = 1;
     private static final int SYMBOLS_MODE_STATE_SYMBOL = 2;
+    
+    static final int LANGUAGE_SWICH_BOTH = 0;
+    static final int LANGUAGE_SWICH_SLIDE = 1;
+    static final int LANGUAGE_SWICH_TOGGLE = 2;
 
     private SoftKeyboardView mInputView;
     private static final int[] ALPHABET_MODES = {
@@ -127,6 +131,9 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     // in the source code now.
     // Default is SETTINGS_KEY_MODE_AUTO.
     private static final int DEFAULT_SETTINGS_KEY_MODE = SETTINGS_KEY_MODE_AUTO;*/
+    
+    // Indicates whether or not we have the language key
+    private int mLanguageSwitchMode;
 
     private int mLastDisplayWidth;
     private LanguageSwitcher mLanguageSwitcher;
@@ -160,7 +167,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     }
 
     private KeyboardId makeSymbolsId(int xml, boolean hasVoice) {
-        return new KeyboardId(xml, mHasSettingsKey ?
+        return new KeyboardId(xml, mHasSettingsKey || getHasLanguageKey() ?
                 KEYBOARDMODE_SYMBOLS_WITH_SETTINGS_KEY : KEYBOARDMODE_SYMBOLS,
                 false, hasVoice);
     }
@@ -282,6 +289,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         		mInputView.getLanguagebarTextColor(), mInputView.getLanguagebarShadowColor());
         // Update the settings key state because number of enabled IMEs could have been changed
         updateSettingsKeyState(PreferenceManager.getDefaultSharedPreferences(mInputMethodService));
+        updateLanguageKeyState(PreferenceManager.getDefaultSharedPreferences(mInputMethodService));
     }
 
     private SoftKeyboard getKeyboard(KeyboardId id) {
@@ -297,7 +305,8 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
             keyboard.setTheme(mThemes, mInputMethodService.getOrientation()); // SMM
             keyboard.setVoiceMode(hasVoiceButton(id.mXml == R.xml.kbd_symbols), mHasVoice);
             keyboard.setLanguageSwitcher(mLanguageSwitcher, mIsAutoCompletionActive, 
-            		mInputView.getLanguagebarTextColor(), mInputView.getLanguagebarShadowColor());
+            		mInputView.getLanguagebarTextColor(), mInputView.getLanguagebarShadowColor(),
+            		mLanguageSwitchMode);
 
             if (id.mEnableShiftLock) {
                 keyboard.enableShiftLock();
@@ -320,7 +329,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
             } else if (mode == MODE_NUMBER) {
             	return new KeyboardId(KBD_NUMBER_SYMBOLS, hasVoice);
             } else {
-                return new KeyboardId(KBD_SYMBOLS, mHasSettingsKey ?
+                return new KeyboardId(KBD_SYMBOLS, mHasSettingsKey || getHasLanguageKey() ?
                         KEYBOARDMODE_SYMBOLS_WITH_SETTINGS_KEY : KEYBOARDMODE_SYMBOLS,
                         false, hasVoice);
             }
@@ -331,26 +340,26 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
                         "getKeyboardId:" + mode + "," + imeOptions + "," + isSymbols);
                 /* fall through */
             case MODE_TEXT:
-                return new KeyboardId(keyboardRowsResId, mHasSettingsKey ?
+                return new KeyboardId(keyboardRowsResId, mHasSettingsKey || getHasLanguageKey() ?
                         KEYBOARDMODE_NORMAL_WITH_SETTINGS_KEY : KEYBOARDMODE_NORMAL,
                         true, hasVoice);
             case MODE_SYMBOLS:
-                return new KeyboardId(KBD_SYMBOLS, mHasSettingsKey ?
+                return new KeyboardId(KBD_SYMBOLS, mHasSettingsKey || getHasLanguageKey() ?
                         KEYBOARDMODE_SYMBOLS_WITH_SETTINGS_KEY : KEYBOARDMODE_SYMBOLS,
                         false, hasVoice);
             case MODE_PHONE:
                 return new KeyboardId(KBD_PHONE, hasVoice);
             case MODE_URL:
-                return new KeyboardId(keyboardRowsResId, mHasSettingsKey ?
+                return new KeyboardId(keyboardRowsResId, mHasSettingsKey || getHasLanguageKey() ?
                         KEYBOARDMODE_URL_WITH_SETTINGS_KEY : KEYBOARDMODE_URL, true, hasVoice);
             case MODE_EMAIL:
-                return new KeyboardId(keyboardRowsResId, mHasSettingsKey ?
+                return new KeyboardId(keyboardRowsResId, mHasSettingsKey || getHasLanguageKey() ?
                         KEYBOARDMODE_EMAIL_WITH_SETTINGS_KEY : KEYBOARDMODE_EMAIL, true, hasVoice);
             case MODE_IM:
-                return new KeyboardId(keyboardRowsResId, mHasSettingsKey ?
+                return new KeyboardId(keyboardRowsResId, mHasSettingsKey || getHasLanguageKey() ?
                         KEYBOARDMODE_IM_WITH_SETTINGS_KEY : KEYBOARDMODE_IM, true, hasVoice);
             case MODE_WEB:
-                return new KeyboardId(keyboardRowsResId, mHasSettingsKey ?
+                return new KeyboardId(keyboardRowsResId, mHasSettingsKey || getHasLanguageKey() ?
                         KEYBOARDMODE_WEB_WITH_SETTINGS_KEY : KEYBOARDMODE_WEB, true, hasVoice);
             case MODE_NUMBER:
             	return new KeyboardId(KBD_NUMBER, hasVoice);
@@ -368,6 +377,11 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     
     public KeyboardThemes getThemes() {
     	return mThemes;
+    }
+    
+    public boolean getHasLanguageKey() {
+    	return ((mLanguageSwitchMode == LANGUAGE_SWICH_TOGGLE) || (mLanguageSwitchMode == LANGUAGE_SWICH_BOTH))  
+    			&& (mLanguageSwitcher != null) && mLanguageSwitcher.getLanguageSwitchEnabled();
     }
     
     public boolean isAlphabetMode() {
@@ -505,6 +519,9 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         } else if (IMESettings.PREF_SETTINGS_KEY.equals(key)) {
             updateSettingsKeyState(sharedPreferences);
             recreateInputView();
+        } else if (IMESettings.PREF_LANGUAGE_KEY.equals(key)) {
+        	updateLanguageKeyState(sharedPreferences);
+            recreateInputView();
         }
     }
 
@@ -520,5 +537,10 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     private void updateSettingsKeyState(SharedPreferences prefs) {
         Resources resources = mInputMethodService.getResources();
         mHasSettingsKey = prefs.getBoolean(IMESettings.PREF_SETTINGS_KEY, resources.getBoolean(R.bool.default_show_settings_key));
+    }
+    
+    private void updateLanguageKeyState(SharedPreferences prefs) {
+        Resources resources = mInputMethodService.getResources();
+        mLanguageSwitchMode = Integer.valueOf(prefs.getString(IMESettings.PREF_LANGUAGE_KEY, resources.getString(R.string.language_key_default)));
     }
 }

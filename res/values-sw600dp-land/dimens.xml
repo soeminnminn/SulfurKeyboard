@@ -5,6 +5,6 @@
          screen margins) for sw600dp devices (e.g. 7" tablets) here.
     -->
 
-    <fraction name="keyboard_max_height">45%</fraction>
-    <fraction name="keyboard_min_height">30%</fraction>
+    <fraction name="keyboard_max_height">40%</fraction>
+    <fraction name="keyboard_min_height">20%</fraction>
 </resources>

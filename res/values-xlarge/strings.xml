@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="resource_mode">xlarge</string>
+    <string name="resource_mode" translatable="false">xlarge</string>
 </resources>

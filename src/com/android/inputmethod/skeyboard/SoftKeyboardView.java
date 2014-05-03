@@ -229,6 +229,10 @@ public class SoftKeyboardView extends KeyboardBaseView {
 
         final SoftKeyboard keyboard = getSoftKeyboard();
     	if (keyboard != null) {
+        	if (!keyboard.isLanguageSwitchSlideEnabled()) {
+    			return super.onTouchEvent(me);
+    		}
+        	
 	        // Reset any bounding box controls in the keyboard
 	        if (me.getAction() == MotionEvent.ACTION_DOWN) {
 	        	keyboard.keyReleased();

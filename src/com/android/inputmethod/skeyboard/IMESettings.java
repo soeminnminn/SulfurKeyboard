@@ -54,6 +54,7 @@ public class IMESettings extends PreferenceActivity
     private static final String PREDICTION_SETTINGS_KEY = "prediction_settings";
     private static final String VOICE_SETTINGS_KEY = "voice_mode";
     /* package */ static final String PREF_SETTINGS_KEY = "settings_key";
+    /* package */ static final String PREF_LANGUAGE_KEY = "language_key";
     private static final String KEYBOARD_LAYOUT_SETTINGS_KEY = "keyboard_layout";
     private static final String TEXT_SIZE_SETTINGS_KEY = "key_text_size";
     //private static final String USED_UNICODE_SETTINGS_KEY = "used_unicode";
@@ -69,6 +70,7 @@ public class IMESettings extends PreferenceActivity
     private CheckBoxPreference mQuickFixes;
     private ListPreference mVoicePreference;
     //private ListPreference mSettingsKeyPreference;
+    private ListPreference mLanguageKeyPreference;
     private ListPreference mKeyboardLayoutPreference;
     private ListPreference mKeyboardTextSizePreference;
     private boolean mVoiceOn;
@@ -86,6 +88,7 @@ public class IMESettings extends PreferenceActivity
         mQuickFixes = (CheckBoxPreference) findPreference(QUICK_FIXES_KEY);
         mVoicePreference = (ListPreference) findPreference(VOICE_SETTINGS_KEY);
         //mSettingsKeyPreference = (ListPreference) findPreference(PREF_SETTINGS_KEY);
+        mLanguageKeyPreference = (ListPreference) findPreference(PREF_LANGUAGE_KEY);
         mKeyboardLayoutPreference = (ListPreference) findPreference(KEYBOARD_LAYOUT_SETTINGS_KEY);
         mKeyboardTextSizePreference = (ListPreference) findPreference(TEXT_SIZE_SETTINGS_KEY);
 
@@ -132,6 +135,7 @@ public class IMESettings extends PreferenceActivity
             updateVoiceModeSummary();
         }
         //updateSettingsKeySummary();
+        updateLanguageKeySummary();
         updateKeyboardLayoutSummary();
         updateTextSizeSummary();
     }
@@ -155,6 +159,7 @@ public class IMESettings extends PreferenceActivity
         mVoiceOn = !(prefs.getString(VOICE_SETTINGS_KEY, mVoiceModeOff).equals(mVoiceModeOff));
         updateVoiceModeSummary();
         // updateSettingsKeySummary();
+        updateLanguageKeySummary();
         updateKeyboardLayoutSummary();
         updateTextSizeSummary();
     }
@@ -164,6 +169,12 @@ public class IMESettings extends PreferenceActivity
                 getResources().getStringArray(R.array.settings_key_modes)
                 [mSettingsKeyPreference.findIndexOfValue(mSettingsKeyPreference.getValue())]);
     }*/
+    
+    private void updateLanguageKeySummary() {
+        mLanguageKeyPreference.setSummary(
+                getResources().getStringArray(R.array.language_key_modes)
+                [mLanguageKeyPreference.findIndexOfValue(mLanguageKeyPreference.getValue())]);
+    }
     
     private void updateKeyboardLayoutSummary() {
     	mKeyboardLayoutPreference.setSummary(

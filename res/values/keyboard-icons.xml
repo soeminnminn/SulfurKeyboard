@@ -19,14 +19,15 @@
     <integer name="icon_keyboard_123mic">0</integer>
     <integer name="icon_keyboard_mic">1</integer>
     <integer name="icon_keyboard_settings">2</integer>
-    <integer name="icon_keyboard_shift">3</integer>
-    <integer name="icon_keyboard_shift_locked">4</integer>
-    <integer name="icon_keyboard_space">5</integer>
-    <integer name="icon_keyboard_tab">6</integer>
-    <integer name="icon_keyboard_return">7</integer>
-    <integer name="icon_keyboard_search">8</integer>
-    <integer name="icon_keyboard_delete">9</integer>
-    <integer name="icon_keyboard_done">10</integer>
-    <integer name="icon_keyboard_hint_popup">11</integer>
+    <integer name="icon_keyboard_language">3</integer>
+    <integer name="icon_keyboard_shift">4</integer>
+    <integer name="icon_keyboard_shift_locked">5</integer>
+    <integer name="icon_keyboard_space">6</integer>
+    <integer name="icon_keyboard_tab">7</integer>
+    <integer name="icon_keyboard_return">8</integer>
+    <integer name="icon_keyboard_search">9</integer>
+    <integer name="icon_keyboard_delete">10</integer>
+    <integer name="icon_keyboard_done">11</integer>
+    <integer name="icon_keyboard_hint_popup">12</integer>
 
 </resources>

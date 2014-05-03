@@ -6,8 +6,6 @@
     -->
     <dimen name="activity_horizontal_margin">128dp</dimen>
 
-    <fraction name="keyboard_max_height">30%</fraction>
-    <fraction name="keyboard_min_height">15%</fraction>
-    
-    <dimen name="key_text_size">0.26in</dimen>
+    <fraction name="keyboard_max_height">40%</fraction>
+    <fraction name="keyboard_min_height">20%</fraction>
 </resources>

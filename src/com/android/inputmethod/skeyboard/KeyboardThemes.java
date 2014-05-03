@@ -43,15 +43,16 @@ public class KeyboardThemes {
 	public static final int ICON_UNDEFINED = 0;
 	public static final int ICON_MIC_KEY = 1;
 	public static final int ICON_SETTINGS_KEY = 2;
-	public static final int ICON_SHIFT_KEY = 3;
-	public static final int ICON_SHIFTLOCKED_KEY = 4;
-	public static final int ICON_SPACE_KEY = 5;
-	public static final int ICON_TAB_KEY = 6;
-	public static final int ICON_RETURN_KEY = 7;
-	public static final int ICON_SEARCH_KEY = 8;
-	public static final int ICON_DELETE_KEY = 9;
-	public static final int ICON_DONE_KEY = 10;
-	public static final int ICON_HINT_POPUP = 11;
+	public static final int ICON_LANGUAGE_KEY = 3;
+	public static final int ICON_SHIFT_KEY = 4;
+	public static final int ICON_SHIFTLOCKED_KEY = 5;
+	public static final int ICON_SPACE_KEY = 6;
+	public static final int ICON_TAB_KEY = 7;
+	public static final int ICON_RETURN_KEY = 8;
+	public static final int ICON_SEARCH_KEY = 9;
+	public static final int ICON_DELETE_KEY = 10;
+	public static final int ICON_DONE_KEY = 11;
+	public static final int ICON_HINT_POPUP = 12;
 	private static final int ICON_LAST = ICON_HINT_POPUP; 
 	
 	private static int[] mIconValues;
@@ -60,6 +61,7 @@ public class KeyboardThemes {
 		mIconValues[ICON_UNDEFINED] = ICON_LAST;
 		mIconValues[ICON_MIC_KEY] = 0xF002;
 		mIconValues[ICON_SETTINGS_KEY] = 0xE013;
+		mIconValues[ICON_LANGUAGE_KEY] = 0xE073;
 		mIconValues[ICON_SHIFT_KEY] = 0xF006;
 		mIconValues[ICON_SHIFTLOCKED_KEY] = 0xF007;
 		mIconValues[ICON_SPACE_KEY] = 0xF004;

@@ -50,5 +50,5 @@
     <string name="alternates_for_cyrillic_e">&#x1089;</string>
     <string name="alternates_for_cyrillic_soft_sign"></string>
     <string name="alternates_for_o_umlaut"></string>
-    <string name="alternates_for_oe"></string>
+    <string name="alternates_for_oe">&#x104A;&#x104B;</string>
 </resources>

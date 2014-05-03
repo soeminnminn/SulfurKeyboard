@@ -42,6 +42,7 @@ public final class KeyCodes {
     
     static final int KEYCODE_NEXT_LANGUAGE = -117; // KEYCODE_META_LEFT = 117;
     static final int KEYCODE_PREV_LANGUAGE = -118; // KEYCODE_META_RIGHT = 118;
+    static final int KEYCODE_LANGUAGE = -177;
     
     // The following keycodes match (negative) KeyEvent keycodes.
     // Would be better to use the real KeyEvent values, but many

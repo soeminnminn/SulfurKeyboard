@@ -60,13 +60,15 @@ public class InputTestActivity extends Activity {
             	//this.dispatchKeyEvent(new Keyevent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
             }
         });
+		
+		editTextNormal.requestFocus();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		//getMenuInflater().inflate(R.menu.input_test, menu);
-		return true;
+		return false;
 	}
 
 }

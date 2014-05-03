@@ -74,6 +74,15 @@
             />
 
     	<ListPreference
+            android:key="language_key"
+            android:title="@string/prefs_language_key"
+            android:persistent="true"
+            android:entryValues="@array/language_key_modes_values"
+            android:entries="@array/language_key_modes"
+            android:defaultValue="@string/language_key_slide"
+            />
+            
+        <ListPreference
             android:key="voice_mode"
             android:title="@string/voice_input"
             android:persistent="true"
