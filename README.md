@@ -23,8 +23,11 @@ Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 - Bug Fix
 - Zawgyi Auto correction (Smart Zawgyi) charater fix
 - Check Install location and wrong location warning message.
-- Fix used unicode mode not working.
-- Fix used JellyBean fix not working.
+- Fix not working "Jellybean Fix" option.
+- Fix not working "Used Unicode Convertion" option.
+- Fix key text size too small problem.
+- Add font size adjustment option.
+- Fix Myanmar Language not shown problem.
 - Fix key text aligment for android 3.0+.
 
 #### Version 1.0.0.12
