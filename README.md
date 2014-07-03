@@ -8,6 +8,10 @@ Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 
 ## Change Log
 
+#### Version 1.2.1.0
+- Bug Fix
+- Zawgyi Auto correction (Smart Zawgyi) charater fix
+
 #### Version 1.2.0.0
 - Bug Fix
 - Zawgyi Auto correction (Smart Zawgyi) charater fix
