@@ -833,10 +833,12 @@ public class ZawGyiCorrection {
 				{
 					this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x108C;
 				}
+				this.mWord[(int)CHARINDEX_AThart] = NULL_CHAR;
 			}
 			else if (this.mWord[(int)CHARINDEX_TeeTeeTin] != NULL_CHAR)
 			{
 				this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x108E;
+				this.mWord[(int)CHARINDEX_AThart] = NULL_CHAR;
 			}
 			else if ((this.mWord[(int)CHARINDEX_LoneGyiTin] == 0x102D) 
 			         || (this.mWord[(int)CHARINDEX_LoneGyiTin] == 0x108B)
@@ -1028,6 +1030,7 @@ public class ZawGyiCorrection {
                 if (this.mWord[(int)CHARINDEX_TeeTeeTin] != NULL_CHAR) 
                 {
                     this.mWord[(int)CHARINDEX_AThart] = 0x108D;
+					this.mWord[(int)CHARINDEX_TeeTeeTin] = NULL_CHAR;
                 } 
                 else 
                 {
