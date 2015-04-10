@@ -12,6 +12,7 @@ Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 - Apply Lollipop style
 - Add Kitkat theme
 - Add xhdpi resources
+- Add more keys popup setting
 - Fix suggestion (Dictionary) not working
 - Keyboard size and font size fix
 - Bug Fix
