@@ -16,11 +16,15 @@
 
 package com.android.inputmethod.skeyboard;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.view.ContextThemeWrapper;
 import android.view.InflateException;
+import android.view.LayoutInflater;
 
 import java.lang.ref.SoftReference;
 import java.util.Arrays;
@@ -31,6 +35,8 @@ import com.android.inputmethod.skeyboard.R;
 
 public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+	protected static final String TAG = KeyboardSwitcher.class.getSimpleName();
+	
 	private static final boolean VOICE_DEBUG = false;
 	
     public static final int MODE_NONE = 0;
@@ -67,7 +73,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     public static final int KEYBOARDMODE_SYMBOLS_WITH_SETTINGS_KEY =
             R.id.mode_symbols_with_settings_key;
 
-    public static final String DEFAULT_LAYOUT_ID = "4";
+    public static final String DEFAULT_LAYOUT_ID = "5";
     public static final String PREF_KEYBOARD_LAYOUT = "keyboard_layout";
     /*private static final int[] THEMES = new int [] {
         R.layout.input_basic, R.layout.input_stone, R.layout.input_white, 
@@ -105,6 +111,9 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         KEYBOARDMODE_WEB_WITH_SETTINGS_KEY };
 
     private final LatinIME mInputMethodService;
+    
+    private int mThemeResId;
+    private Context mThemedContext;
 
     private KeyboardId mSymbolsId;
     private KeyboardId mSymbolsShiftedId;
@@ -134,13 +143,14 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     
     // Indicates whether or not we have the language key
     private int mLanguageSwitchMode;
+    
+    private boolean mAutoHideMiniKeyboard; // SMM
 
     private int mLastDisplayWidth;
     private LanguageSwitcher mLanguageSwitcher;
     private Locale mInputLocale;
 
     private int mLayoutId;
-    private KeyboardThemes mThemes;
 
     public KeyboardSwitcher(LatinIME ims) {
         mInputMethodService = ims;
@@ -153,6 +163,8 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         mKeyboards = new HashMap<KeyboardId, SoftReference<SoftKeyboard>>();
         mSymbolsId = makeSymbolsId(KBD_SYMBOLS, false);
         mSymbolsShiftedId = makeSymbolsId(KBD_SYMBOLS_SHIFT, false);
+        
+        updateAutoHideMiniKeyboardState(PreferenceManager.getDefaultSharedPreferences(mInputMethodService)); // SMM
     }
 
     /**
@@ -301,8 +313,11 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
             Locale saveLocale = conf.locale;
             conf.locale = mInputLocale;
             orig.updateConfiguration(conf, null);
-            keyboard = new SoftKeyboard(mInputMethodService, id.mXml, id.mKeyboardMode);
-            keyboard.setTheme(mThemes, mInputMethodService.getOrientation()); // SMM
+            if (mThemedContext != null) {
+            	keyboard = new SoftKeyboard(mThemedContext, id.mXml, id.mKeyboardMode, mThemeResId);
+            } else {
+            	keyboard = new SoftKeyboard(mInputMethodService, id.mXml, id.mKeyboardMode);
+            }
             keyboard.setVoiceMode(hasVoiceButton(id.mXml == R.xml.kbd_symbols), mHasVoice);
             keyboard.setLanguageSwitcher(mLanguageSwitcher, mIsAutoCompletionActive, 
             		mInputView.getLanguagebarTextColor(), mInputView.getLanguagebarShadowColor(),
@@ -373,10 +388,6 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     
     public int getImeOptions() {
     	return mImeOptions;
-    }
-    
-    public KeyboardThemes getThemes() {
-    	return mThemes;
     }
     
     public boolean getHasLanguageKey() {
@@ -476,7 +487,8 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         changeSoftKeyboardView(mLayoutId, true);
     }
 
-    private void changeSoftKeyboardView(int newLayout, boolean forceReset) {
+    @SuppressLint("InflateParams")
+	private void changeSoftKeyboardView(int newLayout, boolean forceReset) {
         if (mLayoutId != newLayout || mInputView == null || forceReset) {
             if (mInputView != null) {
                 mInputView.closing();
@@ -484,14 +496,16 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
             /*if (THEMES.length <= newLayout) {
                 newLayout = Integer.valueOf(DEFAULT_LAYOUT_ID);
             }*/
-            mThemes = new KeyboardThemes(newLayout);
+            
+            mThemeResId = KeyboardTheme.getThemeResId(newLayout);
+            mThemedContext = new ContextThemeWrapper(mInputMethodService, mThemeResId);
 
             IMEUtil.GCUtils.getInstance().reset();
             boolean tryGC = true;
             for (int i = 0; i < IMEUtil.GCUtils.GC_TRY_LOOP_MAX && tryGC; ++i) {
                 try {
                     //mInputView = (SoftKeyboardView) mInputMethodService.getLayoutInflater().inflate(THEMES[newLayout], null);
-                	mInputView = (SoftKeyboardView) mInputMethodService.getLayoutInflater().inflate(R.layout.input_view, null);
+                	mInputView = (SoftKeyboardView)LayoutInflater.from(mThemedContext).inflate(R.layout.input_view, null);
                     tryGC = false;
                 } catch (OutOfMemoryError e) {
                     tryGC = IMEUtil.GCUtils.getInstance().tryGCOrWait(mLayoutId + "," + newLayout, e);
@@ -500,7 +514,8 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
                 }
             }
             
-            mInputView.setTheme(mThemes);
+            mInputView.setStyle(mThemedContext, mThemeResId);
+            mInputView.setAutoHideMiniKeyboard(mAutoHideMiniKeyboard);
             mInputView.setOnKeyboardActionListener(mInputMethodService);
             mLayoutId = newLayout;
         }
@@ -522,6 +537,9 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         } else if (IMESettings.PREF_LANGUAGE_KEY.equals(key)) {
         	updateLanguageKeyState(sharedPreferences);
             recreateInputView();
+        } else if (IMESettings.PREF_AUTO_HIDE_MINIKEYBOARD.equals(key)) {
+        	updateAutoHideMiniKeyboardState(sharedPreferences);
+        	recreateInputView();
         }
     }
 
@@ -541,6 +559,21 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     
     private void updateLanguageKeyState(SharedPreferences prefs) {
         Resources resources = mInputMethodService.getResources();
-        mLanguageSwitchMode = Integer.valueOf(prefs.getString(IMESettings.PREF_LANGUAGE_KEY, resources.getString(R.string.language_key_default)));
+        mLanguageSwitchMode = Integer.valueOf(prefs.getString(IMESettings.PREF_LANGUAGE_KEY, resources.getString(R.string.default_language_key_mode)));
     }
+    
+    private void updateAutoHideMiniKeyboardState(SharedPreferences prefs) {
+        Resources resources = mInputMethodService.getResources();
+        mAutoHideMiniKeyboard = prefs.getBoolean(IMESettings.PREF_AUTO_HIDE_MINIKEYBOARD, resources.getBoolean(R.bool.default_auto_hide_minikeyboard));
+    }
+    
+    // SMM {
+    public int getThemeResId() {
+    	return mThemeResId;
+    }
+    
+    public Context getThemedContext() {
+    	return mThemedContext;
+    }
+    // } SMM
 }

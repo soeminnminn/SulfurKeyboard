@@ -25,6 +25,8 @@
     <string name="english_ime_settings" translatable="false">Settings for Sulfur\'s Keyboard</string>
     <!-- Title for Latin keyboard input options dialog -->
     <string name="english_ime_input_options" translatable="false">Input options</string>
+    
+    <string name="english_ime_description" translatable="false">English and Myanmar</string>
 
     <!-- Option to provide vibrate/haptic feedback on keypress -->
     <string name="vibrate_on_keypress" translatable="false">Vibrate on keypress</string>
@@ -113,6 +115,12 @@
     <!-- Description for auto completion -->
     <string name="auto_complete_summary" translatable="false">Spacebar and punctuation automatically insert highlighted word</string>
     
+    <!-- Option to enable auto hiding mini keyboard -->
+    <string name="auto_hide_minikeyboard" translatable="false">Auto hide morekeys keyboard</string>
+    <!-- Description for auto hide mini keyboard -->
+    <string name="auto_hide_minikeyboard_true" translatable="false">Auto hide morekeys keyboard when release touch.</string>
+    <string name="auto_hide_minikeyboard_false" translatable="false">Still morekeys keyboard when release touch.</string>
+    
     <!-- Option to show/hide the settings key -->
     <string name="prefs_settings_key" translatable="false">Show settings key</string>
     <!-- Array of the settings key mode values -->
@@ -180,7 +188,7 @@
         <item>@string/language_key_slide</item>
         <item>@string/language_key_toggle</item>
     </string-array>
-    <string name="language_key_default" translatable="false">0</string>
+    <string name="default_language_key_mode" translatable="false">0</string>
 
     <!-- Indicates that a word has been added to the dictionary -->
     <string name="added_word" translatable="false"><xliff:g id="word">%s</xliff:g> : Saved</string>
@@ -426,6 +434,7 @@
     <string name="layout_iphone" translatable="false">iPhone</string>
     <string name="layout_gingerbread" translatable="false">Gingerbread</string>
     <string name="layout_ics" translatable="false">Ice cream sandwich</string>
+    <string name="layout_klp" translatable="false">Kitkat</string>
     <string name="layout_galaxy" translatable="false">Galaxy</string>
     <string name="layout_pink" translatable="false">Pink</string>
 
@@ -436,6 +445,7 @@
         <item>@string/layout_iphone</item>
         <item>@string/layout_gingerbread</item>
         <item>@string/layout_ics</item>
+        <item>@string/layout_klp</item>
         <item>@string/layout_galaxy</item>
         <item>@string/layout_pink</item>
     </string-array>
@@ -447,8 +457,9 @@
     <string name="layout_iphone_value" translatable="false">3</string>
     <string name="layout_gingerbread_value" translatable="false">4</string>
     <string name="layout_ics_value" translatable="false">5</string>
-    <string name="layout_galaxy_value" translatable="false">6</string>
-    <string name="layout_pink_value" translatable="false">7</string>
+    <string name="layout_klp_value" translatable="false">6</string>
+    <string name="layout_galaxy_value" translatable="false">7</string>
+    <string name="layout_pink_value" translatable="false">8</string>
 
     <string-array name="keyboard_layout_modes_values" translatable="false">
         <item>@string/layout_basic_value</item>
@@ -457,6 +468,7 @@
         <item>@string/layout_iphone_value</item>
         <item>@string/layout_gingerbread_value</item>
         <item>@string/layout_ics_value</item>
+        <item>@string/layout_klp_value</item>
         <item>@string/layout_galaxy_value</item>
         <item>@string/layout_pink_value</item>
     </string-array>
@@ -501,7 +513,7 @@
     <string name="summary_force_keyboard_on_false" translatable="false">When no hardware keyboard is available</string>
     
     <!-- Option to used unicode -->
-    <string name="title_used_unicode" translatable="false">Used unicode conversion</string>
+    <string name="title_used_unicode" translatable="false">Used unicode</string>
     <string name="summary_used_unicode_true" translatable="false">Using unicode 5.1 above, such as Myanmar 3 font.</string>
     <string name="summary_used_unicode_false" translatable="false">Not used unicode conversion.</string>
     

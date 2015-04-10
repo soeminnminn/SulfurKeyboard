@@ -16,8 +16,10 @@
 
 package com.android.inputmethod.skeyboard;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
@@ -95,7 +97,9 @@ public class CandidateView extends View {
      * @param context
      * @param attrs
      */
-    public CandidateView(Context context, AttributeSet attrs) {
+    @SuppressLint("InflateParams")
+	@SuppressWarnings("deprecation")
+	public CandidateView(Context context, AttributeSet attrs) {
         super(context, attrs);
         
         mSelectionHighlight = context.getResources().getDrawable(R.drawable.list_selector_background_pressed);
@@ -134,6 +138,34 @@ public class CandidateView extends View {
         setVerticalScrollBarEnabled(false);
         scrollTo(0, getScrollY());
     }
+    
+    // SMM {
+    @SuppressWarnings("deprecation")
+	public void setStyle(Context context, int styleResId) {
+    	if (styleResId == 0) {
+    		styleResId = R.style.KeyboardBaseView;
+    	}
+    	final TypedArray a = context.obtainStyledAttributes(styleResId, R.styleable.KeyboardBaseView);
+    	
+    	mSelectionHighlight = a.getDrawable(R.styleable.KeyboardBaseView_candidateSelection);
+    	mSelectionHighlight.setBounds(0, 0, mSelectionHighlight.getIntrinsicWidth(), mSelectionHighlight.getIntrinsicHeight());
+    	
+    	mColorNormal = a.getColor(R.styleable.KeyboardBaseView_candidateTextColorNormal, 0);
+    	mColorRecommended = a.getColor(R.styleable.KeyboardBaseView_candidateTextColorRecommended, 0);
+    	mColorOther = a.getColor(R.styleable.KeyboardBaseView_candidateTextColorOther, 0);
+    	
+    	mDivider = a.getDrawable(R.styleable.KeyboardBaseView_candidateDivider);
+    	mDivider.setBounds(0, 0, mDivider.getIntrinsicWidth(), mDivider.getIntrinsicHeight());
+    	
+    	Drawable background = a.getDrawable(R.styleable.KeyboardBaseView_candidateBackground);
+    	a.recycle();
+    	
+    	if (background != null) {
+    		setBackgroundDrawable(background);
+    	}
+    	invalidate();
+    }
+    // } SMM
 
     private class CandidateStripGestureListener extends GestureDetector.SimpleOnGestureListener {
         private final int mTouchSlopSquare;
@@ -196,23 +228,6 @@ public class CandidateView extends View {
      */
     public void setService(LatinIME listener) {
         mService = listener;
-    }
-    
-    public void setThemes(KeyboardThemes themes) {
-    	if((themes == null) || (themes.getTheme() == null)) return;
-    	
-    	final KeyboardThemes.Theme theme = themes.getTheme();
-    	mSelectionHighlight = theme.candidateSelection;
-    	mSelectionHighlight.setBounds(0, 0, mSelectionHighlight.getIntrinsicWidth(), mSelectionHighlight.getIntrinsicHeight());
-    	
-    	mColorNormal = theme.candidateTextColorNormal;
-        mColorRecommended = theme.candidateTextColorRecommended;
-        mColorOther = theme.candidateTextColorOther;
-        
-        mDivider = theme.candidateDivider;
-        mDivider.setBounds(0, 0, mDivider.getIntrinsicWidth(), mDivider.getIntrinsicHeight());
-        
-        invalidate();
     }
     
     @Override
@@ -292,7 +307,7 @@ public class CandidateView extends View {
 
             if (canvas != null) {
             	if(ZawGyiCorrection.isMyChar(suggestion)) { // SMM
-            		paint.setTypeface(KeyboardThemes.getTypeFace(getContext()));
+            		paint.setTypeface(KeyboardTheme.getTypeFace(getContext()));
             	}
             	
             	final String fixSuggestion = ZawGyiCorrection.ZawGyiDrawFix(suggestion).toString();
@@ -339,7 +354,7 @@ public class CandidateView extends View {
         invalidate();
     }
     
-    public void setSuggestions(List<CharSequence> suggestions, boolean completions,
+	public void setSuggestions(List<CharSequence> suggestions, boolean completions,
             boolean typedWordValid, boolean haveMinimalSuggestion) {
         clear();
         if (suggestions != null) {
@@ -356,7 +371,7 @@ public class CandidateView extends View {
         mTargetScrollX = 0;
         mHaveMinimalSuggestion = haveMinimalSuggestion;
         // Compute the total width
-        onDraw(null);
+        //onDraw(null);
         invalidate();
         requestLayout();
     }
@@ -469,7 +484,7 @@ public class CandidateView extends View {
             } else {
                 CharSequence word = altText != null? altText : mSuggestions.get(wordIndex);
                 if(ZawGyiCorrection.isMyChar(word)) { // SMM
-                	mPreviewText.setTypeface(KeyboardThemes.getTypeFace(getContext()));
+                	mPreviewText.setTypeface(KeyboardTheme.getTypeFace(getContext()));
             	}
                 mPreviewText.setText(word);
                 mPreviewText.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), 

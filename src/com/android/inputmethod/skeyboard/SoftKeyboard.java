@@ -17,7 +17,6 @@
 package com.android.inputmethod.skeyboard;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
@@ -59,11 +58,11 @@ public class SoftKeyboard extends Keyboard {
     private Drawable m123MicIcon; 
     private final Drawable mHintIcon;*/
     
-    private Drawable mShiftLockPreviewIcon;
     private Drawable mSpacePreviewIcon;
+    /*private Drawable mShiftLockPreviewIcon;
     private Drawable mMicPreviewIcon;
     private Drawable mSettingsPreviewIcon;
-    private Drawable mLanguagePreviewIcon;
+    private Drawable mLanguagePreviewIcon;*/
     
     private final Drawable mButtonArrowLeftIcon;
     private final Drawable mButtonArrowRightIcon;
@@ -131,32 +130,36 @@ public class SoftKeyboard extends Keyboard {
     private static final float MINIMUM_SCALE_OF_LANGUAGE_NAME = 0.8f;
 
     private static int sSpacebarVerticalCorrection;
-    private KeyboardThemes mThemes;
     private static final float ICON_SIZE_ADJUST = 0.6f;
     private float mIconSizeAdjust;
     
     private int mLanguageSwitchMode; 
-
-    public SoftKeyboard(Context context, int xmlLayoutResId) {
-        this(context, xmlLayoutResId, 0);
-    }
+    
+    private Drawable mKeyHintPopup;
+    private Drawable mSpaceKeyIcon;
+    private Drawable mSpaceKeyIconModifier;
+    private Drawable mSpaceAutoCompletionIndicator;
 
     public SoftKeyboard(Context context, int xmlLayoutResId, int mode) {
+        this(context, xmlLayoutResId, mode, 0);
+    }
+
+    public SoftKeyboard(Context context, int xmlLayoutResId, int mode, int styleResId) {
         super(context, xmlLayoutResId, mode);
         final Resources res = context.getResources();
         mContext = context;
         mMode = mode;
         mRes = res;
         
-        mShiftLockPreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_shift_locked);
-        setDefaultBounds(mShiftLockPreviewIcon);
         mSpacePreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_space);
+        /*mShiftLockPreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_shift_locked);
+        setDefaultBounds(mShiftLockPreviewIcon);
         mMicPreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_mic);
         setDefaultBounds(mMicPreviewIcon);
         mSettingsPreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_settings);
         setDefaultBounds(mSettingsPreviewIcon);
         mLanguagePreviewIcon = res.getDrawable(R.drawable.sym_keyboard_feedback_language);
-        setDefaultBounds(mLanguagePreviewIcon);
+        setDefaultBounds(mLanguagePreviewIcon);*/
         mButtonArrowLeftIcon = res.getDrawable(R.drawable.sym_keyboard_language_arrows_left);
         mButtonArrowRightIcon = res.getDrawable(R.drawable.sym_keyboard_language_arrows_right);
         sSpacebarVerticalCorrection = res.getDimensionPixelOffset(R.dimen.spacebar_vertical_correction);
@@ -170,6 +173,31 @@ public class SoftKeyboard extends Keyboard {
         // TODO remove this initialization after cleanup
         mVerticalGap = super.getVerticalGap();
         mIconSizeAdjust = ICON_SIZE_ADJUST;
+        
+        initializeThemesIcons(context, styleResId);
+    }
+    
+    private void initializeThemesIcons(Context context, int styleResId) {
+    	
+    	final Resources res = context.getResources();
+    	final int defKeyTextColor = res.getColor(R.color.key_text_color_dark);
+    	final int defKeyModifierColor = res.getColor(R.color.key_modifier_color_dark);
+    	
+    	if (styleResId == 0) {
+    		styleResId = R.style.KeyboardBaseView;
+    	}
+    	final TypedArray a = context.obtainStyledAttributes(styleResId, R.styleable.KeyboardBaseView);
+    	
+    	mKeyHintPopup = a.getDrawable(R.styleable.KeyboardBaseView_keyHintPopup);
+    	mSpaceAutoCompletionIndicator = a.getDrawable(R.styleable.KeyboardBaseView_spaceAutoCompletionIndicator);
+    	
+    	int keyTextColor = a.getColor(R.styleable.KeyboardBaseView_keyTextColor, defKeyTextColor);
+    	mSpaceKeyIcon = KeyboardTheme.createSpaceKeyIconDrawable(context, keyTextColor);
+    	
+    	int keyModifierColor = a.getColor(R.styleable.KeyboardBaseView_keyModifierColor, defKeyModifierColor);
+    	mSpaceKeyIconModifier = KeyboardTheme.createSpaceKeyIconDrawable(context, keyModifierColor);
+    	
+    	a.recycle();
     }
     
 	/*
@@ -240,14 +268,6 @@ public class SoftKeyboard extends Keyboard {
 
         return key;
     }
-    
-    public void setTheme(KeyboardThemes themes, int orientation) {
-    	mThemes = themes;
-    	if(orientation == Configuration.ORIENTATION_LANDSCAPE)
-    		mIconSizeAdjust = 0.8f;
-    	else
-    		mIconSizeAdjust = ICON_SIZE_ADJUST;
-    }
 
     void setImeOptions(Resources res, int mode, int options) {
         mMode = mode;
@@ -258,7 +278,7 @@ public class SoftKeyboard extends Keyboard {
             mEnterKey.icon = null;
             mEnterKey.iconic = false;
             mEnterKey.iconKey = false;
-            mEnterKey.iconId = KeyboardThemes.ICON_UNDEFINED;
+            mEnterKey.iconId = KeyboardTheme.ICON_UNDEFINED;
             mEnterKey.popupCharacters = null;
             mEnterKey.popupResId = 0;
             mEnterKey.text = null;
@@ -274,24 +294,24 @@ public class SoftKeyboard extends Keyboard {
                     mEnterKey.label = res.getText(R.string.label_done_key);
                     break;
                 case EditorInfo.IME_ACTION_SEARCH:
-                    mEnterKey.iconPreview = res.getDrawable(R.drawable.sym_keyboard_feedback_search);
+                    //mEnterKey.iconPreview = res.getDrawable(R.drawable.sym_keyboard_feedback_search);
                     //mEnterKey.icon = res.getDrawable(mIsBlackSym ?
                     //        R.drawable.sym_bkeyboard_search : R.drawable.sym_keyboard_search); // SMM
                     mEnterKey.iconic = true;
                     mEnterKey.iconKey = true;
-                    mEnterKey.label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SEARCH_KEY);
+                    mEnterKey.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_SEARCH_KEY);
                     mEnterKey.iconSizeAdjust = mIconSizeAdjust;
                     break;
                 case EditorInfo.IME_ACTION_SEND:
                     mEnterKey.label = res.getText(R.string.label_send_key);
                     break;
                 default:
-                    mEnterKey.iconPreview = res.getDrawable(R.drawable.sym_keyboard_feedback_return);
+                    //mEnterKey.iconPreview = res.getDrawable(R.drawable.sym_keyboard_feedback_return);
                     //mEnterKey.icon = res.getDrawable(mIsBlackSym ?
                     //        R.drawable.sym_bkeyboard_return : R.drawable.sym_keyboard_return);
                     mEnterKey.iconic = true;
                     mEnterKey.iconKey = true;
-                    mEnterKey.label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_RETURN_KEY);
+                    mEnterKey.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_RETURN_KEY);
                     mEnterKey.iconSizeAdjust = mIconSizeAdjust;
                     break;
             }
@@ -300,18 +320,18 @@ public class SoftKeyboard extends Keyboard {
             	case KeyboardSwitcher.MODE_TEXT:
             	case KeyboardSwitcher.MODE_IM:
             	case KeyboardSwitcher.MODE_WEB:
-            		mEnterKey.icon = mThemes.getTheme().keyHintPopup;
-                    mEnterKey.iconId = KeyboardThemes.ICON_HINT_POPUP;
+            		mEnterKey.icon = mKeyHintPopup;
+                    mEnterKey.iconId = KeyboardTheme.ICON_HINT_POPUP;
                     mEnterKey.popupResId = R.xml.popup_smileys;
             		break;
             	case KeyboardSwitcher.MODE_EMAIL:
             	case KeyboardSwitcher.MODE_URL:
-            		mEnterKey.icon = mThemes.getTheme().keyHintPopup;
-                    mEnterKey.iconId = KeyboardThemes.ICON_HINT_POPUP;
+            		mEnterKey.icon = mKeyHintPopup;
+                    mEnterKey.iconId = KeyboardTheme.ICON_HINT_POPUP;
                     mEnterKey.popupResId = R.xml.popup_domains;
             		break;
             	default:
-            		mEnterKey.iconId = KeyboardThemes.ICON_UNDEFINED;
+            		mEnterKey.iconId = KeyboardTheme.ICON_UNDEFINED;
                     mEnterKey.popupResId = 0;
             		break;
             }
@@ -337,8 +357,8 @@ public class SoftKeyboard extends Keyboard {
     void setShiftLocked(boolean shiftLocked) {
         if (mShiftKey != null) {
             mShiftKey.icon = null;
-            mShiftKey.iconId = KeyboardThemes.ICON_UNDEFINED;
-            String label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SHIFT_KEY);
+            mShiftKey.iconId = KeyboardTheme.ICON_UNDEFINED;
+            String label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_SHIFT_KEY);
             
             if (shiftLocked) {
                 mShiftKey.on = true;
@@ -347,7 +367,7 @@ public class SoftKeyboard extends Keyboard {
             } else {
                 mShiftKey.on = false;
                 //mShiftKey.icon = mShiftLockIcon;
-                label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SHIFTLOCKED_KEY);
+                label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_SHIFTLOCKED_KEY);
                 mShiftState = SHIFT_ON;
             }
             
@@ -369,8 +389,8 @@ public class SoftKeyboard extends Keyboard {
         boolean shiftChanged = false;
         if (mShiftKey != null) {
             mShiftKey.icon = null;
-            mShiftKey.iconId = KeyboardThemes.ICON_UNDEFINED;
-            String label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SHIFT_KEY);
+            mShiftKey.iconId = KeyboardTheme.ICON_UNDEFINED;
+            String label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_SHIFT_KEY);
             
             if (shiftState == false) {
                 shiftChanged = mShiftState != SHIFT_OFF;
@@ -382,7 +402,7 @@ public class SoftKeyboard extends Keyboard {
                     shiftChanged = mShiftState == SHIFT_OFF;
                     mShiftState = SHIFT_ON;
                     //mShiftKey.icon = mShiftLockIcon;
-                    label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SHIFTLOCKED_KEY);
+                    label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_SHIFTLOCKED_KEY);
                 }
             }
             
@@ -419,20 +439,18 @@ public class SoftKeyboard extends Keyboard {
             updateSpaceBarForLocale(isAutoCompletion, textColor, shadowColor);
         }
         
-        setIconicKey(mDeleteKey, KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_DELETE_KEY), mIconSizeAdjust);
-        setIconicKey(mTabKey, KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_TAB_KEY), ICON_SIZE_ADJUST);
+        setIconicKey(mDeleteKey, KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_DELETE_KEY), mIconSizeAdjust);
+        setIconicKey(mTabKey, KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_TAB_KEY), ICON_SIZE_ADJUST);
         //setIconicKey(mSettingsKey, KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SETTINGS_KEY), ICON_SIZE_ADJUST);
         updateSettingsKey();
         
-        if(mKeys != null && mThemes != null) {
-        	for(int i = 0; i < mKeys.size(); i++) {
-        		Key key = mKeys.get(i);
-        		if(key.iconId == KeyboardThemes.ICON_HINT_POPUP) {
-        			key.icon = mThemes.getTheme().keyHintPopup;
-        			mKeys.set(i, key);
-        		}
-        	}
-        }
+        for(int i = 0; i < mKeys.size(); i++) {
+    		Key key = mKeys.get(i);
+    		if(key.iconId == KeyboardTheme.ICON_HINT_POPUP) {
+    			key.icon = mKeyHintPopup;
+    			mKeys.set(i, key);
+    		}
+    	}
         
         // updateNumberHintKeys();
     }
@@ -473,14 +491,14 @@ public class SoftKeyboard extends Keyboard {
                 //m123Key.icon = m123MicIcon;
                 //m123Key.icon = mThemes.getTheme().getIcon(KeyboardThemes.ICON_123MIC_KEY);
             	m123Key.icon = null;
-                m123Key.iconId = KeyboardThemes.ICON_UNDEFINED;
+                m123Key.iconId = KeyboardTheme.ICON_UNDEFINED;
                 m123Key.iconic = true;
                 //m123Key.iconPreview = m123MicPreviewIcon;
                 m123Key.iconPreview = null;
                 m123Key.label = m123MicLabel;
             } else {
                 m123Key.icon = null;
-                m123Key.iconId = KeyboardThemes.ICON_UNDEFINED;
+                m123Key.iconId = KeyboardTheme.ICON_UNDEFINED;
                 m123Key.iconPreview = null;
                 m123Key.iconic = true;
                 m123Key.label = m123Label;
@@ -525,27 +543,26 @@ public class SoftKeyboard extends Keyboard {
                 drawSynthesizedSettingsHintImage(key.width, key.height, 
                 		micIcon, hintIcon));
     	 */
-    	if(mThemes == null || mThemes.getTheme() == null) return;
-        key.label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_MIC_KEY);
+        key.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_MIC_KEY);
         key.iconic = true;
         key.iconKey = true;
         key.iconSizeAdjust = ICON_SIZE_ADJUST;
         key.codes = new int[] { KeyCodes.KEYCODE_VOICE };
         key.popupResId = R.xml.popup_settings;
-        key.icon = mThemes.getTheme().keyHintPopup;//micWithSettingsHintDrawable;
-        key.iconId = KeyboardThemes.ICON_HINT_POPUP;
-        key.iconPreview = mMicPreviewIcon;
+        key.icon = mKeyHintPopup;//micWithSettingsHintDrawable;
+        key.iconId = KeyboardTheme.ICON_HINT_POPUP;
+        //key.iconPreview = mMicPreviewIcon;
+        key.iconPreview = null;
     }
 
     private void setNonMicF1Key(Key key, String label, int popupResId) {
-    	if(mThemes == null || mThemes.getTheme() == null) return;
         key.label = label;
         key.iconic = false;
         key.iconKey = false;
         key.codes = new int[] { label.charAt(0) };
         key.popupResId = popupResId;
-        key.icon = mThemes.getTheme().keyHintPopup;
-        key.iconId = KeyboardThemes.ICON_HINT_POPUP;
+        key.icon = mKeyHintPopup;
+        key.iconId = KeyboardTheme.ICON_HINT_POPUP;
         key.iconPreview = null;
     }
     
@@ -555,21 +572,22 @@ public class SoftKeyboard extends Keyboard {
 		mSettingsKey.iconic = true;
 		mSettingsKey.iconKey = true;
 		mSettingsKey.iconSizeAdjust = ICON_SIZE_ADJUST;
+		mSettingsKey.iconPreview = null;
 		
     	if (isLanguageSwitchToggleEnabled()) {
-    		mSettingsKey.icon = mThemes.getTheme().keyHintPopup;
-    		mSettingsKey.iconId = KeyboardThemes.ICON_HINT_POPUP;
-    		mSettingsKey.iconPreview = mLanguagePreviewIcon;
+    		mSettingsKey.icon = mKeyHintPopup;
+    		mSettingsKey.iconId = KeyboardTheme.ICON_HINT_POPUP;
+    		//mSettingsKey.iconPreview = mLanguagePreviewIcon;
     		mSettingsKey.popupResId = R.xml.popup_settings;
     		mSettingsKey.codes = new int[] { KeyCodes.KEYCODE_LANGUAGE };
-    		mSettingsKey.label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_LANGUAGE_KEY);
+    		mSettingsKey.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_LANGUAGE_KEY);
     	} else {
     		mSettingsKey.icon = null;
-    		mSettingsKey.iconId = KeyboardThemes.ICON_UNDEFINED;
-    		mSettingsKey.iconPreview = mSettingsPreviewIcon;
+    		mSettingsKey.iconId = KeyboardTheme.ICON_UNDEFINED;
+    		//mSettingsKey.iconPreview = mSettingsPreviewIcon;
     		mSettingsKey.popupResId = 0;
     		mSettingsKey.codes = new int[] { KeyCodes.KEYCODE_OPTIONS };
-    		mSettingsKey.label = KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SETTINGS_KEY);
+    		mSettingsKey.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_SETTINGS_KEY);
     	}
     }
     
@@ -580,7 +598,7 @@ public class SoftKeyboard extends Keyboard {
     	key.iconic = true;
     	key.iconKey = true;
     	key.icon = null;
-    	key.iconId = KeyboardThemes.ICON_UNDEFINED;
+    	key.iconId = KeyboardTheme.ICON_UNDEFINED;
     	key.iconSizeAdjust = iconSizeAdjust;
     }
 
@@ -595,7 +613,7 @@ public class SoftKeyboard extends Keyboard {
     }
     
     public static boolean hasPopupHint(Key key) {
-    	return key.iconId == KeyboardThemes.ICON_HINT_POPUP;
+    	return key.iconId == KeyboardTheme.ICON_HINT_POPUP;
     }
 
     /**
@@ -638,10 +656,9 @@ public class SoftKeyboard extends Keyboard {
     // } SMM
 
     private void updateSpaceBarForLocale(boolean isAutoCompletion, int textColor, int shadowColor) {
-    	if(mThemes == null || mThemes.getTheme() == null) return;
         // If application locales are explicitly selected.
-    	final Drawable icon = isPhoneOrNumber() ? mThemes.getTheme().spaceKeyIcon : mThemes.getTheme().spaceKeyIconModifier;
-    	mSpaceKey.iconId = KeyboardThemes.ICON_UNDEFINED;
+    	final Drawable icon = isPhoneOrNumber() ? mSpaceKeyIcon : mSpaceKeyIconModifier;
+    	mSpaceKey.iconId = KeyboardTheme.ICON_UNDEFINED;
         if (isLanguageSwitchEnabled()) {
             mSpaceKey.icon = new BitmapDrawable(mRes, drawSpaceBar(icon, OPACITY_FULLY_OPAQUE, isAutoCompletion, textColor, shadowColor));
         } else {
@@ -776,7 +793,7 @@ public class SoftKeyboard extends Keyboard {
 
         // Draw the spacebar icon at the bottom
         if (isAutoCompletion) {
-        	final Drawable spaceAutoCompletionIndicator = mThemes.getTheme().spaceAutoCompletionIndicator;
+        	final Drawable spaceAutoCompletionIndicator = mSpaceAutoCompletionIndicator;
             final int iconWidth = width * SPACE_LED_LENGTH_PERCENT / 100;
             final int iconHeight = spaceAutoCompletionIndicator.getIntrinsicHeight();
             int x = (width - iconWidth) / 2;

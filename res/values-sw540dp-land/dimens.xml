@@ -1,0 +1,16 @@
+<resources>
+
+    <!--
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw540dp land devices here.
+    -->
+    
+    <fraction name="keyboard_max_height">40%</fraction>
+    <fraction name="keyboard_min_height">20%</fraction>
+    
+    <fraction name="key_text_ratio">45%</fraction>
+    <fraction name="key_label_text_ratio">26%</fraction>
+    <fraction name="key_hint_text_ratio">24%</fraction>
+    <fraction name="key_trail_text_ratio">32%</fraction>
+    
+</resources>

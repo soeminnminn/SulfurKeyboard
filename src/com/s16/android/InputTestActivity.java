@@ -1,6 +1,7 @@
 package com.s16.android;
 
 import com.android.inputmethod.skeyboard.R;
+import com.s16.drawing.HomeUpDrawable;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -54,6 +55,7 @@ public class InputTestActivity extends Activity {
 		editTextMultiLine.setTypeface(typeface);
 		
 		final ImageButton imageTitle = (ImageButton)findViewById(R.id.imageButtonTitleBack);
+		imageTitle.setImageDrawable(new HomeUpDrawable(this, HomeUpDrawable.MODE_HOME_UP));
 		imageTitle.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	InputTestActivity.this.finish();
@@ -66,8 +68,6 @@ public class InputTestActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.input_test, menu);
 		return false;
 	}
 

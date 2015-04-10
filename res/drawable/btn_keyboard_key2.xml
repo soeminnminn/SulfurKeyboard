@@ -22,15 +22,15 @@
           android:state_pressed="true"
           android:drawable="@drawable/btn_keyboard_key_pressed_on" />
     <item android:state_checkable="true" android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_fulltrans_pressed" />
+          android:drawable="@drawable/btn_keyboard_key_pressed_fulltrans" />
     <item android:state_checkable="true" android:state_checked="true"
           android:drawable="@drawable/btn_keyboard_key_normal_on" />
     <item android:state_checkable="true"
-          android:drawable="@drawable/btn_keyboard_key_fulltrans_normal" />
+          android:drawable="@drawable/btn_keyboard_key_normal_fulltrans" />
 
     <!-- Normal keys -->
 
     <item android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_fulltrans_pressed" />
-    <item android:drawable="@drawable/btn_keyboard_key_fulltrans_normal" />
+          android:drawable="@drawable/btn_keyboard_key_pressed_fulltrans" />
+    <item android:drawable="@drawable/btn_keyboard_key_normal_fulltrans" />
 </selector>

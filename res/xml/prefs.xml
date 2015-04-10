@@ -79,7 +79,7 @@
             android:persistent="true"
             android:entryValues="@array/language_key_modes_values"
             android:entries="@array/language_key_modes"
-            android:defaultValue="@string/language_key_slide"
+            android:defaultValue="@string/default_language_key_mode"
             />
             
         <ListPreference
@@ -88,7 +88,7 @@
             android:persistent="true"
             android:entryValues="@array/voice_input_modes_values"
             android:entries="@array/voice_input_modes"
-            android:defaultValue="@string/voice_mode_main"
+            android:defaultValue="@string/voice_mode_off"
             />
     
     	<ListPreference
@@ -97,7 +97,7 @@
             android:persistent="true"
             android:entryValues="@array/keyboard_layout_modes_values"
             android:entries="@array/keyboard_layout_modes"
-            android:defaultValue="@string/layout_gingerbread_value"
+            android:defaultValue="@string/layout_ics_value"
             />
     	
     	<ListPreference
@@ -125,6 +125,15 @@
             android:defaultValue="@bool/default_force_keyboard_on"
             android:summaryOn="@string/summary_force_keyboard_on_true"
             android:summaryOff="@string/summary_force_keyboard_on_false"
+            />
+    	
+    	<CheckBoxPreference
+            android:key="auto_hide_minikeyboard"
+            android:title="@string/auto_hide_minikeyboard"
+            android:persistent="true"
+            android:defaultValue="true"
+            android:summaryOn="@string/auto_hide_minikeyboard_true"
+            android:summaryOff="@string/auto_hide_minikeyboard_false"
             />
 
     	<PreferenceScreen

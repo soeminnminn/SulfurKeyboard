@@ -17,14 +17,12 @@
 package com.android.inputmethod.skeyboard;
 
 import com.android.inputmethod.skeyboard.IMEUtil.RingCharBuffer;
-
 import com.android.inputmethod.voice.FieldContext;
 import com.android.inputmethod.voice.SettingsUtil;
 import com.android.inputmethod.voice.VoiceInput;
 import com.android.inputmethod.skeyboard.R;
 
-import org.xmlpull.v1.XmlPullParserException;
-
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -50,6 +48,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.PrintWriterPrinter;
 import android.util.Printer;
+import android.view.ContextThemeWrapper;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -76,9 +75,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 /**
  * Input method implementation for Qwerty'ish keyboard.
  */
+@SuppressWarnings("deprecation")
 public class LatinIME extends InputMethodService
         implements KeyboardBaseView.OnKeyboardActionListener,
         VoiceInput.UiListener,
@@ -88,7 +90,7 @@ public class LatinIME extends InputMethodService
     static final boolean DEBUG = false;
     static final boolean TRACE = false;
     static final boolean VOICE_INSTALLED = true;
-    static final boolean ENABLE_VOICE_BUTTON = true;
+    static final boolean ENABLE_VOICE_BUTTON = false;
 
     // A list of locales which are supported by default for voice input, unless we get a
     // different list from Gservices.
@@ -221,7 +223,7 @@ public class LatinIME extends InputMethodService
     private boolean mUsedUnicode;
     private boolean mJellyBeanFix;
     private int     mKeyTextSizeScale;
-    private boolean mEnableVoice = true;
+    private boolean mEnableVoice = false;
     private boolean mVoiceOnPrimary;
     private int     mOrientation;
     private List<CharSequence> mSuggestPuncList;
@@ -264,8 +266,6 @@ public class LatinIME extends InputMethodService
     private Map<String, List<CharSequence>> mWordToSuggestions = new HashMap<String, List<CharSequence>>();
 
     private ArrayList<WordAlternatives> mWordHistory = new ArrayList<WordAlternatives>();
-    
-    private PluginManager mPluginManager; // SMM
     
     private class VoiceResults {
         List<String> candidates;
@@ -379,17 +379,6 @@ public class LatinIME extends InputMethodService
         mForceKeyboardOn = prefs.getBoolean(PREF_FORCE_KEYBOARD_ON,
                 res.getBoolean(R.bool.default_force_keyboard_on));
         
-        // SMM {
-        PluginManager.getPluginDictionaries(getApplicationContext());
-        mPluginManager = new PluginManager(this);
-        final IntentFilter pFilter = new IntentFilter();
-        pFilter.addDataScheme("package");
-        pFilter.addAction("android.intent.action.PACKAGE_ADDED");
-        pFilter.addAction("android.intent.action.PACKAGE_REPLACED");
-        pFilter.addAction("android.intent.action.PACKAGE_REMOVED");
-        registerReceiver(mPluginManager, pFilter);
-        // } SMM
-        
         IMEUtil.GCUtils.getInstance().reset();
         boolean tryGC = true;
         for (int i = 0; i < IMEUtil.GCUtils.GC_TRY_LOOP_MAX && tryGC; ++i) {
@@ -428,8 +417,11 @@ public class LatinIME extends InputMethodService
      * @return returns array of dictionary resource ids
      */
     /* package */ static int[] getDictionary(Resources res) {
+    	
+    	String packageName = LatinIME.class.getPackage().getName();
         XmlResourceParser xrp = res.getXml(R.xml.dictionary);
         ArrayList<Integer> dictionaries = new ArrayList<Integer>();
+        final Locale locale = res.getConfiguration().locale;
 
         try {
             int current = xrp.getEventType();
@@ -439,8 +431,17 @@ public class LatinIME extends InputMethodService
                     if (tag != null) {
                         if (tag.equals("part")) {
                             String dictFileName = xrp.getAttributeValue(null, "name");
+                            // SMM {
+                            if (locale != null) {
+                            	String dictLocale = xrp.getAttributeValue(null, "locale");
+                            	if (dictLocale != null && dictLocale.equalsIgnoreCase(locale.toString())) {
+                            		dictionaries.add(res.getIdentifier(dictFileName, "raw", packageName));
+                            	}
+                            } else {
+                            	dictionaries.add(res.getIdentifier(dictFileName, "raw", packageName));	
+                            } 
+                            // } SMM
                             //dictionaries.add(res.getIdentifier(dictFileName, "raw", packageName));
-                            dictionaries.add(res.getIdentifier(dictFileName, "raw", "com.android.inputmethod.skeyboard"));
                         }
                     }
                 }
@@ -452,13 +453,13 @@ public class LatinIME extends InputMethodService
         } catch (IOException e) {
             Log.e(TAG, "Dictionary XML IOException");
         }
-
+        
         int count = dictionaries.size();
         int[] dict = new int[count];
         for (int i = 0; i < count; i++) {
             dict[i] = dictionaries.get(i);
         }
-
+        
         return dict;
     }
 
@@ -514,7 +515,6 @@ public class LatinIME extends InputMethodService
             mContactsDictionary.close();
         }
         unregisterReceiver(mReceiver);
-        unregisterReceiver(mPluginManager); // SMM
         if (VOICE_INSTALLED && mVoiceInput != null) {
             mVoiceInput.destroy();
         }
@@ -569,7 +569,8 @@ public class LatinIME extends InputMethodService
         return mKeyboardSwitcher.getInputView();
     }
 
-    @Override
+    @SuppressLint("InflateParams")
+	@Override
     public View onCreateCandidatesView() {
         mKeyboardSwitcher.makeKeyboards(true);
         mCandidateViewContainer = (LinearLayout) getLayoutInflater().inflate(
@@ -968,7 +969,7 @@ public class LatinIME extends InputMethodService
             super.setCandidatesViewShown(isShown);
             
             if(mCandidateView != null && isShown) {
-        		mCandidateView.setThemes(mKeyboardSwitcher.getThemes());
+        		mCandidateView.setStyle(mKeyboardSwitcher.getThemedContext(), mKeyboardSwitcher.getThemeResId());
         	}
         }
     }
@@ -1249,8 +1250,7 @@ public class LatinIME extends InputMethodService
     }
 
     private void showInputMethodPicker() {
-        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                .showInputMethodPicker();
+        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).showInputMethodPicker();
     }
 
     private void onOptionKeyPressed() {
@@ -2441,10 +2441,13 @@ public class LatinIME extends InputMethodService
     		Log.i(TAG, "toggleLanguage");
     	}
     	
-    	final SoftKeyboardView keyboard = mKeyboardSwitcher.getInputView();
+    	final SoftKeyboardView keyboardView = mKeyboardSwitcher.getInputView();
     	boolean isLanguageSwitchEnabled = true;
-    	if(keyboard != null) {
-    		isLanguageSwitchEnabled = ((SoftKeyboard)keyboard.getKeyboard()).isLanguageSwitchEnabled();
+    	if(keyboardView != null) {
+    		SoftKeyboard keyboard = (SoftKeyboard)keyboardView.getKeyboard();
+    		if (keyboard != null) {
+    			isLanguageSwitchEnabled = keyboard.isLanguageSwitchEnabled();
+    		}
     	}
     	
         if (reset) {
@@ -2571,7 +2574,8 @@ public class LatinIME extends InputMethodService
                 && !mVoiceInput.isBlacklistedField(fieldContext);
     }
 
-    private boolean shouldShowVoiceButton(FieldContext fieldContext, EditorInfo attribute) {
+    @SuppressWarnings("unused")
+	private boolean shouldShowVoiceButton(FieldContext fieldContext, EditorInfo attribute) {
         return ENABLE_VOICE_BUTTON && fieldCanDoVoice(fieldContext)
                 && !(attribute != null
                         && IME_OPTION_NO_MICROPHONE.equals(attribute.privateImeOptions))
@@ -2814,7 +2818,7 @@ public class LatinIME extends InputMethodService
     }
 
     private void showOptionsMenu() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme));
         builder.setCancelable(true);
         builder.setIcon(R.drawable.ic_dialog_keyboard);
         builder.setNegativeButton(android.R.string.cancel, null);
@@ -2831,8 +2835,7 @@ public class LatinIME extends InputMethodService
                         launchSettings();
                         break;
                     case POS_METHOD:
-                        ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
-                            .showInputMethodPicker();
+                        showInputMethodPicker();
                         break;
                 }
             }

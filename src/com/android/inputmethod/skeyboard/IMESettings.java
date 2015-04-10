@@ -21,7 +21,6 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.backup.BackupManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,10 +37,15 @@ import android.preference.PreferenceGroup;
 import android.speech.SpeechRecognizer;
 import android.text.AutoText;
 import android.text.Html;
-import android.util.Log;
+import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Menu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.inputmethod.skeyboard.R;
+import com.android.inputmethod.skeyboard.R.color;
 import com.android.inputmethod.voice.SettingsUtil;
 import com.android.inputmethod.voice.VoiceInputLogger;
 
@@ -55,6 +59,7 @@ public class IMESettings extends PreferenceActivity
     private static final String VOICE_SETTINGS_KEY = "voice_mode";
     /* package */ static final String PREF_SETTINGS_KEY = "settings_key";
     /* package */ static final String PREF_LANGUAGE_KEY = "language_key";
+    /* package */ static final String PREF_AUTO_HIDE_MINIKEYBOARD = "auto_hide_minikeyboard";
     private static final String KEYBOARD_LAYOUT_SETTINGS_KEY = "keyboard_layout";
     private static final String TEXT_SIZE_SETTINGS_KEY = "key_text_size";
     //private static final String USED_UNICODE_SETTINGS_KEY = "used_unicode";
@@ -62,10 +67,7 @@ public class IMESettings extends PreferenceActivity
     
     //private static final String CATEGORY_PREDICTION_KEY = "prediction_category";
 
-    private static final String TAG = "IMESettings";
-
-    // Dialog ids
-    private static final int VOICE_INPUT_CONFIRM_DIALOG = 0;
+    protected static final String TAG = "IMESettings";
 
     private CheckBoxPreference mQuickFixes;
     private ListPreference mVoicePreference;
@@ -80,7 +82,8 @@ public class IMESettings extends PreferenceActivity
     private boolean mOkClicked = false;
     private String mVoiceModeOff;
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         addPreferencesFromResource(R.xml.prefs);
@@ -114,6 +117,11 @@ public class IMESettings extends PreferenceActivity
 			e.printStackTrace();
 		}
     }
+    
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return false;
+	}
 
     @Override
     protected void onStart() {
@@ -121,7 +129,8 @@ public class IMESettings extends PreferenceActivity
         IMESettings.AlertForInstallLocation(this, null);
     }
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onResume() {
         super.onResume();
         int autoTextSize = AutoText.getSize(getListView());
@@ -140,10 +149,10 @@ public class IMESettings extends PreferenceActivity
         updateTextSizeSummary();
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onDestroy() {
-        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(
-                this);
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onDestroy();
     }
 
@@ -188,9 +197,9 @@ public class IMESettings extends PreferenceActivity
 	            [mKeyboardTextSizePreference.findIndexOfValue(mKeyboardTextSizePreference.getValue())]);
 	}
 
-    private void showVoiceConfirmation() {
+	private void showVoiceConfirmation() {
         mOkClicked = false;
-        showDialog(VOICE_INPUT_CONFIRM_DIALOG);
+        showVoiceComfirmDialog();
     }
 
     private void updateVoiceModeSummary() {
@@ -199,58 +208,51 @@ public class IMESettings extends PreferenceActivity
                 [mVoicePreference.findIndexOfValue(mVoicePreference.getValue())]);
     }
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case VOICE_INPUT_CONFIRM_DIALOG:
-                DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
-                            mVoicePreference.setValue(mVoiceModeOff);
-                            mLogger.settingsWarningDialogCancel();
-                        } else if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-                            mOkClicked = true;
-                            mLogger.settingsWarningDialogOk();
-                        }
-                        updateVoicePreference();
-                    }
-                };
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle(R.string.voice_warning_title)
-                        .setPositiveButton(android.R.string.ok, listener)
-                        .setNegativeButton(android.R.string.cancel, listener);
-
-                // Get the current list of supported locales and check the current locale against
-                // that list, to decide whether to put a warning that voice input will not work in
-                // the current language as part of the pop-up confirmation dialog.
-                String supportedLocalesString = SettingsUtil.getSettingsString(
-                        getContentResolver(),
-                        SettingsUtil.LATIN_IME_VOICE_INPUT_SUPPORTED_LOCALES,
-                        LatinIME.DEFAULT_VOICE_INPUT_SUPPORTED_LOCALES);
-                ArrayList<String> voiceInputSupportedLocales =
-                        LatinIME.newArrayList(supportedLocalesString.split("\\s+"));
-                boolean localeSupported = voiceInputSupportedLocales.contains(
-                        Locale.getDefault().toString());
-
-                if (localeSupported) {
-                    String message = getString(R.string.voice_warning_may_not_understand) + "\n\n" +
-                            getString(R.string.voice_hint_dialog_message);
-                    builder.setMessage(message);
-                } else {
-                    String message = getString(R.string.voice_warning_locale_not_supported) +
-                            "\n\n" + getString(R.string.voice_warning_may_not_understand) + "\n\n" +
-                            getString(R.string.voice_hint_dialog_message);
-                    builder.setMessage(message);
+    protected void showVoiceComfirmDialog() {
+    	DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
+                    mVoicePreference.setValue(mVoiceModeOff);
+                    mLogger.settingsWarningDialogCancel();
+                } else if (whichButton == DialogInterface.BUTTON_POSITIVE) {
+                    mOkClicked = true;
+                    mLogger.settingsWarningDialogOk();
                 }
+                updateVoicePreference();
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.voice_warning_title)
+                .setPositiveButton(android.R.string.ok, listener)
+                .setNegativeButton(android.R.string.cancel, listener);
 
-                AlertDialog dialog = builder.create();
-                dialog.setOnDismissListener(this);
-                mLogger.settingsWarningDialogShown();
-                return dialog;
-            default:
-                Log.e(TAG, "unknown dialog " + id);
-                return null;
+        // Get the current list of supported locales and check the current locale against
+        // that list, to decide whether to put a warning that voice input will not work in
+        // the current language as part of the pop-up confirmation dialog.
+        String supportedLocalesString = SettingsUtil.getSettingsString(
+                getContentResolver(),
+                SettingsUtil.LATIN_IME_VOICE_INPUT_SUPPORTED_LOCALES,
+                LatinIME.DEFAULT_VOICE_INPUT_SUPPORTED_LOCALES);
+        ArrayList<String> voiceInputSupportedLocales =
+                LatinIME.newArrayList(supportedLocalesString.split("\\s+"));
+        boolean localeSupported = voiceInputSupportedLocales.contains(
+                Locale.getDefault().toString());
+
+        if (localeSupported) {
+            String message = getString(R.string.voice_warning_may_not_understand) + "\n\n" +
+                    getString(R.string.voice_hint_dialog_message);
+            builder.setMessage(message);
+        } else {
+            String message = getString(R.string.voice_warning_locale_not_supported) +
+                    "\n\n" + getString(R.string.voice_warning_may_not_understand) + "\n\n" +
+                    getString(R.string.voice_hint_dialog_message);
+            builder.setMessage(message);
         }
+
+        AlertDialog dialog = builder.create();
+        dialog.setOnDismissListener(this);
+        mLogger.settingsWarningDialogShown();
+        dialog.show();
     }
 
     public void onDismiss(DialogInterface dialog) {
@@ -274,21 +276,7 @@ public class IMESettings extends PreferenceActivity
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		if(preference.getKey().contains(ABOUT_KEY)) {
-			AlertDialog.Builder dlgBuilder = new AlertDialog.Builder(IMESettings.this);
-			dlgBuilder.setIcon(android.R.drawable.ic_dialog_info);
-			dlgBuilder.setTitle(getText(R.string.english_ime_name));
-			
-			String html = getText(R.string.about_text).toString();
-			dlgBuilder.setMessage(Html.fromHtml(html));
-			
-			dlgBuilder.setNegativeButton(getText(R.string.cancel), new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-			dlgBuilder.setPositiveButton(null, null);
-			dlgBuilder.show();
+			showAboutDialog();
 		}
 		return false;
 	}
@@ -328,5 +316,32 @@ public class IMESettings extends PreferenceActivity
 		}
 		return true;
 	}
+	
+	private void showAboutDialog() {
+		Context context = this;
+		DisplayMetrics dm = context.getResources().getDisplayMetrics();
+		int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, dm);
+		
+		final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+		dialogBuilder.setIcon(android.R.drawable.ic_dialog_info);
+		dialogBuilder.setTitle(R.string.english_ime_name);
+		
+		String html = context.getText(R.string.about_text).toString();
+		final TextView message = new TextView(context);
+		message.setPadding(padding, padding, padding, padding);
+		message.setTextColor(context.getResources().getColor(color.key_text_color_dark));
+		message.setMovementMethod(LinkMovementMethod.getInstance());
+		message.setText(Html.fromHtml(html));
+		dialogBuilder.setView(message);
+		
+		dialogBuilder.setNegativeButton(context.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		dialogBuilder.setPositiveButton(null, null);
+		dialogBuilder.show();
+    }
 	// } SMM
 }

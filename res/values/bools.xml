@@ -31,8 +31,9 @@
     <bool name="default_show_settings_key">true</bool>
     <bool name="default_recorrection_enabled">true</bool>
     <bool name="default_suggestions_in_landscape">true</bool>
-    <bool name="default_fullscreen_override">true</bool>
+    <bool name="default_fullscreen_override">false</bool>
     <bool name="default_force_keyboard_on">false</bool>
+    <bool name="default_auto_hide_minikeyboard">true</bool>
     <bool name="default_used_unicode">false</bool>
     <bool name="default_used_jbfix">false</bool>
     <bool name="config_long_press_comma_for_settings_enabled">true</bool>

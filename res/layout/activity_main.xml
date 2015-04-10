@@ -1,38 +1,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_gravity="fill"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_default_height"
         android:layout_gravity="top"
-        android:background="@drawable/ok_cancel"
-        android:paddingLeft="@dimen/actionbar_horizontal_margin"
-        android:paddingRight="@dimen/actionbar_horizontal_margin" >
+        android:paddingStart="@dimen/actionbar_horizontal_margin"
+    	android:paddingLeft="@dimen/actionbar_horizontal_margin"
+    	android:paddingEnd="@dimen/actionbar_horizontal_margin"
+    	android:paddingRight="@dimen/actionbar_horizontal_margin"
+        android:background="@drawable/actionbar_background" >
 
         <ImageView
-            android:id="@+id/ImageViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/imageViewTitle"
+            android:layout_width="@dimen/action_bar_default_height"
+            android:layout_height="match_parent"
             android:layout_gravity="left"
+            android:padding="@dimen/actionbar_icon_padding"
             android:contentDescription="@string/title_activity_input_test"
             android:src="@drawable/ic_application" />
 
         <TextView
-            android:id="@+id/mainTextViewTitle"
+            android:id="@+id/itTextViewTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_toEndOf="@+id/imageViewTitle"
+            android:layout_toRightOf="@+id/imageViewTitle"
+            android:paddingStart="@dimen/actionbar_horizontal_margin"
+            android:paddingLeft="@dimen/actionbar_horizontal_margin"
             android:text="@string/english_ime_name"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-    </FrameLayout>
+        
+    </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_gravity="bottom"
         android:layout_weight="1"
@@ -74,7 +81,7 @@
 
         <TextView
             android:id="@+id/txtHelp"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/english_ime_name" />

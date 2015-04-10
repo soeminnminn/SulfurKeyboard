@@ -19,6 +19,8 @@
 -->
 
 <resources>
+    <dimen name="action_bar_default_height">56dip</dimen>
+    
     <!-- key_height + key_bottom_gap = popup_key_height -->
     <dimen name="key_height">0.250in</dimen>
     <dimen name="key_bottom_gap">0.020in</dimen>
@@ -34,7 +36,11 @@
     <dimen name="mini_keyboard_vertical_correction">-0.270in</dimen>
     
     <!-- <dimen name="key_text_size">0.138in</dimen> -->
+    <fraction name="key_text_ratio">55%</fraction>
+    <fraction name="key_label_text_ratio">34%</fraction>
+    <fraction name="key_hint_text_ratio">25%</fraction>
+    <fraction name="key_trail_text_ratio">44%</fraction>
 
     <fraction name="keyboard_max_height">60%</fraction>
-    <fraction name="keyboard_min_height">40%</fraction>
+    <fraction name="keyboard_min_height">45%</fraction>
 </resources>

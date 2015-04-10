@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef LATINIME_DICTIONARY_H
-#define LATINIME_DICTIONARY_H
+#ifndef SKEYBOARD_DICTIONARY_H
+#define SKEYBOARD_DICTIONARY_H
 
-namespace latinime {
+namespace skeyboard {
 
 // 22-bit address = ~4MB dictionary size limit, which on average would be about 200k-300k words
 #define ADDRESS_MASK 0x3FFFFF
@@ -102,6 +102,6 @@ private:
 
 // ----------------------------------------------------------------------------
 
-}; // namespace latinime
+}; // namespace skeyboard
 
-#endif // LATINIME_DICTIONARY_H
+#endif // SKEYBOARD_DICTIONARY_H

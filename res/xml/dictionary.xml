@@ -19,5 +19,7 @@
 -->
 
 <dictionary>
-    <part name = "main" />
+    <part name="main" />
+    <part name="main_en" locale="en_us" />
+    <part name="main_my" locale="my_mm" />
 </dictionary>

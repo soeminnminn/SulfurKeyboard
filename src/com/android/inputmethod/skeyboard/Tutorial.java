@@ -72,7 +72,8 @@ public class Tutorial implements OnTouchListener {
         TextView textView;
         View inputView;
         
-        Bubble(Context context, View inputView,
+        @SuppressWarnings("deprecation")
+		Bubble(Context context, View inputView,
                 int backgroundResource, int bx, int by, int textResource1, int textResource2) {
             bubbleBackground = context.getResources().getDrawable(backgroundResource);
             x = bx;

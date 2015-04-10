@@ -32,7 +32,7 @@
 #define DICTIONARY_HEADER_SIZE 2
 #define NOT_VALID_WORD -99
 
-namespace latinime {
+namespace skeyboard {
 
 Dictionary::Dictionary(void *dict, int typedLetterMultiplier, int fullWordMultiplier)
 {

@@ -1,0 +1,16 @@
+<resources>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo">
+    </style>
+    
+    <style name="ActionbarButton" parent="@android:style/Widget.Holo.ActionButton">
+	    <item name="android:padding">6dp</item>
+	    <item name="android:textColor">#ffffff</item>
+	    <item name="android:gravity">center</item>
+	    <item name="android:textStyle">bold</item>
+	    <item name="android:minHeight">30dp</item>
+        <item name="android:minWidth">30dp</item>
+	</style>
+
+</resources>

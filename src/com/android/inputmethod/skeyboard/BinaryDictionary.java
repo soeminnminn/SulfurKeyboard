@@ -61,9 +61,9 @@ public class BinaryDictionary extends Dictionary {
 
     static {
         try {
-            System.loadLibrary("jni_latinime");
+            System.loadLibrary("jni_skeyboard");
         } catch (UnsatisfiedLinkError ule) {
-            Log.e("BinaryDictionary", "Could not load native library jni_latinime");
+            Log.e(TAG, "Could not load native library jni_skeyboard");
         }
     }
 
@@ -145,7 +145,7 @@ public class BinaryDictionary extends Dictionary {
                         TYPED_LETTER_MULTIPLIER, FULL_WORD_FREQ_MULTIPLIER);
                 mDictLength = total;
             }
-            if (mDictLength > 10000) Log.i("PCKeyboard", "Loaded dictionary, len=" + mDictLength);
+            if (mDictLength > 10000) Log.i(TAG, "Loaded dictionary, len=" + mDictLength);
         } catch (IOException e) {
             Log.w(TAG, "No available memory for binary dictionary");
         } catch (UnsatisfiedLinkError e) {
@@ -164,6 +164,7 @@ public class BinaryDictionary extends Dictionary {
     }
     
     private final void loadDictionary(Context context, int[] resId) {
+    	//Log.i(TAG, "loadDictionary, resId=" + (resId == null ? "null" : (resId.length > 0 ? String.format("0x%X", resId[0]) : "0")));
         InputStream[] is = null;
         try {
             // merging separated dictionary into one if dictionary is separated
@@ -206,7 +207,7 @@ public class BinaryDictionary extends Dictionary {
     @Override
     public void getBigrams(final WordComposer codes, final CharSequence previousWord,
             final WordCallback callback, int[] nextLettersFrequencies) {
-
+    	
         char[] chars = previousWord.toString().toCharArray();
         Arrays.fill(mOutputChars_bigrams, (char) 0);
         Arrays.fill(mFrequencies_bigrams, 0);
@@ -256,7 +257,7 @@ public class BinaryDictionary extends Dictionary {
                 MAX_WORD_LENGTH, MAX_WORDS, MAX_ALTERNATIVES, -1,
                 nextLettersFrequencies,
                 nextLettersFrequencies != null ? nextLettersFrequencies.length : 0);
-
+        
         // If there aren't sufficient suggestions, search for words by allowing wild cards at
         // the different character positions. This feature is not ready for prime-time as we need
         // to figure out the best ranking for such words compared to proximity corrections and

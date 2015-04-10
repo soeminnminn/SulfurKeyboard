@@ -21,13 +21,27 @@
 
         <item name="keyboardBackground">@drawable/keyboard_background</item>
         <item name="keyBackground">@drawable/btn_keyboard_key</item>
-        <item name="labelTextSize">@dimen/key_label_text_size</item>
-        <item name="keyTextSize">@dimen/key_text_size</item>
+        <item name="keyHorizontalMargin">0dip</item>
+        <item name="keyVerticalMargin">0dip</item>
         <item name="keyTextColor">@color/key_text_color_dark</item>
         <item name="keyModifierColor">@color/key_modifier_color_dark</item>
-        <item name="keyHintTextSize">@dimen/key_hint_text_size</item>
         <item name="keyHintColor">@color/key_hint_color_dark</item>
+        <!-- 
+        <item name="keyTextSize">@dimen/key_text_size</item>
+        <item name="keyLabelTextSize">@dimen/key_label_text_size</item>
+        <item name="keyHintTextSize">@dimen/key_hint_text_size</item>
         <item name="keyTrailTextSize">@dimen/key_trail_text_size</item>
+        
+        <item name="keyTextSize">@fraction/key_text_size</item>
+        <item name="keyLabelTextSize">@fraction/key_label_text_size</item>
+        <item name="keyHintTextSize">@fraction/key_hint_text_size</item>
+        <item name="keyTrailTextSize">@fraction/key_trail_text_size</item>
+        -->
+        <item name="keyLabelTextRatio">@fraction/key_label_text_ratio</item>
+        <item name="keyTextRatio">@fraction/key_text_ratio</item>
+        <item name="keyHintTextRatio">@fraction/key_hint_text_ratio</item>
+        <item name="keyTrailTextRatio">@fraction/key_trail_text_ratio</item>
+        
         <item name="keyTrailColor">@color/key_trail_color_dark</item>
         <item name="languagebarTextColor">@color/languagebar_text_dark</item>
         <item name="languagebarShadowColor">@color/languagebar_shadow_dark</item>
@@ -119,18 +133,36 @@
         <item name="keyboardBackground">@drawable/keyboard_dark_background</item>
         <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_holo</item>
+        <item name="keyHorizontalMargin">2dip</item>
         <item name="keyTextStyle">bold</item>
         <item name="spaceAutoCompletionIndicator">@drawable/sym_keyboard_space_led_holo</item>
-        <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_holo</item>
-        <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_holo</item>
-        <item name="popupLayout">@layout/keyboard_popup_holo</item>
-        
-        <item name="numHintTopPadding">12dip</item>
+        <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_ics</item>
+        <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_ics</item>
+        <item name="popupLayout">@layout/keyboard_popup_ics</item>
         
         <item name="candidateTextColorNormal">@color/holo_blue_light</item>
         <item name="candidateTextColorRecommended">@color/holo_blue_dark</item>
         <item name="candidateTextColorOther">@color/holo_blue_light</item>
-	</style>    
+	</style>  
+	
+	<!-- KitKat Themes -->
+	<style name="KeyboardBaseView.kitkat" parent="KeyboardBaseView">
+	    <item name="android:paddingBottom">@dimen/keyboard_bottom_padding</item>
+
+        <item name="keyboardBackground">@drawable/keyboard_dark_background</item>
+        <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
+        <item name="keyBackground">@drawable/btn_keyboard_key_klp</item>
+        <item name="keyHorizontalMargin">2dip</item>
+        <item name="keyTextStyle">bold</item>
+        <item name="spaceAutoCompletionIndicator">@drawable/sym_keyboard_space_led_holo</item>
+        <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_klp</item>
+        <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_klp</item>
+        <item name="popupLayout">@layout/keyboard_popup_klp</item>
+        
+        <item name="candidateTextColorNormal">@color/bright_foreground_holo_dark</item>
+        <item name="candidateTextColorRecommended">@color/bright_foreground_holo_dark</item>
+        <item name="candidateTextColorOther">@color/bright_foreground_holo_dark</item>
+	</style>
 	
 	<!-- Galaxy Themes -->
 	<style name="KeyboardBaseView.galaxy" parent="KeyboardBaseView">
@@ -165,7 +197,6 @@
         <item name="languagebarShadowColor">@color/shadow_light</item>
         <item name="keyTextStyle">normal</item>
         
-        <item name="numHintRightPadding">8dip</item>
         <item name="hintPopupBottomPadding">8dip</item>
         
         <item name="candidateTextColorNormal">#ffff58e2</item>

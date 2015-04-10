@@ -753,7 +753,7 @@ public class Keyboard {
         mDefaultVerticalGap = gap;
     }
 
-    protected int getKeyHeight() {
+    public int getKeyHeight() {
         return mDefaultHeight;
     }
 
@@ -761,7 +761,7 @@ public class Keyboard {
         mDefaultHeight = height;
     }
 
-    protected int getKeyWidth() {
+    public int getKeyWidth() {
         return mDefaultWidth;
     }
     
@@ -1014,6 +1014,11 @@ public class Keyboard {
         mDefaultHeight = Math.max(mDefaultHeight, minHeight / 4);
         mDefaultHeight = Math.min(mDefaultHeight, maxHeight / 4);
         // } SMM
+    }
+    
+    static int getDimensionOrFraction(Context context, TypedArray a, int index, int defValue) {
+    	DisplayMetrics dm = context.getResources().getDisplayMetrics();
+    	return getDimensionOrFraction(a, index, dm.heightPixels, defValue);
     }
     
     static int getDimensionOrFraction(TypedArray a, int index, int base, int defValue) {

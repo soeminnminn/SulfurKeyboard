@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef LATINIME_CHAR_UTILS_H
-#define LATINIME_CHAR_UTILS_H
+#ifndef SKEYBOARD_CHAR_UTILS_H
+#define SKEYBOARD_CHAR_UTILS_H
 
-namespace latinime {
+namespace skeyboard {
 
 unsigned short latin_tolower(unsigned short c);
 
-}; // namespace latinime
+}; // namespace skeyboard
 
-#endif // LATINIME_CHAR_UTILS_H
+#endif // SKEYBOARD_CHAR_UTILS_H

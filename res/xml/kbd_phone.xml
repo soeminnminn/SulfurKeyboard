@@ -86,7 +86,6 @@
         <Key
             android:codes="@integer/key_delete"
             android:keyIconId="@integer/icon_keyboard_delete"
-            android:iconPreview="@drawable/sym_keyboard_feedback_delete"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:isRepeatable="true"
@@ -107,8 +106,7 @@
             android:trailLabel="@string/trail_for_num0" />
         <Key
             android:codes="@integer/key_space"
-            android:keyIconId="@integer/icon_keyboard_space"
-            android:iconPreview="@drawable/sym_keyboard_feedback_space" />
+            android:keyIconId="@integer/icon_keyboard_space" />
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"

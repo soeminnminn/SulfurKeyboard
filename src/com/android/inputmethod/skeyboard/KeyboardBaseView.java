@@ -76,6 +76,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     private static final boolean DEBUG = false;
 
     public static final int NOT_A_TOUCH_COORDINATE = -1;
+    private static final float UNDEFINED_RATIO = -1.0f;
 
     public interface OnKeyboardActionListener {
 
@@ -171,12 +172,16 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     private static final int NUMBER_HINT_VERTICAL_ADJUSTMENT_PIXEL = -1;
 
     // XML attribute
-    protected int mLabelTextSize;
+    protected float mKeyLabelTextRatio;
+    protected int mKeyLabelTextSize;
+    protected float mKeyTextRatio;
     protected int mKeyTextSize;
     protected int mKeyTextColor;
     protected int mKeyModifierColor;
+    protected float mKeyHintTextRatio;
     protected int mKeyHintTextSize;
     protected int mKeyHintColor;
+    protected float mTrailTextRatio;
     protected int mTrailTextSize;
     protected int mTrailTextColor;
     protected int mLanguagebarTextColor;
@@ -205,6 +210,11 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     // TODO this attribute should be gotten from Keyboard.
     protected int mKeyboardVerticalGap;
     private float mKeyTextSizeScale = 1.0f;
+    // SMM {
+    private int mKeyHorizontalMargin;
+    private int mKeyVerticalMargin;
+    private boolean mAutoHideMiniKeyboard;
+    // } SMM
 
     // Key preview popup
     private TextView mPreviewText;
@@ -418,12 +428,13 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         this(context, attrs, R.attr.keyboardViewStyle);
     }
 
-    public KeyboardBaseView(Context context, AttributeSet attrs, int defStyle) {
+    @SuppressWarnings("deprecation")
+	public KeyboardBaseView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         final Resources res = getResources();
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.KeyboardBaseView, defStyle, R.style.KeyboardBaseView);
-        LayoutInflater inflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflate = LayoutInflater.from(context);
         
         int previewLayout = 0;
         //int keyHintPopup = 0;
@@ -450,89 +461,52 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         mKeyHintColor = defKeyHintColor;
         mTrailTextColor = defTrailTextColor;
 
-        int n = a.getIndexCount();
+		mKeyBackground = a.getDrawable(R.styleable.KeyboardBaseView_keyBackground);
+		mKeyHysteresisDistance = a.getDimensionPixelOffset(R.styleable.KeyboardBaseView_keyHysteresisDistance, 0);
+		mVerticalCorrection = a.getDimensionPixelOffset(R.styleable.KeyboardBaseView_verticalCorrection, 0);
+		previewLayout = a.getResourceId(R.styleable.KeyboardBaseView_keyPreviewLayout, 0);
+		mPreviewOffset = a.getDimensionPixelOffset(R.styleable.KeyboardBaseView_keyPreviewOffset, 0);
+		mPreviewHeight = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyPreviewHeight, 80);
+		mPreviewBackground = a.getDrawable(R.styleable.KeyboardBaseView_keyPreviewBackground);
+		mPreviewSlideBackground = a.getDrawable(R.styleable.KeyboardBaseView_keyPreviewSlideBackground);
+		if (a.hasValue(R.styleable.KeyboardBaseView_keyLabelTextSize)) {
+			mKeyLabelTextRatio = UNDEFINED_RATIO;
+			mKeyLabelTextSize = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyLabelTextSize, defLabelTextSize);
+		} else {
+			mKeyLabelTextRatio = getRatio(a, R.styleable.KeyboardBaseView_keyLabelTextRatio);
+		}
+		if (a.hasValue(R.styleable.KeyboardBaseView_keyTextSize)) {
+			mKeyTextRatio = UNDEFINED_RATIO;
+			mKeyTextSize = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyTextSize, defKeyTextSize);	
+		} else {
+			mKeyTextRatio = getRatio(a, R.styleable.KeyboardBaseView_keyTextRatio);
+		}
+		if (a.hasValue(R.styleable.KeyboardBaseView_keyHintTextSize)) {
+			mKeyHintTextRatio = UNDEFINED_RATIO;
+			mKeyHintTextSize = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyHintTextSize, defKeyHintTextSize);	
+		} else {
+			mKeyHintTextRatio = getRatio(a, R.styleable.KeyboardBaseView_keyHintTextRatio);
+		}
+		if (a.hasValue(R.styleable.KeyboardBaseView_keyTrailTextSize)) {
+			mTrailTextRatio = UNDEFINED_RATIO;
+			mTrailTextSize = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyTrailTextSize, defTrailTextSize);	
+		} else {
+			mTrailTextRatio = getRatio(a, R.styleable.KeyboardBaseView_keyTrailTextRatio);
+		}
+		mKeyTextColor = a.getColor(R.styleable.KeyboardBaseView_keyTextColor, defKeyTextColor);
+		mKeyModifierColor = a.getColor(R.styleable.KeyboardBaseView_keyModifierColor, defKeyModifierColor);
+		mKeyHintColor = a.getColor(R.styleable.KeyboardBaseView_keyHintColor, defKeyHintColor);
+		mTrailTextColor = a.getColor(R.styleable.KeyboardBaseView_keyTrailColor, defTrailTextColor);
+		mLanguagebarTextColor = a.getColor(R.styleable.KeyboardBaseView_languagebarTextColor, defLanguagebarTextColor);
+		mLanguagebarShadowColor = a.getColor(R.styleable.KeyboardBaseView_languagebarShadowColor, defLanguagebarShadowColor);
+		mPopupLayout = a.getResourceId(R.styleable.KeyboardBaseView_popupLayout, 0);
+		mShadowColor = a.getColor(R.styleable.KeyboardBaseView_shadowColor, 0);
+		mShadowRadius = a.getFloat(R.styleable.KeyboardBaseView_shadowRadius, 0f);
+		// TODO: Use Theme (android.R.styleable.Theme_backgroundDimAmount)
+		mBackgroundDimAmount = a.getFloat(R.styleable.KeyboardBaseView_backgroundDimAmount, 0.5f);
+		mKeyTextStyle = a.getInt(R.styleable.KeyboardBaseView_keyTextStyle, 0);
+		// keyHintPopup = a.getResourceId(R.styleable.KeyboardBaseView_keyHintPopup, R.drawable.hint_popup);
 
-        for (int i = 0; i < n; i++) {
-            int attr = a.getIndex(i);
-
-            switch (attr) {
-            case R.styleable.KeyboardBaseView_keyBackground:
-                mKeyBackground = a.getDrawable(attr);
-                break;
-            case R.styleable.KeyboardBaseView_keyHysteresisDistance:
-                mKeyHysteresisDistance = a.getDimensionPixelOffset(attr, 0);
-                break;
-            case R.styleable.KeyboardBaseView_verticalCorrection:
-                mVerticalCorrection = a.getDimensionPixelOffset(attr, 0);
-                break;
-            case R.styleable.KeyboardBaseView_keyPreviewLayout:
-                previewLayout = a.getResourceId(attr, 0);
-                break;
-            case R.styleable.KeyboardBaseView_keyPreviewOffset:
-                mPreviewOffset = a.getDimensionPixelOffset(attr, 0);
-                break;
-            case R.styleable.KeyboardBaseView_keyPreviewHeight:
-                mPreviewHeight = a.getDimensionPixelSize(attr, 80);
-                break;
-            case R.styleable.KeyboardBaseView_keyPreviewBackground:
-            	mPreviewBackground = a.getDrawable(attr);
-            	break;
-            case R.styleable.KeyboardBaseView_keyPreviewSlideBackground:
-            	mPreviewSlideBackground = a.getDrawable(attr);
-            	break;
-            case R.styleable.KeyboardBaseView_labelTextSize:
-                mLabelTextSize = a.getDimensionPixelSize(attr, defLabelTextSize);
-                break;
-            case R.styleable.KeyboardBaseView_keyTextSize:
-                mKeyTextSize = a.getDimensionPixelSize(attr, defKeyTextSize);
-                break;
-            case R.styleable.KeyboardBaseView_keyHintTextSize:
-                mKeyHintTextSize = a.getDimensionPixelSize(attr, defKeyHintTextSize);
-                break;
-            case R.styleable.KeyboardBaseView_keyTrailTextSize:
-                mTrailTextSize = a.getDimensionPixelSize(attr, defTrailTextSize);
-                break;
-            case R.styleable.KeyboardBaseView_keyTextColor:
-                mKeyTextColor = a.getColor(attr, defKeyTextColor);
-                break;
-            case R.styleable.KeyboardBaseView_keyModifierColor:
-            	mKeyModifierColor = a.getColor(attr, defKeyModifierColor);
-            	break;
-            case R.styleable.KeyboardBaseView_keyHintColor:
-            	mKeyHintColor = a.getColor(attr, defKeyHintColor);
-            	break;
-            case R.styleable.KeyboardBaseView_keyTrailColor:
-            	mTrailTextColor = a.getColor(attr, defTrailTextColor);
-            	break;
-            case R.styleable.KeyboardBaseView_languagebarTextColor:
-            	mLanguagebarTextColor = a.getColor(attr, defLanguagebarTextColor);
-                break;
-            case R.styleable.KeyboardBaseView_languagebarShadowColor:
-            	mLanguagebarShadowColor = a.getColor(attr, defLanguagebarShadowColor);
-                break;
-            case R.styleable.KeyboardBaseView_popupLayout:
-                mPopupLayout = a.getResourceId(attr, 0);
-                break;
-            case R.styleable.KeyboardBaseView_shadowColor:
-                mShadowColor = a.getColor(attr, 0);
-                break;
-            case R.styleable.KeyboardBaseView_shadowRadius:
-                mShadowRadius = a.getFloat(attr, 0f);
-                break;
-            // TODO: Use Theme (android.R.styleable.Theme_backgroundDimAmount)
-            case R.styleable.KeyboardBaseView_backgroundDimAmount:
-                mBackgroundDimAmount = a.getFloat(attr, 0.5f);
-                break;
-            case R.styleable.KeyboardBaseView_keyTextStyle:
-            	mKeyTextStyle = a.getInt(attr, 0);
-                break;
-            //case R.styleable.KeyboardBaseView_keyHintPopup:
-            //	keyHintPopup = a.getResourceId(attr, R.drawable.hint_popup);
-            //	break;
-            default:
-            	break;
-            }
-        }
 
         if(mPreviewBackground != null) {
         	mPreviewBackground.setBounds(0, 0, mPreviewBackground.getIntrinsicWidth(), mPreviewBackground.getIntrinsicHeight());
@@ -623,46 +597,111 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         mKeyRepeatInterval = res.getInteger(R.integer.config_key_repeat_interval);
     }
     
-    public void setTheme(KeyboardThemes themes) {
-    	if(themes == null) return;
-    	final Context context = getContext();
-    	final KeyboardThemes.Theme theme = themes.loadTheme(context);
+    public void setOnKeyboardActionListener(OnKeyboardActionListener listener) {
+        mKeyboardActionListener = listener;
+        for (PointerTracker tracker : mPointerTrackers) {
+            tracker.setOnKeyboardActionListener(listener);
+        }
+    }
+
+    /**
+     * Returns the {@link OnKeyboardActionListener} object.
+     * @return the listener attached to this keyboard
+     */
+    protected OnKeyboardActionListener getOnKeyboardActionListener() {
+        return mKeyboardActionListener;
+    }
+    
+    // SMM {
+    protected static float getRatio(TypedArray a, int index) {
+        return a.getFraction(index, 1000, 1000, 1) / 1000.0f;
+    }
+
+    @SuppressWarnings("deprecation")
+	public void setStyle(Context context, int styleResId) {
+    	final Resources res = context.getResources();
     	
-    	final Resources res = getResources();
-    	final LayoutInflater inflate = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    	final int previewLayout;
+    	if (styleResId == 0) {
+    		styleResId = R.style.KeyboardBaseView;
+    	}
+    	final TypedArray a = context.obtainStyledAttributes(styleResId, R.styleable.KeyboardBaseView);
     	
-    	setBackgroundDrawable(theme.background);
-    	setPadding(0, 0, 0, theme.paddingBottom);
+    	final int defNumHintTopPadding = res.getDimensionPixelSize(R.dimen.num_popup_icon_top_padding);
+		final int defNumHintRightPadding = res.getDimensionPixelSize(R.dimen.num_popup_icon_right_padding);
+		final int defHintPopupBottomPadding = res.getDimensionPixelSize(R.dimen.hint_popup_icon_bottom_padding);
+		final int defHintPopupRightPadding = res.getDimensionPixelSize(R.dimen.hint_popup_icon_right_padding);
+		
+		final int defKeyTextColor = res.getColor(R.color.key_text_color_dark);
+        final int defKeyModifierColor = res.getColor(R.color.key_modifier_color_dark);
+        final int defKeyHintColor = res.getColor(R.color.key_hint_color_dark);
+        final int defTrailTextColor = res.getColor(R.color.key_trail_color_dark);
+        final int defLanguagebarTextColor = res.getColor(R.color.languagebar_text_dark);
+        final int defLanguagebarShadowColor = res.getColor(R.color.languagebar_shadow_dark);
+        
+        final int defLabelTextSize = res.getDimensionPixelSize(R.dimen.key_label_text_size);
+        final int defKeyTextSize = res.getDimensionPixelSize(R.dimen.key_text_size);
+        final int defKeyHintTextSize = res.getDimensionPixelSize(R.dimen.key_hint_text_size);
+        final int defTrailTextSize = res.getDimensionPixelSize(R.dimen.key_trail_text_size);
+        
+        Drawable background = null;
+        int paddingBottom = 0;
+        int keyPreviewLayout = 0;
+        
+    	background = a.getDrawable(R.styleable.KeyboardBaseView_keyboardBackground);
+    	mKeyBackground = a.getDrawable(R.styleable.KeyboardBaseView_keyBackground);
+    	paddingBottom = a.getDimensionPixelOffset(R.styleable.KeyboardBaseView_keyboardPaddingBottom, 0);
+    	mKeyHorizontalMargin = a.getDimensionPixelOffset(R.styleable.KeyboardBaseView_keyHorizontalMargin, 0);
+    	mKeyVerticalMargin = a.getDimensionPixelOffset(R.styleable.KeyboardBaseView_keyVerticalMargin, 0);
+    	mKeyTextStyle = a.getInt(R.styleable.KeyboardBaseView_keyTextStyle, 0);
+    	mKeyHysteresisDistance = a.getDimensionPixelOffset(R.styleable.KeyboardBaseView_keyHysteresisDistance, 0);
+    	mVerticalCorrection = a.getDimensionPixelOffset(R.styleable.KeyboardBaseView_verticalCorrection, 0);
+    	keyPreviewLayout = a.getResourceId(R.styleable.KeyboardBaseView_keyPreviewLayout, 0);
+    	mPreviewOffset = a.getDimensionPixelOffset(R.styleable.KeyboardBaseView_keyPreviewOffset, 0);
+    	mPreviewHeight = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyPreviewHeight, 80);
+    	mPreviewBackground = a.getDrawable(R.styleable.KeyboardBaseView_keyPreviewBackground);
+    	mPreviewSlideBackground = a.getDrawable(R.styleable.KeyboardBaseView_keyPreviewSlideBackground);
+    	if (a.hasValue(R.styleable.KeyboardBaseView_keyLabelTextSize)) {
+			mKeyLabelTextRatio = UNDEFINED_RATIO;
+			mKeyLabelTextSize = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyLabelTextSize, defLabelTextSize);
+		} else {
+			mKeyLabelTextRatio = getRatio(a, R.styleable.KeyboardBaseView_keyLabelTextRatio);
+		}
+		if (a.hasValue(R.styleable.KeyboardBaseView_keyTextSize)) {
+			mKeyTextRatio = UNDEFINED_RATIO;
+			mKeyTextSize = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyTextSize, defKeyTextSize);	
+		} else {
+			mKeyTextRatio = getRatio(a, R.styleable.KeyboardBaseView_keyTextRatio);
+		}
+		if (a.hasValue(R.styleable.KeyboardBaseView_keyHintTextSize)) {
+			mKeyHintTextRatio = UNDEFINED_RATIO;
+			mKeyHintTextSize = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyHintTextSize, defKeyHintTextSize);	
+		} else {
+			mKeyHintTextRatio = getRatio(a, R.styleable.KeyboardBaseView_keyHintTextRatio);
+		}
+		if (a.hasValue(R.styleable.KeyboardBaseView_keyTrailTextSize)) {
+			mTrailTextRatio = UNDEFINED_RATIO;
+			mTrailTextSize = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_keyTrailTextSize, defTrailTextSize);	
+		} else {
+			mTrailTextRatio = getRatio(a, R.styleable.KeyboardBaseView_keyTrailTextRatio);
+		}
+    	mKeyTextColor = a.getColor(R.styleable.KeyboardBaseView_keyTextColor, defKeyTextColor);
+    	mKeyModifierColor = a.getColor(R.styleable.KeyboardBaseView_keyModifierColor, defKeyModifierColor);
+    	mKeyHintColor = a.getColor(R.styleable.KeyboardBaseView_keyHintColor, defKeyHintColor);
+    	mTrailTextColor = a.getColor(R.styleable.KeyboardBaseView_keyTrailColor, defTrailTextColor);
+    	mLanguagebarTextColor = a.getColor(R.styleable.KeyboardBaseView_languagebarTextColor, defLanguagebarTextColor);
+    	mLanguagebarShadowColor = a.getColor(R.styleable.KeyboardBaseView_languagebarShadowColor, defLanguagebarShadowColor);
+    	mPopupLayout = a.getResourceId(R.styleable.KeyboardBaseView_popupLayout, 0);
+    	mShadowColor = a.getColor(R.styleable.KeyboardBaseView_shadowColor, 0);
+    	mShadowRadius = a.getFloat(R.styleable.KeyboardBaseView_shadowRadius, 0f);
+    	mBackgroundDimAmount = a.getFloat(R.styleable.KeyboardBaseView_backgroundDimAmount, 0.5f);
+            	
+        // Hint Padding
+    	mNumHintTopPadding = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_numHintTopPadding, defNumHintTopPadding);
+    	mNumHintRightPadding = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_numHintRightPadding, defNumHintRightPadding);
+    	mHintPopupBottomPadding = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_hintPopupBottomPadding, defHintPopupBottomPadding);
+    	mHintPopupRightPadding = a.getDimensionPixelSize(R.styleable.KeyboardBaseView_hintPopupRightPadding, defHintPopupRightPadding);
     	
-    	mKeyBackground = theme.keyBackground;
-    	mKeyHysteresisDistance = theme.keyHysteresisDistance;
-    	mVerticalCorrection = theme.verticalCorrection;
-    	previewLayout = theme.keyPreviewLayout;
-    	mPreviewOffset = theme.keyPreviewOffset;
-    	mPreviewHeight = theme.keyPreviewHeight;
-    	mPreviewBackground = theme.keyPreviewBackground;
-    	mPreviewSlideBackground = theme.keyPreviewSlideBackground;
-    	mLabelTextSize = theme.labelTextSize;
-    	mKeyTextSize = theme.keyTextSize;
-    	mKeyHintTextSize = theme.keyHintTextSize;
-    	mTrailTextSize = theme.keyTrailTextSize;
-    	mKeyTextColor = theme.keyTextColor;
-    	mKeyModifierColor = theme.keyModifierColor;
-    	mKeyHintColor = theme.keyHintColor;
-    	mTrailTextColor = theme.keyTrailColor;
-    	mLanguagebarTextColor = theme.languagebarTextColor;
-    	mLanguagebarShadowColor = theme.languagebarShadowColor;
-    	mPopupLayout = theme.popupLayout;
-    	mShadowColor = theme.shadowColor;
-    	mShadowRadius = theme.shadowRadius;
-    	mBackgroundDimAmount = theme.backgroundDimAmount;
-    	mKeyTextStyle = theme.keyTextStyle;
-    	
-    	mNumHintTopPadding = theme.numHintTopPadding;
-        mNumHintRightPadding = theme.numHintRightPadding;
-        mHintPopupRightPadding = theme.hintPopupRightPadding;
-        mHintPopupBottomPadding = theme.hintPopupBottomPadding;
+    	a.recycle();
     	
     	if(mKeyBackground != null) {
     		mKeyBackground.setBounds(0, 0, mKeyBackground.getIntrinsicWidth(), mKeyBackground.getIntrinsicHeight());
@@ -675,10 +714,15 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
          if(mPreviewSlideBackground != null) {
          	mPreviewSlideBackground.setBounds(0, 0, mPreviewSlideBackground.getIntrinsicWidth(), mPreviewSlideBackground.getIntrinsicHeight());
          }
+         
+        if (background != null) {
+        	setBackgroundDrawable(background);
+        }
+     	setPadding(0, 0, 0, paddingBottom);
     	
     	mPreviewPopup = new PopupWindow(context);
-        if (previewLayout != 0) {
-            mPreviewText = (TextView)inflate.inflate(previewLayout, null);
+        if (keyPreviewLayout != 0) {
+            mPreviewText = (TextView)LayoutInflater.from(context).inflate(keyPreviewLayout, null);
             mPreviewText.setBackgroundDrawable(mPreviewBackground);
             mPreviewTextSizeLarge = (int) res.getDimension(R.dimen.key_preview_text_size_large);
             mPreviewPopup.setContentView(mPreviewText);
@@ -697,46 +741,33 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         	mKeyBackground.getPadding(mPadding);
         }
         
+        if (mKeyboard != null) {
+        	updateKeyHeight(mKeyboard.getKeyHeight());
+        }
+        
         invalidateAllKeys();
     }
-
-    public void setOnKeyboardActionListener(OnKeyboardActionListener listener) {
-        mKeyboardActionListener = listener;
-        for (PointerTracker tracker : mPointerTrackers) {
-            tracker.setOnKeyboardActionListener(listener);
-        }
-    }
-
-    /**
-     * Returns the {@link OnKeyboardActionListener} object.
-     * @return the listener attached to this keyboard
-     */
-    protected OnKeyboardActionListener getOnKeyboardActionListener() {
-        return mKeyboardActionListener;
-    }
-
-    // SMM {
+    
     protected Typeface getKeyTextTypeface(CharSequence label) {
     	return getKeyTextTypeface(label, false);
     }
     
     protected Typeface getKeyTextTypeface(CharSequence label, boolean isIconic) {
     	if(isIconic) {
-    		return KeyboardThemes.getTypeFace(getContext());
+    		return KeyboardTheme.getTypeFace(getContext());
     	}
     	
     	if(label == null) return Typeface.DEFAULT;
     	if(ZawGyiCorrection.isMyChar(label)) {
-    		return KeyboardThemes.getTypeFace(getContext());
+    		return KeyboardTheme.getTypeFace(getContext());
     	}
-    	switch(mKeyTextStyle)
-    	{
-    	case 0:
-    		return Typeface.DEFAULT;
-    	case 1:
-    		return Typeface.DEFAULT_BOLD;
-    	default:
-    		return Typeface.defaultFromStyle(mKeyTextStyle);
+    	switch(mKeyTextStyle) {
+	    	case 0:
+	    		return Typeface.DEFAULT;
+	    	case 1:
+	    		return Typeface.DEFAULT_BOLD;
+	    	default:
+	    		return Typeface.defaultFromStyle(mKeyTextStyle);
     	}
     }
     // } SMM
@@ -766,6 +797,11 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         for (PointerTracker tracker : mPointerTrackers) {
             tracker.setKeyboard(mKeys, mKeyHysteresisDistance);
         }
+        // SMM {
+        if (keyboard != null) {
+        	updateKeyHeight(keyboard.getKeyHeight());
+        }
+        // } SMM
         requestLayout();
         // Hint to reallocate the buffer if the size changed
         mKeyboardChanged = true;
@@ -847,8 +883,34 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     	return mLanguagebarShadowColor;
     }
     
+    public void setAutoHideMiniKeyboard(boolean value) {
+    	if (mAutoHideMiniKeyboard != value) {
+    		mAutoHideMiniKeyboard = value;
+    		dismissPopupKeyboard();
+    	}
+    }
+    
+    public void setVerticalCorrection(float value) {
+    	mVerticalCorrection = value;
+    }
+    
     public void setTextSizeScale(final float textSizeScale) {
     	mKeyTextSizeScale = textSizeScale;
+    }
+    
+    public void updateKeyHeight(int keyHeight) {
+    	if (mKeyLabelTextRatio >= 0.0f) {
+    		mKeyLabelTextSize = (int)(keyHeight * mKeyLabelTextRatio);
+    	}
+    	if (mKeyTextRatio >= 0.0f) {
+    		mKeyTextSize = (int)(keyHeight * mKeyTextRatio);
+    	}
+    	if (mKeyHintTextRatio >= 0.0f) {
+    		mKeyHintTextSize = (int)(keyHeight * mKeyHintTextRatio);
+    	}
+    	if (mTrailTextRatio >= 0.0f) {
+    		mTrailTextSize = (int)(keyHeight * mTrailTextRatio);
+    	}
     }
     // } SMM 
     
@@ -960,6 +1022,8 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         final int kbdPaddingTop = getPaddingTop();
         final Key[] keys = mKeys;
         final Key invalidKey = mInvalidatedKey;
+        final int keyMarginX = mKeyHorizontalMargin;
+        final int keyMarginY = mKeyVerticalMargin;
 
         // paint.setColor(mKeyTextColor); // SMM
         boolean drawSingleKey = false;
@@ -989,7 +1053,8 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
             
             final Rect bounds = keyBackground.getBounds();
             if (key.width != bounds.right || key.height != bounds.bottom) {
-                keyBackground.setBounds(0, 0, key.width, key.height);
+                //keyBackground.setBounds(0, 0, key.width, key.height);
+            	keyBackground.setBounds(keyMarginX, keyMarginX, key.width - keyMarginX, key.height - keyMarginY); // SMM
             }
             canvas.translate(bgX, bgY);
             keyBackground.draw(canvas);
@@ -1011,7 +1076,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
                 	final int iconicTextSize = (int)(Math.min(key.height, key.width) * key.iconSizeAdjust);
                 	labelSize = Math.max(iconicTextSize, mKeyTextSize);
                 } else if (label.length() > 1 && key.codes.length < 2 && !key.fullTextSize && !DeadAccentSequence.isDeadAccent(label)) {
-                    labelSize = (int)(mLabelTextSize * mKeyTextSizeScale);
+                    labelSize = (int)(mKeyLabelTextSize * mKeyTextSizeScale);
                 } else {
 	                if(textWeight < 2) {
 	                	labelSize = mKeyTextSize - (mKeyTextSize / 4); 
@@ -1103,7 +1168,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
                 final float x = key.width - mHintPopupRightPadding;
                 final float hintBaseline = key.height - mHintPopupBottomPadding;
                 
-                canvas.drawText(KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_HINT_POPUP), x, hintBaseline, paint);
+                canvas.drawText(KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_HINT_POPUP), x, hintBaseline, paint);
                 paint.setShadowLayer(0, 0, 0, 0);
             }
             
@@ -1204,7 +1269,8 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         }
     }
 
-    private void showKey(final int keyIndex, PointerTracker tracker) {
+    @SuppressWarnings("deprecation")
+	private void showKey(final int keyIndex, PointerTracker tracker) {
         Key key = tracker.getKey(keyIndex);
         if (key == null)
             return;
@@ -1394,6 +1460,11 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         } else {
             keyboard = new Keyboard(getContext(), popupKeyboardId);
         }
+        // SMM {
+        if (!mAutoHideMiniKeyboard) {
+        	miniKeyboard.setVerticalCorrection(0);
+        }
+        // } SMM
         miniKeyboard.setKeyboard(keyboard);
         miniKeyboard.setPopupParent(this);
 
@@ -1466,7 +1537,8 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         popupY -= container.getMeasuredHeight();
         popupY += container.getPaddingBottom();
         final int x = popupX;
-        final int y = mShowPreview && isOneRowKeys(miniKeys) ? mPopupPreviewDisplayedY : popupY;
+        final int y = mShowPreview && mPopupPreviewDisplayedY != 0 && isOneRowKeys(miniKeys) ? 
+        		mPopupPreviewDisplayedY : popupY;
 
         int adjustedX = x;
         if (x < 0) {
@@ -1485,14 +1557,15 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         mMiniKeyboardPopup.setHeight(container.getMeasuredHeight());
         mMiniKeyboardPopup.showAtLocation(this, Gravity.NO_GRAVITY, x, y);
 
-        // Inject down event on the key to mini keyboard.
-        long eventTime = SystemClock.uptimeMillis();
-        mMiniKeyboardPopupTime = eventTime;
-        MotionEvent downEvent = generateMiniKeyboardMotionEvent(MotionEvent.ACTION_DOWN, popupKey.x
-                + popupKey.width / 2, popupKey.y + popupKey.height / 2, eventTime);
-        mMiniKeyboard.onTouchEvent(downEvent);
-        downEvent.recycle();
-
+        if (mAutoHideMiniKeyboard) { // SMM
+	        // Inject down event on the key to mini keyboard.
+	        long eventTime = SystemClock.uptimeMillis();
+	        mMiniKeyboardPopupTime = eventTime;
+	        MotionEvent downEvent = generateMiniKeyboardMotionEvent(MotionEvent.ACTION_DOWN, popupKey.x
+	                + popupKey.width / 2, popupKey.y + popupKey.height / 2, eventTime);
+	        mMiniKeyboard.onTouchEvent(downEvent);
+	        downEvent.recycle();
+        }
         invalidateAllKeys();
         return true;
     }
@@ -1601,6 +1674,13 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         // Needs to be called after the gesture detector gets a turn, as it may have
         // displayed the mini keyboard
         if (mMiniKeyboard != null) {
+        	// SMM {
+        	if (!mAutoHideMiniKeyboard) {
+        		if (action == MotionEvent.ACTION_DOWN) {
+        			dismissPopupKeyboard();
+        		}
+        		return true;
+        	} // } SMM
             final int miniKeyboardPointerIndex = me.findPointerIndex(mMiniKeyboardTrackerId);
             if (miniKeyboardPointerIndex >= 0 && miniKeyboardPointerIndex < pointerCount) {
                 final int miniKeyboardX = (int)me.getX(miniKeyboardPointerIndex);

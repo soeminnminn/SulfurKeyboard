@@ -19,24 +19,24 @@
     <!-- Functional keys. -->
 
     <item android:state_single="true" android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_dark_pressed" />
+          android:drawable="@drawable/btn_keyboard_key_pressed_gb_dark" />
     <item android:state_single="true"
-          android:drawable="@drawable/btn_keyboard_key_dark_normal" />
+          android:drawable="@drawable/btn_keyboard_key_normal_gb_dark" />
 
     <!-- Toggle keys. Use checkable/checked state. -->
 
     <item android:state_checkable="true" android:state_checked="true" android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_dark_pressed_on" />
+          android:drawable="@drawable/btn_keyboard_key_pressed_on_gb_dark" />
     <item android:state_checkable="true" android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_dark_pressed_off" />
+          android:drawable="@drawable/btn_keyboard_key_pressed_off_gb_dark" />
     <item android:state_checkable="true" android:state_checked="true"
-          android:drawable="@drawable/btn_keyboard_key_dark_normal_on" />
+          android:drawable="@drawable/btn_keyboard_key_normal_on_gb_dark" />
     <item android:state_checkable="true"
-          android:drawable="@drawable/btn_keyboard_key_dark_normal_off" />
+          android:drawable="@drawable/btn_keyboard_key_normal_off_gb_dark" />
 
     <!-- Normal keys -->
 
     <item android:state_pressed="true"
-          android:drawable="@drawable/btn_keyboard_key_light_pressed" />
-    <item android:drawable="@drawable/btn_keyboard_key_light_normal" />
+          android:drawable="@drawable/btn_keyboard_key_pressed_gb_light" />
+    <item android:drawable="@drawable/btn_keyboard_key_normal_gb_light" />
 </selector>

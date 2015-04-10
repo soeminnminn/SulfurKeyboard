@@ -92,7 +92,8 @@ public class InputLanguageSelection extends PreferenceActivity {
         }
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         addPreferencesFromResource(R.xml.language_prefs);
@@ -157,7 +158,8 @@ public class InputLanguageSelection extends PreferenceActivity {
         super.onResume();
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onPause() {
         super.onPause();
         // Save the selected languages

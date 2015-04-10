@@ -1,0 +1,19 @@
+<resources>
+
+    <!--
+         Customize dimensions originally defined in res/values/dimens.xml (such as
+         screen margins) for sw540dp devices here.
+    -->
+    
+    <dimen name="num_popup_icon_right_padding">12dip</dimen>
+    <dimen name="num_popup_icon_top_padding">18dip</dimen>
+
+    <fraction name="keyboard_max_height">45%</fraction>
+    <fraction name="keyboard_min_height">30%</fraction>
+    
+    <fraction name="key_text_ratio">40%</fraction>
+    <fraction name="key_label_text_ratio">22%</fraction>
+    <fraction name="key_hint_text_ratio">18%</fraction>
+    <fraction name="key_trail_text_ratio">26%</fraction>
+    
+</resources>

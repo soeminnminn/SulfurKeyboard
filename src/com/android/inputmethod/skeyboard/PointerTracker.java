@@ -409,13 +409,25 @@ public class PointerTracker {
         final int dy = y - edgeY;
         return dx * dx + dy * dy;
     }
-
+    
+    // SMM {
+    private boolean shouldShowKeyPreview(int keyIndex) {
+    	if (isModifier()) return false;
+    	Key key = getKey(keyIndex);
+        if (key == null)
+            return false;
+        int primaryCode = key.codes[0];
+        return (primaryCode > 0 && primaryCode != KeyCodes.KEYCODE_ENTER);
+    }
+    // } SMM
+    
     private void showKeyPreviewAndUpdateKey(int keyIndex) {
         updateKey(keyIndex);
         // The modifier key, such as shift key, should not be shown as preview when multi-touch is
         // supported. On thge other hand, if multi-touch is not supported, the modifier key should
         // be shown as preview.
-        if (mHasDistinctMultitouch && isModifier()) {
+        // if (mHasDistinctMultitouch && isModifier()) { // SMM
+        if (mHasDistinctMultitouch && !shouldShowKeyPreview(keyIndex)) {
             mProxy.showPreview(NOT_A_KEY, this);
         } else {
             mProxy.showPreview(keyIndex, this);

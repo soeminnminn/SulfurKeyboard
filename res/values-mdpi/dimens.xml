@@ -19,12 +19,6 @@
 -->
 
 <resources>
-    <dimen name="num_popup_icon_right_padding">7dip</dimen>
-    <dimen name="num_popup_icon_top_padding">15dip</dimen>
-    
-    <dimen name="hint_popup_icon_right_padding">8dip</dimen>
-    <dimen name="hint_popup_icon_bottom_padding">4dip</dimen>
-    
     <dimen name="key_icon_text_size">20sp</dimen>
     <dimen name="key_icon_width">36dip</dimen>
     <dimen name="key_icon_height">34dip</dimen>

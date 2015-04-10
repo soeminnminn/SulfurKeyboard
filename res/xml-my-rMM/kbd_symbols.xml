@@ -120,7 +120,6 @@
         <Key
             android:codes="@integer/key_delete"
             android:keyIconId="@integer/icon_keyboard_delete"
-            android:iconPreview="@drawable/sym_keyboard_feedback_delete"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:isRepeatable="true"
@@ -143,7 +142,6 @@
         <Key
             android:codes="@integer/key_space"
             android:keyIconId="@integer/icon_keyboard_space"
-            android:iconPreview="@drawable/sym_keyboard_feedback_space"
             android:keyWidth="40%p"
             android:isModifier="true" />
         <Key
@@ -157,7 +155,6 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
-            android:iconPreview="@drawable/sym_keyboard_feedback_return"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
@@ -175,7 +172,6 @@
         <Key
             android:codes="@integer/key_settings"
             android:keyIconId="@integer/icon_keyboard_settings"
-            android:iconPreview="@drawable/sym_keyboard_feedback_settings"
             android:isModifier="true" />
         <Key
             android:keyLabel="&#x1088;"
@@ -184,7 +180,6 @@
         <Key
             android:codes="@integer/key_space"
             android:keyIconId="@integer/icon_keyboard_space"
-            android:iconPreview="@drawable/sym_keyboard_feedback_space"
             android:keyWidth="30%p"
             android:isModifier="true" />
         <Key
@@ -198,7 +193,6 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
-            android:iconPreview="@drawable/sym_keyboard_feedback_return"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />

@@ -34,7 +34,8 @@ public class IMEDebugSettings extends PreferenceActivity
 
     private CheckBoxPreference mDebugMode;
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         addPreferencesFromResource(R.xml.prefs_for_debug);

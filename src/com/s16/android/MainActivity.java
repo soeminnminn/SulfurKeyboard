@@ -56,20 +56,19 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		//getMenuInflater().inflate(R.menu.main, menu);
 		return false;
 	}
 	
-	public boolean onOptionsItemSelected(MenuItem paramMenuItem) {
-	    switch (paramMenuItem.getItemId()) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
 	      case 0:
 	    	  startActivityForResult(new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS), 0);
 	        break;
 	      default:
 	        break;
 	    }
-	    return true;
-	  }
+	    return super.onOptionsItemSelected(item);
+	}
 
 }
