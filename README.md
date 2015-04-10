@@ -8,6 +8,14 @@ Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 
 ## Change Log
 
+#### Version 1.3.0.0
+- Apply Lollipop style
+- Add Kitkat theme
+- Add xhdpi resources
+- Fix suggestion (Dictionary) not working
+- Keyboard size and font size fix
+- Bug Fix
+
 #### Version 1.2.1.0
 - Bug Fix
 - Zawgyi Auto correction (Smart Zawgyi) charater fix
