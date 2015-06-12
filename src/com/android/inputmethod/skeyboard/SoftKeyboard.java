@@ -626,7 +626,7 @@ public class SoftKeyboard extends Keyboard {
 
     public boolean isLanguageSwitchEnabled() {
         //return mLocale != null;
-    	return (mLocale != null) && (!isPhoneOrNumber());
+    	return mLocale != null && mLanguageSwitcher.getEnabledLanguagesCount() > 1 && !isPhoneOrNumber();
     }
     
     public boolean isPhoneOrNumber() {
@@ -1150,8 +1150,7 @@ public class SoftKeyboard extends Keyboard {
             mHeight = height;
             mTextPaint = new TextPaint();
             mTextPaint.setTextSize(getTextSizeFromTheme(android.R.style.TextAppearance_Medium, 18));
-            //mTextPaint.setColor(R.color.latinkeyboard_transparent); // SMM
-            mTextPaint.setColor(mContext.getResources().getColor(R.color.transparent));
+           mTextPaint.setColor(mContext.getResources().getColor(R.color.transparent));
             mTextPaint.setTextAlign(Align.CENTER);
             mTextPaint.setAlpha(OPACITY_FULLY_OPAQUE);
             mTextPaint.setAntiAlias(true);

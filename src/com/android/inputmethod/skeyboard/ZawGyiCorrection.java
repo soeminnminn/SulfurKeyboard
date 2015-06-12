@@ -571,16 +571,6 @@ public class ZawGyiCorrection {
 			patterns = res.getStringArray(R.array.zawgyi_unicode);
 		}
 		
-		/*String output = zString.toString();
-		String[] strPatterns = patterns;
-		int patCount = strPatterns.length / 2;
-		for (int i = 0; i < patCount; i++) {
-			int idx = i * 2;
-			output = Pattern.compile(strPatterns[idx]).matcher(output).replaceAll(strPatterns[(idx + 1)]);
-			// output = output.replace("null", "");
-		}
-		return output;*/
-		
 		CharSequence data = zString;
 		final String[] strPatterns = patterns;
 		final int patCount = strPatterns.length / 2;

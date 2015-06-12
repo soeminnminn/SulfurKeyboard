@@ -100,16 +100,43 @@ public class SoftKeyboardView extends KeyboardBaseView {
     }
     
     @Override
+    protected void showKey(final int keyIndex, PointerTracker tracker) {
+        Key key = tracker.getKey(keyIndex);
+        if (key != null) {
+        	final SoftKeyboard keyboard = getSoftKeyboard();
+        	if(keyboard != null && tracker.isSpaceKey(keyIndex)
+        			&& !keyboard.isLanguageSwitchSlideEnabled()) {
+        		return;
+        	}
+        }
+        super.showKey(keyIndex, tracker);
+    }
+    
+    // SMM {
+    protected boolean openMethodPickerIfRequired() {
+    	final SoftKeyboard keyboard = getSoftKeyboard();
+    	if(keyboard != null) {
+    		if (!keyboard.isLanguageSwitchSlideEnabled() 
+    				&& IMEUtil.hasMultipleEnabledIMEs(getContext())) {
+    			return invokeOnKey(KeyCodes.KEYCODE_INPUT_METHOD);
+    		}
+    	}
+    	return false;
+    }
+    // } SMM
+    
+    @Override
     protected boolean onLongPress(Key key) {
         int primaryCode = key.codes[0]; // SMM
-        if (primaryCode == KeyCodes.KEYCODE_OPTIONS) {
+        if (primaryCode == KeyCodes.KEYCODE_SPACE) { // SMM
+        	return openMethodPickerIfRequired();
+        } else if (primaryCode == KeyCodes.KEYCODE_OPTIONS) {
             return invokeOnKey(KeyCodes.KEYCODE_OPTIONS_LONGPRESS);
         } else if (primaryCode == '0' && isPhoneKeyboard()) {
             // Long pressing on 0 in phone number keypad gives you a '+'.
             return invokeOnKey('+');
-        } else {
-            return super.onLongPress(key);
         }
+        return super.onLongPress(key);
     }
 
     private boolean invokeOnKey(int primaryCode) {
@@ -229,16 +256,18 @@ public class SoftKeyboardView extends KeyboardBaseView {
 
         final SoftKeyboard keyboard = getSoftKeyboard();
     	if (keyboard != null) {
-        	if (!keyboard.isLanguageSwitchSlideEnabled()) {
-    			return super.onTouchEvent(me);
-    		}
-        	
 	        // Reset any bounding box controls in the keyboard
 	        if (me.getAction() == MotionEvent.ACTION_DOWN) {
 	        	keyboard.keyReleased();
 	        }
 	
 	        if (me.getAction() == MotionEvent.ACTION_UP) {
+	        	// SMM {
+	        	if (!keyboard.isLanguageSwitchSlideEnabled()) {
+	    			return super.onTouchEvent(me);
+	    		}
+	        	// } SMM
+	        	
 	            int languageDirection = keyboard.getLanguageChangeDirection();
 	            if (languageDirection != 0) {
 	                getOnKeyboardActionListener().onKey(
@@ -253,7 +282,7 @@ public class SoftKeyboardView extends KeyboardBaseView {
 
         return super.onTouchEvent(me);
     }
-
+    
     /****************************  INSTRUMENTATION  *******************************/
 
     static final boolean DEBUG_AUTO_PLAY = false;

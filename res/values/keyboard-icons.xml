@@ -28,6 +28,7 @@
     <integer name="icon_keyboard_search">9</integer>
     <integer name="icon_keyboard_delete">10</integer>
     <integer name="icon_keyboard_done">11</integer>
-    <integer name="icon_keyboard_hint_popup">12</integer>
+    <integer name="icon_keyboard_emoji">12</integer>
+    <integer name="icon_keyboard_hint_popup">13</integer>
 
 </resources>

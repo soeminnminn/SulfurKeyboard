@@ -1270,13 +1270,10 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     }
 
     @SuppressWarnings("deprecation")
-	private void showKey(final int keyIndex, PointerTracker tracker) {
+	protected void showKey(final int keyIndex, PointerTracker tracker) {
         Key key = tracker.getKey(keyIndex);
         if (key == null)
             return;
-        
-        if (key.iconKey && key.iconPreview == null) // SMM 
-        	return;
         
         // Should not draw hint icon in key preview
         if ((key.icon != null || key.iconPreview != null) && !shouldDrawLabelAndIcon(key)) {
@@ -1339,13 +1336,17 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
 
         // Set the preview background state
         // SMM {
-        if(key.codes[0] == KeyCodes.KEYCODE_SPACE) {
+        if(tracker.isSpaceKey(keyIndex)) {
         	mPreviewText.setBackgroundDrawable(mPreviewSlideBackground);
         } else {
         	mPreviewText.setBackgroundDrawable(mPreviewBackground);
         }
         // } SMM
         mPreviewText.getBackground().setState(key.popupResId != 0 ? LONG_PRESSABLE_STATE_SET : EMPTY_STATE_SET);
+        
+        // Record popup preview position to display mini-keyboard later at the same positon
+        mPopupPreviewDisplayedY = popupPreviewY;
+        mPreviewText.setVisibility(VISIBLE);
         
         if (mPreviewPopup.isShowing()) {
             mPreviewPopup.update(popupPreviewX, popupPreviewY, popupWidth, popupHeight);
@@ -1354,9 +1355,6 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
             mPreviewPopup.setHeight(popupHeight);
             mPreviewPopup.showAtLocation(mMiniKeyboardParent, Gravity.NO_GRAVITY, popupPreviewX, popupPreviewY);
         }
-        // Record popup preview position to display mini-keyboard later at the same positon
-        mPopupPreviewDisplayedY = popupPreviewY;
-        mPreviewText.setVisibility(VISIBLE);
     }
 
     /**
@@ -1389,7 +1387,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         invalidate(key.x + getPaddingLeft(), key.y + getPaddingTop(),
                 key.x + key.width + getPaddingLeft(), key.y + key.height + getPaddingTop());
     }
-
+    
     private boolean openPopupIfRequired(int keyIndex, PointerTracker tracker) {
         // Check if we have a popup layout specified first.
         if (mPopupLayout == 0) {
@@ -1536,9 +1534,10 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         popupY += getPaddingTop();
         popupY -= container.getMeasuredHeight();
         popupY += container.getPaddingBottom();
+        
         final int x = popupX;
-        final int y = mShowPreview && mPopupPreviewDisplayedY != 0 && isOneRowKeys(miniKeys) ? 
-        		mPopupPreviewDisplayedY : popupY;
+        //final int y = mShowPreview && isOneRowKeys(miniKeys) ? mPopupPreviewDisplayedY : popupY;
+        final int y = mShowPreview && isOneRowKeys(miniKeys) ? Math.max(mPopupPreviewDisplayedY, popupY) : popupY; // SMM
 
         int adjustedX = x;
         if (x < 0) {
@@ -1557,10 +1556,11 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         mMiniKeyboardPopup.setHeight(container.getMeasuredHeight());
         mMiniKeyboardPopup.showAtLocation(this, Gravity.NO_GRAVITY, x, y);
 
+        // Inject down event on the key to mini keyboard.
+        long eventTime = SystemClock.uptimeMillis();
+        mMiniKeyboardPopupTime = eventTime;
+        
         if (mAutoHideMiniKeyboard) { // SMM
-	        // Inject down event on the key to mini keyboard.
-	        long eventTime = SystemClock.uptimeMillis();
-	        mMiniKeyboardPopupTime = eventTime;
 	        MotionEvent downEvent = generateMiniKeyboardMotionEvent(MotionEvent.ACTION_DOWN, popupKey.x
 	                + popupKey.width / 2, popupKey.y + popupKey.height / 2, eventTime);
 	        mMiniKeyboard.onTouchEvent(downEvent);
