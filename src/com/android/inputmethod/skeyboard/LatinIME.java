@@ -610,8 +610,10 @@ public class LatinIME extends InputMethodService
         // the switch statement) whether we want to enable the voice button.
         mPasswordText = false;
         final int variation = attribute.inputType & EditorInfo.TYPE_MASK_VARIATION;
-        if (variation == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD ||
-        		variation == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+        if (variation == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD 
+        		|| variation == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+        		|| variation == EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD
+        		|| variation == EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD) {
             mPasswordText = true;
         }
 
@@ -649,8 +651,9 @@ public class LatinIME extends InputMethodService
                 //startPrediction();
                 mPredictionOn = true;
                 // Make sure that passwords are not displayed in candidate view
-                if (variation == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD ||
-                		variation == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD ) {
+                if (variation == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD 
+                		|| variation == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                		|| variation == EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD ) {
                     mPredictionOn = false;
                 }
                 if (variation == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
