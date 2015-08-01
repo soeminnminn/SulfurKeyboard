@@ -11,6 +11,11 @@ Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 
 ## Change Log
 
+#### Version 1.4.0.0
+- Fix Slide Key Bug
+- Add Emoji
+- Fix Key Size for some devices
+
 #### Version 1.3.0.0
 - Apply Lollipop style
 - Add Kitkat theme
