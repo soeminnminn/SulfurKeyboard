@@ -26,7 +26,7 @@
     
     <!-- 0.0063in <=> 1dip -->
     <!-- key_height + key_bottom_gap = popup_key_height -->
-    <dimen name="key_height">0.290in</dimen>
+    <dimen name="key_height">0.335in</dimen>
     <dimen name="key_bottom_gap">0.035in</dimen>
     <dimen name="popup_key_height">0.325in</dimen>
     <dimen name="keyboard_bottom_padding">0.06in</dimen>
@@ -77,4 +77,8 @@
     
     <fraction name="keyboard_max_height">50%</fraction>
     <fraction name="keyboard_min_height">30%</fraction>
+    
+    <dimen name="emoji_icon_size">72dip</dimen>
+    <dimen name="emoji_icon_text_size">30sp</dimen>
+    
 </resources>

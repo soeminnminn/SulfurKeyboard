@@ -99,6 +99,7 @@ public class SoftKeyboardView extends KeyboardBaseView {
     	return isPhoneKeyboard;
     }
     
+    // SMM {
     @Override
     protected void showKey(final int keyIndex, PointerTracker tracker) {
         Key key = tracker.getKey(keyIndex);
@@ -112,7 +113,6 @@ public class SoftKeyboardView extends KeyboardBaseView {
         super.showKey(keyIndex, tracker);
     }
     
-    // SMM {
     protected boolean openMethodPickerIfRequired() {
     	final SoftKeyboard keyboard = getSoftKeyboard();
     	if(keyboard != null) {
@@ -262,21 +262,17 @@ public class SoftKeyboardView extends KeyboardBaseView {
 	        }
 	
 	        if (me.getAction() == MotionEvent.ACTION_UP) {
-	        	// SMM {
-	        	if (!keyboard.isLanguageSwitchSlideEnabled()) {
-	    			return super.onTouchEvent(me);
-	    		}
-	        	// } SMM
-	        	
-	            int languageDirection = keyboard.getLanguageChangeDirection();
-	            if (languageDirection != 0) {
-	                getOnKeyboardActionListener().onKey(
-	                        languageDirection == 1 ? KeyCodes.KEYCODE_NEXT_LANGUAGE : KeyCodes.KEYCODE_PREV_LANGUAGE,
-	                        null, mLastX, mLastY);
-	                me.setAction(MotionEvent.ACTION_CANCEL);
-	                keyboard.keyReleased();
-	                return super.onTouchEvent(me);
-	            }
+	        	if (keyboard.isLanguageSwitchSlideEnabled()) { // SMM
+		            int languageDirection = keyboard.getLanguageChangeDirection();
+		            if (languageDirection != 0) {
+		                getOnKeyboardActionListener().onKey(
+		                        languageDirection == 1 ? KeyCodes.KEYCODE_NEXT_LANGUAGE : KeyCodes.KEYCODE_PREV_LANGUAGE,
+		                        null, mLastX, mLastY);
+		                me.setAction(MotionEvent.ACTION_CANCEL);
+		                keyboard.keyReleased();
+		                return super.onTouchEvent(me);
+		            }
+	        	}
 	        }
     	}
 

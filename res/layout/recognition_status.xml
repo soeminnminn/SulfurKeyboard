@@ -31,7 +31,6 @@
 >
 
     <LinearLayout 
-       xmlns:android="http://schemas.android.com/apk/res/android"
        android:id="@+id/main_image"
        android:orientation="vertical"
        android:background="@drawable/voice_ime_background"
@@ -58,6 +57,7 @@
         android:layout_marginTop="20dip"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/mic_slash"
+        android:contentDescription="@null"
     />
 
     <ProgressBar android:id="@+id/progress"
@@ -77,7 +77,7 @@
         android:orientation="vertical"
         android:background="@drawable/ok_cancel"
         android:scaleType="fitXY"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="42dip"
         android:paddingLeft="1dip"
         android:paddingRight="1dip"

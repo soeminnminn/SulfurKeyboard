@@ -1,7 +1,11 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo">
+    </style>
+    
+    <style name="HoloButton" parent="@android:style/Widget.Holo.Button">
+        <item name="android:singleLine">true</item>
     </style>
     
     <style name="ActionbarButton" parent="@android:style/Widget.Holo.ActionButton">

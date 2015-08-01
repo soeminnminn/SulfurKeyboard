@@ -81,10 +81,10 @@ public class Keyboard {
     protected CharSequence mLabel;
 
     /** Horizontal gap default for all rows */
-    protected int mDefaultHorizontalGap;
+    protected float mDefaultHorizontalGap;
     
     /** Default key width */
-    protected int mDefaultWidth;
+    protected float mDefaultWidth;
 
     /** Default key height */
     protected int mDefaultHeight;
@@ -169,11 +169,11 @@ public class Keyboard {
      */
     public static class Row {
         /** Default width of a key in this row. */
-        public int defaultWidth;
+        public float defaultWidth;
         /** Default height of a key in this row. */
         public int defaultHeight;
         /** Default horizontal gap between keys in this row. */
-        public int defaultHorizontalGap;
+        public float defaultHorizontalGap;
         /** Vertical gap following this row. */
         public int verticalGap;
 
@@ -201,13 +201,13 @@ public class Keyboard {
             defaultWidth = getDimensionOrFraction(a, 
                     R.styleable.Keyboard_keyWidth, 
                     parent.mDisplayWidth, parent.mDefaultWidth);
-            defaultHeight = getDimensionOrFraction(a, 
+            defaultHeight = getDimensionOrFractionInt(a, 
                     R.styleable.Keyboard_keyHeight, 
                     parent.mDisplayHeight, parent.mDefaultHeight);
             defaultHorizontalGap = getDimensionOrFraction(a,
                     R.styleable.Keyboard_horizontalGap, 
                     parent.mDisplayWidth, parent.mDefaultHorizontalGap);
-            verticalGap = getDimensionOrFraction(a, 
+            verticalGap = getDimensionOrFractionInt(a, 
                     R.styleable.Keyboard_verticalGap, 
                     parent.mDisplayHeight, parent.mDefaultVerticalGap);
             a.recycle();
@@ -279,6 +279,7 @@ public class Keyboard {
         public CharSequence text;
         /** Popup characters */
         public CharSequence popupCharacters;
+        // SMM {
         /** Disable text size. */
         public boolean fullTextSize;
         /** Used Iconic font. */
@@ -288,6 +289,11 @@ public class Keyboard {
         public boolean iconKey;
         
         public float iconSizeAdjust;
+        
+        private float realWidth;
+        private float realGap;
+        private float realX;
+        // } SMM
 
         /** 
          * Flags that specify the anchoring to edges of the keyboard for detecting touch events
@@ -340,8 +346,9 @@ public class Keyboard {
         public Key(Row parent) {
             keyboard = parent.parent;
             height = parent.defaultHeight;
-            width = parent.defaultWidth;
-            gap = parent.defaultHorizontalGap;
+            width = Math.round(parent.defaultWidth);
+            realWidth = parent.defaultWidth; // SMM
+            gap = Math.round(parent.defaultHorizontalGap);
             edgeFlags = parent.rowEdgeFlags;
             
             iconSizeAdjust = 0.6f;
@@ -364,8 +371,21 @@ public class Keyboard {
             
             TypedArray a = res.obtainAttributes(Xml.asAttributeSet(parser), 
                     R.styleable.Keyboard);
+            
+            realWidth = getDimensionOrFraction(a,
+                    R.styleable.Keyboard_keyWidth,
+                    keyboard.mDisplayWidth, parent.defaultWidth);
+            float realHeight = getDimensionOrFraction(a,
+                    R.styleable.Keyboard_keyHeight,
+                    keyboard.mDisplayHeight, parent.defaultHeight);
+            height = Math.round(realHeight);
+            realGap = getDimensionOrFraction(a,
+                    R.styleable.Keyboard_horizontalGap,
+                    keyboard.mDisplayWidth, parent.defaultHorizontalGap);
+            width = Math.round(realWidth);
+            gap = Math.round(realGap);
 
-            width = getDimensionOrFraction(a, 
+            /*width = getDimensionOrFraction(a, 
                     R.styleable.Keyboard_keyWidth,
                     keyboard.mDisplayWidth, parent.defaultWidth);
             height = getDimensionOrFraction(a, 
@@ -373,7 +393,7 @@ public class Keyboard {
                     keyboard.mDisplayHeight, parent.defaultHeight);
             gap = getDimensionOrFraction(a, 
                     R.styleable.Keyboard_horizontalGap,
-                    keyboard.mDisplayWidth, parent.defaultHorizontalGap);
+                    keyboard.mDisplayWidth, parent.defaultHorizontalGap);*/
             a.recycle();
             
             a = res.obtainAttributes(Xml.asAttributeSet(parser), R.styleable.Keyboard_Key);
@@ -612,7 +632,7 @@ public class Keyboard {
         mDefaultHorizontalGap = 0;
         mDefaultWidth = mDisplayWidth / 10;
         mDefaultVerticalGap = 0;
-        mDefaultHeight = mDefaultWidth;
+        mDefaultHeight = Math.round(mDefaultWidth);
         mKeys = new ArrayList<Key>();
         mModifierKeys = new ArrayList<Key>();
         mKeyboardMode = modeId;
@@ -637,7 +657,7 @@ public class Keyboard {
         mDefaultHorizontalGap = 0;
         mDefaultWidth = mDisplayWidth / 8;
         mDefaultVerticalGap = 0;
-        mDefaultHeight = mDefaultWidth;
+        mDefaultHeight = Math.round(mDefaultWidth);
         mKeys = new ArrayList<Key>();
         mModifierKeys = new ArrayList<Key>();
         mKeyboardMode = modeId;
@@ -683,6 +703,7 @@ public class Keyboard {
             }
             final Key key = new Key(row);
             key.x = x;
+            key.realX = x;
             key.y = y;
             key.label = String.valueOf(c);
             key.codes = new int[] { c };
@@ -698,7 +719,7 @@ public class Keyboard {
         rows.add(row);
     }
 
-    final void resize(int newWidth, int newHeight) {
+    /*final void resize(int newWidth, int newHeight) {
         int numRows = rows.size();
         for (int rowIndex = 0; rowIndex < numRows; ++rowIndex) {
             Row row = rows.get(rowIndex);
@@ -727,7 +748,7 @@ public class Keyboard {
         // TODO: This does not adjust the vertical placement according to the new size.
         // The main problem in the previous code was horizontal placement/size, but we should
         // also recalculate the vertical sizes/positions when we get this resize call.
-    }
+    }*/
     
     public List<Key> getKeys() {
         return mKeys;
@@ -738,7 +759,7 @@ public class Keyboard {
     }
     
     protected int getHorizontalGap() {
-        return mDefaultHorizontalGap;
+        return Math.round(mDefaultHorizontalGap);
     }
     
     protected void setHorizontalGap(int gap) {
@@ -762,7 +783,7 @@ public class Keyboard {
     }
 
     public int getKeyWidth() {
-        return mDefaultWidth;
+        return Math.round(mDefaultWidth);
     }
     
     protected void setKeyWidth(int width) {
@@ -770,6 +791,16 @@ public class Keyboard {
     }
     
     // SMM {
+    public void setKeyboardWidth(int newWidth) {
+        if (newWidth <= 0) return;  // view not initialized?
+        if (mTotalWidth <= newWidth) return;  // it already fits
+        float scale = (float) newWidth / mDisplayWidth;
+        for (Key key : mKeys) {
+            key.x = Math.round(key.realX * scale);
+        }
+        mTotalWidth = newWidth;
+    }
+    
     public int getKeyTextWeight() {
     	if(mKeyTextWeight < 1) {
     		mKeyTextWeight = 2; // default 2
@@ -784,6 +815,7 @@ public class Keyboard {
     public boolean getDisablePreview() {
         return mDefaultDisablePreview;
     }
+    // } SMM
     
     protected void setShiftCaps(boolean value) {
         mDefaultShiftCapsMode = value;
@@ -989,13 +1021,13 @@ public class Keyboard {
         mDefaultWidth = getDimensionOrFraction(a,
                 R.styleable.Keyboard_keyWidth,
                 mDisplayWidth, mDisplayWidth / 10);
-        mDefaultHeight = getDimensionOrFraction(a,
+        mDefaultHeight = getDimensionOrFractionInt(a,
                 R.styleable.Keyboard_keyHeight,
                 mDisplayHeight, 50);
         mDefaultHorizontalGap = getDimensionOrFraction(a,
                 R.styleable.Keyboard_horizontalGap,
                 mDisplayWidth, 0);
-        mDefaultVerticalGap = getDimensionOrFraction(a,
+        mDefaultVerticalGap = getDimensionOrFractionInt(a,
                 R.styleable.Keyboard_verticalGap,
                 mDisplayHeight, 0);
         
@@ -1016,19 +1048,18 @@ public class Keyboard {
         // } SMM
     }
     
-    static int getDimensionOrFraction(Context context, TypedArray a, int index, int defValue) {
-    	DisplayMetrics dm = context.getResources().getDisplayMetrics();
-    	return getDimensionOrFraction(a, index, dm.heightPixels, defValue);
+    static int getDimensionOrFractionInt(TypedArray a, int index, int base, int defValue) {
+    	return Math.round(getDimensionOrFraction(a, index, base, defValue));
     }
     
-    static int getDimensionOrFraction(TypedArray a, int index, int base, int defValue) {
+    static float getDimensionOrFraction(TypedArray a, int index, int base, float defValue) {
         TypedValue value = a.peekValue(index);
         if (value == null) return defValue;
         if (value.type == TypedValue.TYPE_DIMENSION) {
-            return a.getDimensionPixelOffset(index, defValue);
+            return a.getDimensionPixelOffset(index, Math.round(defValue));
         } else if (value.type == TypedValue.TYPE_FRACTION) {
             // Round it to avoid values like 47.9999 from getting truncated
-            return Math.round(a.getFraction(index, base, base, defValue));
+            return a.getFraction(index, base, base, defValue);
         }
         return defValue;
     }

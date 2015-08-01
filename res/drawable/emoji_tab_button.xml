@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+		<shape><solid android:color="@color/holo_blue_dark" /></shape>
+	</item> <!-- selected -->
+    <item android:state_selected="true">
+		<layer-list> 
+          	<!-- This is the line -->
+          	<item><shape><solid android:color="@color/bright_foreground_holo_dark" /></shape></item>
+			<!-- This is the main color -->
+			<item android:bottom="1.5dp"><shape android:shape="rectangle"><solid android:color="@color/background_holo_dark" /></shape></item>
+		</layer-list>
+	</item> <!-- selected -->
+	<item > 
+		<shape android:shape="rectangle"><solid android:color="@color/background_holo_dark" /></shape>
+	</item>
+</selector>

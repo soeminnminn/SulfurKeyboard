@@ -32,6 +32,8 @@
     <integer name="key_language">-177</integer>
     <integer name="key_voice">-94</integer>
     <integer name="key_charset">-95</integer>
+    <integer name="key_emoji">-96</integer>
+    <integer name="key_dpad">-97</integer>
     <integer name="key_f1">-188</integer>
     <integer name="key_f2">-189</integer>
     <integer name="key_f3">-190</integer>

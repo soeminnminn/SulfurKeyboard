@@ -20,7 +20,7 @@
 
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/keyboard_popup_panel_background"
@@ -28,8 +28,7 @@
     <com.android.inputmethod.skeyboard.SoftKeyboardView
             xmlns:latin="http://schemas.android.com/apk/res/com.android.inputmethod.skeyboard"
             android:id="@+id/KeyboardBaseView"
-            android:layout_alignParentBottom="true"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/keyboard_background"
 

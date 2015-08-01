@@ -25,6 +25,7 @@
     <dimen name="hint_popup_icon_right_padding">8dip</dimen>
     <dimen name="hint_popup_icon_bottom_padding">5dip</dimen>
     
+    <dimen name="key_height">0.335in</dimen>
 	<dimen name="key_text_size">0.138in</dimen>
     <dimen name="key_label_text_size">0.083in</dimen>
 	<dimen name="key_trail_text_size">0.11in</dimen>
@@ -34,4 +35,6 @@
     <dimen name="key_icon_text_size">30sp</dimen>
     <dimen name="key_icon_width">54dip</dimen>
     <dimen name="key_icon_height">51dip</dimen>
+    
+    <dimen name="emoji_icon_size">54dip</dimen>
 </resources>

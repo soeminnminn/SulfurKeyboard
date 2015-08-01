@@ -19,6 +19,15 @@
         android:key="english_ime_settings">
 
     <CheckBoxPreference
+            android:key="application_icon"
+            android:title="@string/title_app_icon"
+            android:defaultValue="@bool/default_application_icon"
+            android:summaryOn="@string/summary_app_icon_true"
+            android:summaryOff="@string/summary_app_icon_false"
+            android:persistent="true"
+            />
+    
+    <CheckBoxPreference
             android:key="vibrate_on"
             android:title="@string/vibrate_on_keypress"
             android:persistent="true"

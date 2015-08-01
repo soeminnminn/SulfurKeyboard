@@ -2,13 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.inputmethod.skeyboard"
     android:versionCode="6"
-    android:versionName="1.3.1.20150715">
+    android:versionName="1.4.0.20150728">
     <!-- android:installLocation="internalOnly" > -->
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="14" >
-    </uses-sdk>
+        android:targetSdkVersion="14" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_USER_DICTIONARY" />
@@ -17,7 +16,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
+        android:name="com.s16.android.KeyboardApp"
         android:backupAgent="com.android.inputmethod.skeyboard.IMEBackupAgent"
+        android:allowBackup="true"
         android:icon="@drawable/ic_application"
         android:killAfterRestore="false"
         android:label="@string/english_ime_name"

@@ -1,5 +1,6 @@
 package com.s16.android;
 
+import com.android.inputmethod.skeyboard.IMESettings;
 import com.android.inputmethod.skeyboard.R;
 
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
@@ -38,11 +40,25 @@ public class MainActivity extends Activity {
         TextView description = (TextView) findViewById(R.id.txtHelp);
         description.setMovementMethod(LinkMovementMethod.getInstance());
         description.setText(content, BufferType.SPANNABLE);
+        
+        final Button btnEnableIme = (Button)findViewById(R.id.btnEnableKeyboard);
+        btnEnableIme.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                startActivityForResult(new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS), 0);
+            }
+        });
+        
+        final Button btnSetIme = (Button)findViewById(R.id.btnSetInputMethod);
+        btnSetIme.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	((InputMethodManager)getSystemService(INPUT_METHOD_SERVICE)).showInputMethodPicker();
+            }
+        });
 		
 		final Button btnShowSettings = (Button)findViewById(R.id.btnShowSettings);
 		btnShowSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivityForResult(new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS), 0);
+            	startActivity(new Intent(MainActivity.this.getBaseContext(), IMESettings.class));
             }
         });
 		

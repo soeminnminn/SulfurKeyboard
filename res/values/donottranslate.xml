@@ -33,6 +33,8 @@
     <!-- Always hide the settings key -->
     <string name="settings_key_mode_always_hide" translatable="false">2</string>
     
+    <string name="emoji_symbols">:-)</string>
+    
     <string name="data_app" translatable="false">/data/app</string>
     <string name="system_app" translatable="false">/system/app</string>
 </resources>

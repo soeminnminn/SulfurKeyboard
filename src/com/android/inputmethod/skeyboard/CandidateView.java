@@ -307,7 +307,7 @@ public class CandidateView extends View {
 
             if (canvas != null) {
             	if(ZawGyiCorrection.isMyChar(suggestion)) { // SMM
-            		paint.setTypeface(KeyboardTheme.getTypeFace(getContext()));
+            		paint.setTypeface(KeyboardTheme.getZawgyiTypeFace(getContext()));
             	}
             	
             	final String fixSuggestion = ZawGyiCorrection.ZawGyiDrawFix(suggestion).toString();
@@ -484,7 +484,7 @@ public class CandidateView extends View {
             } else {
                 CharSequence word = altText != null? altText : mSuggestions.get(wordIndex);
                 if(ZawGyiCorrection.isMyChar(word)) { // SMM
-                	mPreviewText.setTypeface(KeyboardTheme.getTypeFace(getContext()));
+                	mPreviewText.setTypeface(KeyboardTheme.getZawgyiTypeFace(getContext()));
             	}
                 mPreviewText.setText(word);
                 mPreviewText.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), 

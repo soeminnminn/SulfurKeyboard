@@ -568,6 +568,14 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     }
     
     // SMM {
+    public LanguageSwitcher getLanguageSwitcher() {
+    	return mLanguageSwitcher;
+    }
+    
+    public boolean isAutoCompletionActive() {
+    	return mIsAutoCompletionActive;
+    }
+    
     public int getThemeResId() {
     	return mThemeResId;
     }

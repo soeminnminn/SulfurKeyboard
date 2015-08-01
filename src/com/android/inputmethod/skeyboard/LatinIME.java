@@ -16,6 +16,7 @@
 
 package com.android.inputmethod.skeyboard;
 
+import com.android.inputmethod.emoji.EmojiInput;
 import com.android.inputmethod.skeyboard.IMEUtil.RingCharBuffer;
 import com.android.inputmethod.voice.FieldContext;
 import com.android.inputmethod.voice.SettingsUtil;
@@ -257,6 +258,10 @@ public class LatinIME extends InputMethodService
     private VoiceInput mVoiceInput;
     private VoiceResults mVoiceResults = new VoiceResults();
     private boolean mConfigurationChanging;
+    
+    // SMM {
+    private EmojiInput mEmojiInput;
+    // } SMM
 
     // Keeps track of most recently inserted text (multi-character key) for reverting
     private CharSequence mEnteredText;
@@ -409,6 +414,12 @@ public class LatinIME extends InputMethodService
                 }
               });
         }
+        
+        // SMM {
+        mEmojiInput = new EmojiInput(this, mKeyboardSwitcher);
+        mEmojiInput.setOnKeyboardActionListener(this);
+        // } SMM
+        
         prefs.registerOnSharedPreferenceChangeListener(this);
     }
 
@@ -1340,6 +1351,15 @@ public class LatinIME extends InputMethodService
                     startListening(false /* was a button press, was not a swipe */);
                 }
                 break;
+            case KeyCodes.KEYCODE_EMOJI:
+            	switchToEmojiView();
+            	break;
+            case KeyCodes.KEYCODE_DPAD:
+            	switchToDpadView();
+            	break;
+            case KeyCodes.KEYCODE_CHARSET:
+            	switchToKeyboardView();
+            	break;
             case 9 /*Tab*/:
                 sendDownUpKeyEvents(KeyEvent.KEYCODE_TAB);
                 break;
@@ -1801,6 +1821,30 @@ public class LatinIME extends InputMethodService
                 }
         }});
     }
+    
+    // SMM {
+    private void switchToEmojiView() {
+    	final boolean configChanged = mConfigurationChanging;
+        mHandler.post(new Runnable() {
+            public void run() {
+                //setCandidatesViewShown(false);
+                View v = mEmojiInput.getView();
+                ViewParent p = v.getParent();
+                if (p != null && p instanceof ViewGroup) {
+                    ((ViewGroup)v.getParent()).removeView(v);
+                }
+                setInputView(v);
+                updateInputViewShown();
+                if (configChanged) {
+                	mEmojiInput.onConfigurationChanged();
+                }
+        }});
+    }
+    
+    private void switchToDpadView() {
+    	
+    }
+    // } SMM
 
     private void startListening(boolean swipe) {
         if (!mHasUsedVoiceInput ||

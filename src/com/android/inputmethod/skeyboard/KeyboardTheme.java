@@ -14,7 +14,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 public class KeyboardTheme {
-	private static Typeface mTypeface;
+	private static Typeface sZawgyiTypeface;
+	private static Typeface sEmojiTypeface;
 	
     //private final int NUMBER_HINT_COUNT = 10;
     
@@ -82,12 +83,20 @@ public class KeyboardTheme {
 		public Drawable spaceAutoCompletionIndicator;
 	}
 	
-	public static Typeface getTypeFace(Context context) {
-		if(mTypeface == null) {
-			mTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/zawgyi.ttf");
+	public static Typeface getZawgyiTypeFace(Context context) {
+		if(sZawgyiTypeface == null) {
+			sZawgyiTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/zawgyi.ttf");
 		}
 		
-		return mTypeface;
+		return sZawgyiTypeface;
+	}
+	
+	public static Typeface getEmojiTypeFace(Context context) {
+		if(sEmojiTypeface == null) {
+			sEmojiTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/emoji.ttf");
+		}
+		
+		return sEmojiTypeface;
 	}
 	
 	public static void getRgbColor(int color, float[] argb) {
@@ -144,7 +153,7 @@ public class KeyboardTheme {
 		paint.setTextAlign(Align.CENTER);
 		paint.setAlpha(255);
 		paint.setTextSize(textSize);
-		paint.setTypeface(getTypeFace(context));
+		paint.setTypeface(getZawgyiTypeFace(context));
 		
 		final Bitmap buffer = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(buffer);

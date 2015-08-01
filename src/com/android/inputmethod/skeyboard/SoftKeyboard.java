@@ -69,6 +69,7 @@ public class SoftKeyboard extends Keyboard {
     
     private Key mShiftKey;
     private Key mEnterKey;
+    private Key mEmojiKey;
     private Key mF1Key;
     private Key mSpaceKey;
     private Key m123Key;
@@ -221,31 +222,34 @@ public class SoftKeyboard extends Keyboard {
             XmlResourceParser parser) {
         Key key = new LatinKey(res, parent, x, y, parser);
         switch (key.codes[0]) {
-        case KeyCodes.KEYCODE_ENTER:
-            mEnterKey = key;
-            break;
-        case KeyCodes.KEYCODE_F1:
-            mF1Key = key;
-            break;
-        case KeyCodes.KEYCODE_SPACE:
-            mSpaceKey = key;
-            break;
-        case KeyCodes.KEYCODE_MODE_CHANGE:
-            m123Key = key;
-            m123Label = key.label;
-            break;
-        case KeyCodes.KEYCODE_DELETE:
-        	mDeleteKey = key;
-        	break;
-        case KeyCodes.KEYCODE_OPTIONS:
-        case KeyCodes.KEYCODE_LANGUAGE:
-        	mSettingsKey = key;
-        	break;
-        case KeyCodes.KEYCODE_TAB:
-        	mTabKey = key;
-        	break;
-    	default:
-    		break;
+	        case KeyCodes.KEYCODE_ENTER:
+	        	mEnterKey = key;
+	        	break;
+	        case KeyCodes.KEYCODE_EMOJI:
+	        	mEmojiKey = key;
+	            break;
+	        case KeyCodes.KEYCODE_F1:
+	            mF1Key = key;
+	            break;
+	        case KeyCodes.KEYCODE_SPACE:
+	            mSpaceKey = key;
+	            break;
+	        case KeyCodes.KEYCODE_MODE_CHANGE:
+	            m123Key = key;
+	            m123Label = key.label;
+	            break;
+	        case KeyCodes.KEYCODE_DELETE:
+	        	mDeleteKey = key;
+	        	break;
+	        case KeyCodes.KEYCODE_OPTIONS:
+	        case KeyCodes.KEYCODE_LANGUAGE:
+	        	mSettingsKey = key;
+	        	break;
+	        case KeyCodes.KEYCODE_TAB:
+	        	mTabKey = key;
+	        	break;
+	    	default:
+	    		break;
         }
         
         /*
@@ -283,6 +287,7 @@ public class SoftKeyboard extends Keyboard {
             mEnterKey.popupResId = 0;
             mEnterKey.text = null;
             mEnterKey.label = null;
+            
             switch (options & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
                 case EditorInfo.IME_ACTION_GO:
                     mEnterKey.label = res.getText(R.string.label_go_key);
@@ -322,7 +327,11 @@ public class SoftKeyboard extends Keyboard {
             	case KeyboardSwitcher.MODE_WEB:
             		mEnterKey.icon = mKeyHintPopup;
                     mEnterKey.iconId = KeyboardTheme.ICON_HINT_POPUP;
-                    mEnterKey.popupResId = R.xml.popup_smileys;
+                    if (android.os.Build.VERSION.SDK_INT < 14) {
+                    	mEnterKey.popupResId = R.xml.popup_smileys;
+                    } else {
+                    	mEnterKey.popupResId = R.xml.popup_switch; // SMM
+                    }
             		break;
             	case KeyboardSwitcher.MODE_EMAIL:
             	case KeyboardSwitcher.MODE_URL:
@@ -482,6 +491,19 @@ public class SoftKeyboard extends Keyboard {
     private void updateDynamicKeys() {
         update123Key();
         updateF1Key();
+        updateEmojiKey();
+    }
+    
+    private void updateEmojiKey() {
+    	if (mEmojiKey != null) {
+        	mEmojiKey.iconic = true;
+        	mEmojiKey.iconKey = true;
+        	mEmojiKey.icon = null;
+        	mEmojiKey.iconId = KeyboardTheme.ICON_UNDEFINED;
+        	mEmojiKey.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_EMOJI);
+        	mEmojiKey.iconSizeAdjust = mIconSizeAdjust;
+        	mEmojiKey.popupResId = 0;
+        }
     }
 
     private void update123Key() {

@@ -22,6 +22,8 @@ public final class KeyCodes {
     static final int KEYCODE_OPTIONS_LONGPRESS = -175; // KEYCODE_CAPTIONS = 175;
     static final int KEYCODE_VOICE = -94; // KEYCODE_PICTSYMBOLS = 94;
     static final int KEYCODE_CHARSET = -95; // KEYCODE_SWITCH_CHARSET = 95;
+    static final int KEYCODE_EMOJI = -96;
+    static final int KEYCODE_DPAD = -97;
     // KEYCODE_BUTTON_1 = 188; to KEYCODE_BUTTON_16 = 203;
     static final int KEYCODE_F1 = -188;
     static final int KEYCODE_F2 = -189;

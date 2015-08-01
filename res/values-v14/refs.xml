@@ -1,0 +1,5 @@
+<resources>
+
+	<item name="kbd_qwerty" type="xml">@xml/kbd_qwerty_v14</item>
+
+</resources>

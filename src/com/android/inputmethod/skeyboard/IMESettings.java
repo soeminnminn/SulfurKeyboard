@@ -48,12 +48,14 @@ import com.android.inputmethod.skeyboard.R;
 import com.android.inputmethod.skeyboard.R.color;
 import com.android.inputmethod.voice.SettingsUtil;
 import com.android.inputmethod.voice.VoiceInputLogger;
+import com.s16.android.KeyboardApp;
 
 public class IMESettings extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener,
         Preference.OnPreferenceClickListener, 
         DialogInterface.OnDismissListener {
 
+	public static final String APPLICATRION_ICON_KEY = "application_icon";
     private static final String QUICK_FIXES_KEY = "quick_fixes";
     private static final String PREDICTION_SETTINGS_KEY = "prediction_settings";
     private static final String VOICE_SETTINGS_KEY = "voice_mode";
@@ -158,6 +160,16 @@ public class IMESettings extends PreferenceActivity
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         (new BackupManager(this)).dataChanged();
+        
+        if (key.equals(APPLICATRION_ICON_KEY)) {
+        	boolean defaultAppIcon = getResources().getBoolean(R.bool.default_application_icon);
+        	if (prefs.getBoolean(APPLICATRION_ICON_KEY, defaultAppIcon)) {
+        		KeyboardApp.ShowApplicationIcon(getApplicationContext());
+        	} else {
+        		KeyboardApp.HideApplicationIcon(getApplicationContext());
+        	}
+        }
+        
         // If turning on voice input, show dialog
         if (key.equals(VOICE_SETTINGS_KEY) && !mVoiceOn) {
             if (!prefs.getString(VOICE_SETTINGS_KEY, mVoiceModeOff)

@@ -167,7 +167,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     //private static final String POPUP_HINT_CHAR = "\u2026";
     
     // Miscellaneous constants
-    /* package */ static final int NOT_A_KEY = -1;
+    public static final int NOT_A_KEY = -1;
     private static final int[] LONG_PRESSABLE_STATE_SET = { android.R.attr.state_long_pressable };
     private static final int NUMBER_HINT_VERTICAL_ADJUSTMENT_PIXEL = -1;
 
@@ -229,6 +229,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     private int mWindowY;
     private int mPopupPreviewDisplayedY;
     private final int mDelayBeforePreview;
+    private final int mDelayBeforeSpacePreview; // SMM
     private final int mDelayAfterPreview;
 
     // Popup mini keyboard
@@ -247,6 +248,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     private OnKeyboardActionListener mKeyboardActionListener;
 
     private final ArrayList<PointerTracker> mPointerTrackers = new ArrayList<PointerTracker>();
+    private boolean mIgnoreMove = false; // SMM
 
     // TODO: Let the PointerTracker class manage this pointer queue
     private final PointerQueue mPointerQueue = new PointerQueue();
@@ -533,6 +535,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         mKeyBackground.getPadding(mPadding);
 
         mDelayBeforePreview = res.getInteger(R.integer.config_delay_before_preview);
+        mDelayBeforeSpacePreview = res.getInteger(R.integer.config_delay_before_space_preview); // SMM
         mDelayAfterPreview = res.getInteger(R.integer.config_delay_after_preview);
 
         mMiniKeyboardParent = this;
@@ -559,30 +562,32 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
                 final float absY = Math.abs(velocityY);
                 float deltaX = me2.getX() - me1.getX();
                 float deltaY = me2.getY() - me1.getY();
-                int travelX = getWidth() / 2; // Half the keyboard width
-                int travelY = getHeight() / 2; // Half the keyboard height
+                // Calculate swipe distance threshold based on screen width & height, taking the smaller distance.
+                int travelX = getWidth() / 3; // Half the keyboard width
+                int travelY = getHeight() / 3; // Half the keyboard height
+                int travelMin = Math.min(travelX, travelY);
                 mSwipeTracker.computeCurrentVelocity(1000);
                 final float endingVelocityX = mSwipeTracker.getXVelocity();
                 final float endingVelocityY = mSwipeTracker.getYVelocity();
-                if (velocityX > mSwipeThreshold && absY < absX && deltaX > travelX) {
+                if (velocityX > mSwipeThreshold && absY < absX && deltaX > travelMin) {
                     if (mDisambiguateSwipe && endingVelocityX >= velocityX / 4) {
-                        swipeRight();
-                        return true;
+                    	swipeRight();
+                    	return true;
                     }
-                } else if (velocityX < -mSwipeThreshold && absY < absX && deltaX < -travelX) {
+                } else if (velocityX < -mSwipeThreshold && absY < absX && deltaX < -travelMin) {
                     if (mDisambiguateSwipe && endingVelocityX <= velocityX / 4) {
-                        swipeLeft();
-                        return true;
+                    	swipeLeft();
+                    	return true;
                     }
-                } else if (velocityY < -mSwipeThreshold && absX < absY && deltaY < -travelY) {
+                } else if (velocityY < -mSwipeThreshold && absX < absY && deltaY < -travelMin) {
                     if (mDisambiguateSwipe && endingVelocityY <= velocityY / 4) {
-                        swipeUp();
-                        return true;
+                    	swipeUp();
+                    	return true;
                     }
-                } else if (velocityY > mSwipeThreshold && absX < absY / 2 && deltaY > travelY) {
+                } else if (velocityY > mSwipeThreshold && absX < absY / 2 && deltaY > travelMin) {
                     if (mDisambiguateSwipe && endingVelocityY >= velocityY / 4) {
-                        swipeDown();
-                        return true;
+                    	swipeDown();
+                    	return true;
                     }
                 }
                 return false;
@@ -754,12 +759,12 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     
     protected Typeface getKeyTextTypeface(CharSequence label, boolean isIconic) {
     	if(isIconic) {
-    		return KeyboardTheme.getTypeFace(getContext());
+    		return KeyboardTheme.getZawgyiTypeFace(getContext());
     	}
     	
     	if(label == null) return Typeface.DEFAULT;
     	if(ZawGyiCorrection.isMyChar(label)) {
-    		return KeyboardTheme.getTypeFace(getContext());
+    		return KeyboardTheme.getZawgyiTypeFace(getContext());
     	}
     	switch(mKeyTextStyle) {
 	    	case 0:
@@ -808,6 +813,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         invalidateAllKeys();
         computeProximityThreshold(keyboard);
         mMiniKeyboardCache.clear();
+        mIgnoreMove = true;
     }
 
     /**
@@ -983,6 +989,11 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     @Override
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        // SMM {
+        if (mKeyboard != null) {
+        	mKeyboard.setKeyboardWidth(w);
+        }
+        // } SMM
         // Release the buffer, if any and it will be reallocated on the next draw
         mBuffer = null;
     }
@@ -1264,7 +1275,9 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
                 mHandler.cancelPopupPreview();
                 mHandler.dismissPreview(mDelayAfterPreview);
             } else if (tracker != null) {
-                mHandler.popupPreview(mDelayBeforePreview, keyIndex, tracker);
+            	int delay = mShowPreview ? mDelayBeforePreview : mDelayBeforeSpacePreview; // SMM
+                mHandler.popupPreview(delay, keyIndex, tracker); // SMM
+                // mHandler.popupPreview(mDelayBeforePreview, keyIndex, tracker);
             }
         }
     }
@@ -1336,7 +1349,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
 
         // Set the preview background state
         // SMM {
-        if(tracker.isSpaceKey(keyIndex)) {
+        if(key.codes[0] == KeyCodes.KEYCODE_SPACE) {
         	mPreviewText.setBackgroundDrawable(mPreviewSlideBackground);
         } else {
         	mPreviewText.setBackgroundDrawable(mPreviewBackground);
@@ -1642,16 +1655,18 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
 
         return pointers.get(id);
     }
-
+    
     @Override
     public boolean onTouchEvent(MotionEvent me) {
         final int pointerCount = me.getPointerCount();
         final int action = me.getActionMasked();
+        final int oldPointerCount = mOldPointerCount;
+        mOldPointerCount = pointerCount;
 
         // TODO: cleanup this code into a multi-touch to single-touch event converter class?
         // If the device does not have distinct multi-touch support panel, ignore all multi-touch
         // events except a transition from/to single-touch.
-        if (!mHasDistinctMultitouch && pointerCount > 1 && mOldPointerCount > 1) {
+        if (!mHasDistinctMultitouch && pointerCount > 1 && oldPointerCount > 1) {
             return true;
         }
 
@@ -1713,7 +1728,7 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
         if (!mHasDistinctMultitouch) {
             // Use only main (id=0) pointer tracker.
             PointerTracker tracker = getPointerTracker(0);
-            int oldPointerCount = mOldPointerCount;
+            //int oldPointerCount = mOldPointerCount; // SMM
             if (pointerCount == 1 && oldPointerCount == 2) {
                 // Multi-touch to single touch transition.
                 // Send a down event for the latest pointer.
@@ -1728,24 +1743,28 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
                 Log.w(TAG, "Unknown touch panel behavior: pointer count is " + pointerCount
                         + " (old " + oldPointerCount + ")");
             }
-            mOldPointerCount = pointerCount;
+            //mOldPointerCount = pointerCount;// SMM  
             return true;
         }
 
         if (action == MotionEvent.ACTION_MOVE) {
-            for (int i = 0; i < pointerCount; i++) {
-                PointerTracker tracker = getPointerTracker(me.getPointerId(i));
-                tracker.onMoveEvent((int)me.getX(i), (int)me.getY(i), eventTime);
-            }
+        	if (!mIgnoreMove) {
+	            for (int i = 0; i < pointerCount; i++) {
+	                PointerTracker tracker = getPointerTracker(me.getPointerId(i));
+	                tracker.onMoveEvent((int)me.getX(i), (int)me.getY(i), eventTime);
+	            }
+        	}
         } else {
             PointerTracker tracker = getPointerTracker(id);
             switch (action) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
+            	mIgnoreMove = false;
                 onDownEvent(tracker, x, y, eventTime);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
+            	mIgnoreMove = false;
                 onUpEvent(tracker, x, y, eventTime);
                 break;
             case MotionEvent.ACTION_CANCEL:
@@ -1795,15 +1814,15 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     }
 
     protected void swipeLeft() {
-        mKeyboardActionListener.swipeLeft();
+    	mKeyboardActionListener.swipeLeft();
     }
 
     protected void swipeUp() {
-        mKeyboardActionListener.swipeUp();
+    	mKeyboardActionListener.swipeUp();
     }
 
     protected void swipeDown() {
-        mKeyboardActionListener.swipeDown();
+    	mKeyboardActionListener.swipeDown();
     }
 
     public void closing() {

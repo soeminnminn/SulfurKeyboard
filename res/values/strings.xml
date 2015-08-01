@@ -522,6 +522,11 @@
     <string name="summary_used_jbfix_true" translatable="false">Using jelly bean fix for Zawgyi font.</string>
     <string name="summary_used_jbfix_false" translatable="false">Not used jelly bean fix.</string>
     
+    <!-- Option to hide/show application icon -->
+    <string name="title_app_icon" translatable="false">Application icon</string>
+    <string name="summary_app_icon_true" translatable="false">Show on launcher</string>
+    <string name="summary_app_icon_false" translatable="false">Hide from launcher</string>
+    
     <string name="about_category" translatable="false">About</string>
     <string name="title_about" translatable="false">About Keyboard</string>
     <string name="version_name" translatable="false">Version</string>
@@ -557,7 +562,11 @@
     <string name="hint_text_datetime" translatable="false">Date Time</string>
     <string name="hint_text_mutiline" translatable="false">Multi-line</string>
     
+    <string name="title_activity_enable_keyboard" translatable="false">Enable Keyboard</string>
+    <string name="title_activity_set_input_method" translatable="false">Set Input Method</string>
     <string name="title_activity_input_test" translatable="false">Test Keyboard</string>
+    <string name="title_activity_settings" translatable="false">Keyboard Settings</string>
+    
     <string name="action_settings" translatable="false">Settings</string>
 
     <string name="main_body" translatable="false"><Data>
@@ -578,18 +587,6 @@
         <blockquote>
           <p>&#8226; Press the <b>Set input method</b> button above.</p>
           <p>&#8226; Select <i>Sulfur's Keyboard</i> from the list.</p>
-        </blockquote>
-
-        <h3>Optional: Select input languages:</h3>
-        <blockquote>
-          <p>&#8226; Press the <b>Input languages</b> button above to select which keyboard layouts you want to use. You <b>must</b> configure this if you want to use a language or layout other than the one corresponding to your system's default language.</p>
-          <p>&#8226; Press the <i>Back</i> button to return to this page.</p>
-          <p>&#8226; When typing, slide the space bar horizontally to switch between selected layouts.
-        </blockquote>
-
-        <h3>Optional: Install completion dictionary packages:</h3>
-        <blockquote>
-          <p>&#8226; Press the <b>Get dictionaries</b> button above to do a Market search.</p>
         </blockquote>
       "]]>
     </Data></string>

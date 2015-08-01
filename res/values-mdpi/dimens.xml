@@ -19,7 +19,10 @@
 -->
 
 <resources>
+    <dimen name="key_height">0.290in</dimen>
     <dimen name="key_icon_text_size">20sp</dimen>
     <dimen name="key_icon_width">36dip</dimen>
     <dimen name="key_icon_height">34dip</dimen>
+    
+    <dimen name="emoji_icon_size">36dip</dimen>
 </resources>

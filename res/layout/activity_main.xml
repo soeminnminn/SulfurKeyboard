@@ -46,36 +46,70 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" >
+        android:paddingRight="@dimen/activity_horizontal_margin" >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/btnShowSettings"
-                style="@style/HoloButton"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:text="@string/action_settings" />
-
-            <Button
-                android:id="@+id/btnShowInputTest"
-                style="@style/HoloButton"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-				android:layout_below="@+id/btnShowSettings"                
-                android:text="@string/title_activity_input_test" />
-
+            
             <TextView
-                android:id="@+id/textView1"
-                android:layout_width="match_parent"
+                android:id="@+id/textResourceMode"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/btnShowSettings"
-                android:gravity="right"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:text="@string/resource_mode"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
+            
+            <LinearLayout 
+                android:id="@+id/frameAction1"
+                android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_below="@+id/textResourceMode"
+            	android:orientation="horizontal" >
+            	
+                <Button
+	                android:id="@+id/btnEnableKeyboard"
+	                style="@style/HoloButton"
+	                android:layout_width="0dip"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:text="@string/title_activity_enable_keyboard" />
+	
+	            <Button
+	                android:id="@+id/btnSetInputMethod"
+	                style="@style/HoloButton"
+	                android:layout_width="0dip"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:text="@string/title_activity_set_input_method" />
+                
+            </LinearLayout>
+            
+            <LinearLayout
+                android:id="@+id/frameAction2" 
+                android:layout_width="match_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_below="@+id/frameAction1"
+            	android:orientation="horizontal" >
+	
+	            <Button
+	                android:id="@+id/btnShowSettings"
+	                style="@style/HoloButton"
+	                android:layout_width="0dip"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:text="@string/title_activity_settings" />
+	
+	            <Button
+	                android:id="@+id/btnShowInputTest"
+	                style="@style/HoloButton"
+	                android:layout_width="0dip"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:text="@string/title_activity_input_test" />
+            
+            </LinearLayout>
 
         </RelativeLayout>
 
