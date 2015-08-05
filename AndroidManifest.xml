@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.inputmethod.skeyboard"
     android:versionCode="6"
-    android:versionName="1.4.0.20150728">
+    android:versionName="1.4.0.20150805">
     <!-- android:installLocation="internalOnly" > -->
 
     <uses-sdk
