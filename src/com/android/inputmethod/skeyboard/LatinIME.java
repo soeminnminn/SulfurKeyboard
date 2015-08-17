@@ -606,6 +606,8 @@ public class LatinIME extends InputMethodService
         if (inputView == null) {
             return;
         }
+        
+        setInputView(inputView); // SMM
 
         if (mRefreshKeyboardRequired) {
             mRefreshKeyboardRequired = false;
@@ -736,8 +738,6 @@ public class LatinIME extends InputMethodService
         inputView.setPreviewEnabled(mPopupOn);
         inputView.setProximityCorrectionEnabled(true);
         mPredictionOn = mPredictionOn && (mCorrectionMode > 0 || isShowSuggestions());
-        
-        switchToKeyboardView(); // SMM
         
         // If we just entered a text field, maybe it has some old text that requires correction
         checkReCorrectionOnStart();

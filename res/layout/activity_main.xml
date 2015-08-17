@@ -22,7 +22,7 @@
             android:layout_gravity="left"
             android:padding="@dimen/actionbar_icon_padding"
             android:contentDescription="@string/title_activity_input_test"
-            android:src="@drawable/ic_application" />
+            android:src="@drawable/ic_launcher" />
 
         <TextView
             android:id="@+id/itTextViewTitle"

@@ -719,8 +719,9 @@ public class Keyboard {
         rows.add(row);
     }
 
-    /*final void resize(int newWidth, int newHeight) {
-        int numRows = rows.size();
+    final void resize(int newWidth, int newHeight) {
+    	// SMM {
+        /*int numRows = rows.size();
         for (int rowIndex = 0; rowIndex < numRows; ++rowIndex) {
             Row row = rows.get(rowIndex);
             int numKeys = row.mKeys.size();
@@ -748,7 +749,15 @@ public class Keyboard {
         // TODO: This does not adjust the vertical placement according to the new size.
         // The main problem in the previous code was horizontal placement/size, but we should
         // also recalculate the vertical sizes/positions when we get this resize call.
-    }*/
+        */
+    	if (newWidth <= 0) return;  // view not initialized?
+        if (mTotalWidth <= newWidth) return;  // it already fits
+        float scale = (float) newWidth / mDisplayWidth;
+        for (Key key : mKeys) {
+            key.x = Math.round(key.realX * scale);
+        }
+        mTotalWidth = newWidth; // } SMM
+    }
     
     public List<Key> getKeys() {
         return mKeys;
@@ -791,16 +800,6 @@ public class Keyboard {
     }
     
     // SMM {
-    public void setKeyboardWidth(int newWidth) {
-        if (newWidth <= 0) return;  // view not initialized?
-        if (mTotalWidth <= newWidth) return;  // it already fits
-        float scale = (float) newWidth / mDisplayWidth;
-        for (Key key : mKeys) {
-            key.x = Math.round(key.realX * scale);
-        }
-        mTotalWidth = newWidth;
-    }
-    
     public int getKeyTextWeight() {
     	if(mKeyTextWeight < 1) {
     		mKeyTextWeight = 2; // default 2

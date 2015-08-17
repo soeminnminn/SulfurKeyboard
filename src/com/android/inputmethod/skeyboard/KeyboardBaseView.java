@@ -989,11 +989,9 @@ public class KeyboardBaseView extends View implements PointerTracker.UIProxy {
     @Override
     public void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        // SMM {
         if (mKeyboard != null) {
-        	mKeyboard.setKeyboardWidth(w);
+        	mKeyboard.resize(w, h);
         }
-        // } SMM
         // Release the buffer, if any and it will be reallocated on the next draw
         mBuffer = null;
     }

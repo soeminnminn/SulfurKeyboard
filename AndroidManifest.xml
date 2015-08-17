@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.inputmethod.skeyboard"
     android:versionCode="6"
-    android:versionName="1.4.0.20150805">
+    android:versionName="1.4.0.20150808">
     <!-- android:installLocation="internalOnly" > -->
 
     <uses-sdk
@@ -19,7 +19,7 @@
         android:name="com.s16.android.KeyboardApp"
         android:backupAgent="com.android.inputmethod.skeyboard.IMEBackupAgent"
         android:allowBackup="true"
-        android:icon="@drawable/ic_application"
+        android:icon="@drawable/ic_launcher"
         android:killAfterRestore="false"
         android:label="@string/english_ime_name"
         android:restoreAnyVersion="true"
