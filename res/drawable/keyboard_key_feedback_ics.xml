@@ -16,7 +16,7 @@
 
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:soft="http://schemas.android.com/apk/res/com.android.inputmethod.skeyboard"
+    xmlns:soft="http://schemas.android.com/apk/res-auto"
 >
     <!-- Left edge -->
     <item soft:state_left_edge="true" soft:state_has_morekeys="true"

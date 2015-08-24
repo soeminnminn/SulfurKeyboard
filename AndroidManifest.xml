@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.inputmethod.skeyboard"
+    package="com.s16.inputmethod.skeyboard"
     android:versionCode="6"
-    android:versionName="1.4.0.20150808">
+    android:versionName="1.5.0.20150824">
     <!-- android:installLocation="internalOnly" > -->
 
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="14" />
+    
+    <supports-screens 
+        android:anyDensity="true"
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true" />
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_USER_DICTIONARY" />
@@ -17,7 +23,7 @@
 
     <application
         android:name="com.s16.android.KeyboardApp"
-        android:backupAgent="com.android.inputmethod.skeyboard.IMEBackupAgent"
+        android:backupAgent="com.s16.inputmethod.skeyboard.IMEBackupAgent"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:killAfterRestore="false"
@@ -26,7 +32,7 @@
         android:theme="@style/AppTheme" >
         
         <service
-            android:name="com.android.inputmethod.skeyboard.LatinIME"
+            android:name="com.s16.inputmethod.skeyboard.LatinIME"
             android:label="@string/english_ime_name"
             android:description="@string/english_ime_description"
             android:permission="android.permission.BIND_INPUT_METHOD" >
@@ -49,21 +55,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.inputmethod.skeyboard.IMESettings"
+            android:name="com.s16.inputmethod.skeyboard.IMESettings"
             android:label="@string/english_ime_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.inputmethod.skeyboard.IMEDebugSettings"
+            android:name="com.s16.inputmethod.skeyboard.IMEDebugSettings"
             android:label="@string/english_ime_debug_settings" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.inputmethod.skeyboard.InputLanguageSelection"
+            android:name="com.s16.inputmethod.skeyboard.InputLanguageSelection"
             android:label="@string/language_selection_title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

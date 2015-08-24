@@ -14,7 +14,7 @@
   ~ ITS DERIVATIVES.
   -->
 
-<com.android.inputmethod.emoji.EmojiGridView xmlns:android="http://schemas.android.com/apk/res/android" 
+<com.s16.inputmethod.emoji.EmojiGridView xmlns:android="http://schemas.android.com/apk/res/android" 
     android:id="@+id/emojiGridView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

@@ -1,7 +1,7 @@
 package com.s16.android;
 
-import com.android.inputmethod.skeyboard.IMESettings;
-import com.android.inputmethod.skeyboard.R;
+import com.s16.inputmethod.skeyboard.IMESettings;
+import com.s16.inputmethod.skeyboard.R;
 
 import android.os.Bundle;
 import android.app.Activity;

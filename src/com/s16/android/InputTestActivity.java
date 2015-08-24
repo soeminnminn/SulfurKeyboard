@@ -1,6 +1,6 @@
 package com.s16.android;
 
-import com.android.inputmethod.skeyboard.R;
+import com.s16.inputmethod.skeyboard.R;
 import com.s16.drawing.HomeUpDrawable;
 
 import android.os.Bundle;

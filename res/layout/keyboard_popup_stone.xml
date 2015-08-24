@@ -20,21 +20,20 @@
 
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/keyboard_popup_panel_background"
         >
-    <com.android.inputmethod.skeyboard.SoftKeyboardView
-            xmlns:latin="http://schemas.android.com/apk/res/com.android.inputmethod.skeyboard"
+    <com.s16.inputmethod.skeyboard.SoftKeyboardView
             android:id="@+id/KeyboardBaseView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/keyboard_background"
-
-            latin:keyBackground="@drawable/btn_keyboard_key_stone"
-            latin:keyTextColor="@color/key_text_color_light"
-            latin:shadowColor="@color/shadow_light"
-            latin:popupLayout="@layout/keyboard_popup_stone"
+            app:keyBackground="@drawable/btn_keyboard_key_stone"
+            app:keyTextColor="@color/key_text_color_light"
+            app:shadowColor="@color/shadow_light"
+            app:popupLayout="@layout/keyboard_popup_stone"
         />
 </LinearLayout>

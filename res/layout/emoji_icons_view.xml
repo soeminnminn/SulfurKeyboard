@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <com.android.inputmethod.emoji.EmojiIconsTabBar
+    <com.s16.inputmethod.emoji.EmojiIconsTabBar
         android:id="@+id/emojis_tab"
         android:layout_width="match_parent"
         android:layout_height="50dip"
@@ -102,7 +102,7 @@
             android:background="@drawable/emoji_tab_button"
             android:contentDescription="@null" />
         
-    </com.android.inputmethod.emoji.EmojiIconsTabBar>
+    </com.s16.inputmethod.emoji.EmojiIconsTabBar>
     
     <View
         android:layout_width="match_parent"
@@ -123,7 +123,7 @@
         android:layout_above="@+id/emojiBottomKeyboard"
         android:background="#8f8f8f"/>
     
-    <com.android.inputmethod.skeyboard.SoftKeyboardView
+    <com.s16.inputmethod.skeyboard.SoftKeyboardView
         android:id="@+id/emojiBottomKeyboard"
         android:layout_width="match_parent"
         android:layout_height="@dimen/key_height"

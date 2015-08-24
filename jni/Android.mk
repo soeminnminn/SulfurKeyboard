@@ -12,7 +12,7 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/src
 	src/zawgyi_correction.cpp
 	
  LOCAL_SRC_FILES := \
-    com_android_inputmethod_skeyboard_BinaryDictionary.cpp \
+    com_s16_inputmethod_skeyboard_BinaryDictionary.cpp \
 	src/dictionary.cpp \
 	src/char_utils.cpp 
 
