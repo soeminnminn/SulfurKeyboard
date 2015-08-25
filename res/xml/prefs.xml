@@ -149,7 +149,7 @@
             android:title="@string/language_selection_title"
             android:summary="@string/language_selection_summary">
         	<intent
-                android:action="com.android.inputmethod.skeyboard.INPUT_LANGUAGE_SELECTION"/>
+                android:action="com.s16.inputmethod.skeyboard.INPUT_LANGUAGE_SELECTION"/>
     	</PreferenceScreen>
     </PreferenceCategory>
 
@@ -207,7 +207,7 @@
     <PreferenceCategory
             android:title="@string/about_category"
             android:key="about_settings">
-        <com.android.inputmethod.skeyboard.PreferenceItem 
+        <com.s16.inputmethod.skeyboard.PreferenceItem 
             android:key="about_keyboard"
             android:summary=""
             android:title="@string/title_about" />

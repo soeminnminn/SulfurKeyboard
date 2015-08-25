@@ -11,6 +11,9 @@ Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 
 ## Change Log
 
+#### Version 1.5.1.0
+- Fix Settings Error
+
 #### Version 1.5.0.0
 - Change Package name to "com.s16.inputmethod.skeyboard"
 - Add "supports-screens" to "AndroidManifest.xml"
