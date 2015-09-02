@@ -9,7 +9,15 @@ Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 - Suggestion for Myanmar Language.
 - And more....
 
+## Download
+
+You can get it from [Google Play](https://play.google.com/store/apps/details?id=com.s16.inputmethod.skeyboard).
+
 ## Change Log
+
+#### Version 1.5.3.0
+- Fix Settings Not open error.
+- Fix Emoji keyboard view not work on some devices.
 
 #### Version 1.5.0.0
 - Change Package name to "com.s16.inputmethod.skeyboard"
