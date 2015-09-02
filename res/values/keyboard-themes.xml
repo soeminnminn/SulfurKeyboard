@@ -31,11 +31,6 @@
         <item name="keyLabelTextSize">@dimen/key_label_text_size</item>
         <item name="keyHintTextSize">@dimen/key_hint_text_size</item>
         <item name="keyTrailTextSize">@dimen/key_trail_text_size</item>
-        
-        <item name="keyTextSize">@fraction/key_text_size</item>
-        <item name="keyLabelTextSize">@fraction/key_label_text_size</item>
-        <item name="keyHintTextSize">@fraction/key_hint_text_size</item>
-        <item name="keyTrailTextSize">@fraction/key_trail_text_size</item>
         -->
         <item name="keyLabelTextRatio">@fraction/key_label_text_ratio</item>
         <item name="keyTextRatio">@fraction/key_text_ratio</item>
@@ -133,7 +128,7 @@
         <item name="keyboardBackground">@drawable/keyboard_dark_background</item>
         <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_holo</item>
-        <item name="keyHorizontalMargin">2dip</item>
+        <item name="keyHorizontalMargin">1dip</item>
         <item name="keyTextStyle">bold</item>
         <item name="spaceAutoCompletionIndicator">@drawable/sym_keyboard_space_led_holo</item>
         <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_ics</item>
@@ -152,7 +147,7 @@
         <item name="keyboardBackground">@drawable/keyboard_dark_background</item>
         <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_klp</item>
-        <item name="keyHorizontalMargin">2dip</item>
+        <item name="keyHorizontalMargin">1dip</item>
         <item name="keyTextStyle">bold</item>
         <item name="spaceAutoCompletionIndicator">@drawable/sym_keyboard_space_led_holo</item>
         <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_klp</item>

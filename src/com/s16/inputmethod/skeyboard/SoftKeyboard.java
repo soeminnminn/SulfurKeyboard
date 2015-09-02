@@ -90,13 +90,8 @@ public class SoftKeyboard extends Keyboard {
     private final Resources mRes;
     private final Context mContext;
     private int mMode;
-    // Whether this keyboard has voice icon on it
-    private boolean mHasVoiceButton;
-    // Whether voice icon is enabled at all
-    private boolean mVoiceEnabled;
     private final boolean mIsAlphaKeyboard;
     private CharSequence m123Label;
-    private CharSequence m123MicLabel;
     private boolean mCurrentlyInSpace;
     private SlidingLocaleDrawable mSlidingLocaleIcon;
     private int[] mPrefLetterFrequencies;
@@ -165,8 +160,6 @@ public class SoftKeyboard extends Keyboard {
         sSpacebarVerticalCorrection = res.getDimensionPixelOffset(R.dimen.spacebar_vertical_correction);
         mIsAlphaKeyboard = xmlLayoutResId == R.xml.kbd_qwerty;
         mSpaceKeyIndex = indexOf(KeyCodes.KEYCODE_SPACE);
-        
-        m123MicLabel = res.getText(R.string.label_symbol_mic_key);
         
         // initializeNumberHintResources(context);
         
@@ -467,26 +460,6 @@ public class SoftKeyboard extends Keyboard {
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
     }
 
-    public void setVoiceMode(boolean hasVoiceButton, boolean hasVoice) {
-        mHasVoiceButton = hasVoiceButton;
-        mVoiceEnabled = hasVoice;
-        
-        //mHasVoiceButton = true;
-        //mVoiceEnabled = true;
-        updateDynamicKeys();
-    }
-
-	/*
-    private void updateNumberHintKeys() {
-        for (int i = 0; i < mNumberHintKeys.length; ++i) {
-            if (mNumberHintKeys[i] != null) {
-                mNumberHintKeys[i].icon = mNumberHintIcons[i];
-                mNumberHintKeys[i].iconId = KeyboardThemes.ICON_UNDEFINED;
-            }
-        }
-    }
-	*/
-    
     private void updateDynamicKeys() {
         update123Key();
         updateF1Key();
@@ -508,22 +481,11 @@ public class SoftKeyboard extends Keyboard {
     private void update123Key() {
         // Update KEYCODE_MODE_CHANGE key only on alphabet mode, not on symbol mode.
         if (m123Key != null && mIsAlphaKeyboard) {
-            if (mVoiceEnabled && !mHasVoiceButton) {
-                //m123Key.icon = m123MicIcon;
-                //m123Key.icon = mThemes.getTheme().getIcon(KeyboardThemes.ICON_123MIC_KEY);
-            	m123Key.icon = null;
-                m123Key.iconId = KeyboardTheme.ICON_UNDEFINED;
-                m123Key.iconic = true;
-                //m123Key.iconPreview = m123MicPreviewIcon;
-                m123Key.iconPreview = null;
-                m123Key.label = m123MicLabel;
-            } else {
-                m123Key.icon = null;
-                m123Key.iconId = KeyboardTheme.ICON_UNDEFINED;
-                m123Key.iconPreview = null;
-                m123Key.iconic = true;
-                m123Key.label = m123Label;
-            }
+        	m123Key.icon = null;
+            m123Key.iconId = KeyboardTheme.ICON_UNDEFINED;
+            m123Key.iconPreview = null;
+            m123Key.iconic = true;
+            m123Key.label = m123Label;
         }
     }
 
@@ -535,48 +497,18 @@ public class SoftKeyboard extends Keyboard {
 
         if (mIsAlphaKeyboard) {
             if (mMode == KeyboardSwitcher.MODE_URL) {
-                setNonMicF1Key(mF1Key, "/", R.xml.popup_settings);
+                setF1Key(mF1Key, "/", R.xml.popup_settings);
             } else if (mMode == KeyboardSwitcher.MODE_EMAIL) {
-                setNonMicF1Key(mF1Key, "@", R.xml.popup_settings);
+                setF1Key(mF1Key, "@", R.xml.popup_settings);
             } else {
-                if (mVoiceEnabled && mHasVoiceButton) {
-                    setMicF1Key(mF1Key);
-                } else {
-                    setNonMicF1Key(mF1Key, ",", R.xml.popup_settings);
-                }
+            	setF1Key(mF1Key, ",", R.xml.popup_settings);
             }
         } else {  // Symbols keyboard
-            if (mVoiceEnabled && mHasVoiceButton) {
-                setMicF1Key(mF1Key);
-            } else {
-                setNonMicF1Key(mF1Key, ",", R.xml.popup_settings);
-            }
+        	setF1Key(mF1Key, ",", R.xml.popup_settings);
         }
     }
 
-    private void setMicF1Key(Key key) {
-        // HACK: draw mMicIcon and mHintIcon at the same time
-        /*final Drawable micWithSettingsHintDrawable = new BitmapDrawable(mRes,
-                drawSynthesizedSettingsHintImage(key.width, key.height, mMicIcon, mHintIcon));*/
-    	/*final Drawable micIcon = mThemes.getTheme().getIcon(KeyboardThemes.ICON_MIC_KEY);
-    	final Drawable hintIcon = mThemes.getTheme().getKeyHintPopup();
-        final Drawable micWithSettingsHintDrawable = new BitmapDrawable(mRes,
-                drawSynthesizedSettingsHintImage(key.width, key.height, 
-                		micIcon, hintIcon));
-    	 */
-        key.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_MIC_KEY);
-        key.iconic = true;
-        key.iconKey = true;
-        key.iconSizeAdjust = ICON_SIZE_ADJUST;
-        key.codes = new int[] { KeyCodes.KEYCODE_VOICE };
-        key.popupResId = R.xml.popup_settings;
-        key.icon = mKeyHintPopup;//micWithSettingsHintDrawable;
-        key.iconId = KeyboardTheme.ICON_HINT_POPUP;
-        //key.iconPreview = mMicPreviewIcon;
-        key.iconPreview = null;
-    }
-
-    private void setNonMicF1Key(Key key, String label, int popupResId) {
+    private void setF1Key(Key key, String label, int popupResId) {
         key.label = label;
         key.iconic = false;
         key.iconKey = false;

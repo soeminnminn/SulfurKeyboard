@@ -16,9 +16,6 @@
 
 package com.s16.inputmethod.skeyboard;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.backup.BackupManager;
@@ -34,7 +31,6 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
-import android.speech.SpeechRecognizer;
 import android.text.AutoText;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -44,21 +40,16 @@ import android.view.Menu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.s16.inputmethod.skeyboard.R;
-import com.s16.inputmethod.skeyboard.R.color;
-import com.s16.inputmethod.voice.SettingsUtil;
-import com.s16.inputmethod.voice.VoiceInputLogger;
 import com.s16.android.KeyboardApp;
+import com.s16.inputmethod.skeyboard.R.color;
 
 public class IMESettings extends PreferenceActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener,
-        Preference.OnPreferenceClickListener, 
-        DialogInterface.OnDismissListener {
+        Preference.OnPreferenceClickListener {
 
 	public static final String APPLICATRION_ICON_KEY = "application_icon";
     private static final String QUICK_FIXES_KEY = "quick_fixes";
     private static final String PREDICTION_SETTINGS_KEY = "prediction_settings";
-    private static final String VOICE_SETTINGS_KEY = "voice_mode";
     /* package */ static final String PREF_SETTINGS_KEY = "settings_key";
     /* package */ static final String PREF_LANGUAGE_KEY = "language_key";
     /* package */ static final String PREF_AUTO_HIDE_MINIKEYBOARD = "auto_hide_minikeyboard";
@@ -72,17 +63,9 @@ public class IMESettings extends PreferenceActivity
     protected static final String TAG = "IMESettings";
 
     private CheckBoxPreference mQuickFixes;
-    private ListPreference mVoicePreference;
-    //private ListPreference mSettingsKeyPreference;
     private ListPreference mLanguageKeyPreference;
     private ListPreference mKeyboardLayoutPreference;
     private ListPreference mKeyboardTextSizePreference;
-    private boolean mVoiceOn;
-
-    private VoiceInputLogger mLogger;
-
-    private boolean mOkClicked = false;
-    private String mVoiceModeOff;
 
     @SuppressWarnings("deprecation")
 	@Override
@@ -91,7 +74,6 @@ public class IMESettings extends PreferenceActivity
         addPreferencesFromResource(R.xml.prefs);
         
         mQuickFixes = (CheckBoxPreference) findPreference(QUICK_FIXES_KEY);
-        mVoicePreference = (ListPreference) findPreference(VOICE_SETTINGS_KEY);
         //mSettingsKeyPreference = (ListPreference) findPreference(PREF_SETTINGS_KEY);
         mLanguageKeyPreference = (ListPreference) findPreference(PREF_LANGUAGE_KEY);
         mKeyboardLayoutPreference = (ListPreference) findPreference(KEYBOARD_LAYOUT_SETTINGS_KEY);
@@ -103,10 +85,6 @@ public class IMESettings extends PreferenceActivity
         SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        mVoiceModeOff = getString(R.string.voice_mode_off);
-        mVoiceOn = !(prefs.getString(VOICE_SETTINGS_KEY, mVoiceModeOff).equals(mVoiceModeOff));
-        mLogger = VoiceInputLogger.getLogger(this);
-		
 		//CheckBoxPreference jbFix = (CheckBoxPreference)findPreference("used_jbfix");
 		//jbFix.setEnabled(Build.VERSION.SDK_INT > 15);
         
@@ -139,12 +117,6 @@ public class IMESettings extends PreferenceActivity
         if (autoTextSize < 1) {
             ((PreferenceGroup) findPreference(PREDICTION_SETTINGS_KEY)).removePreference(mQuickFixes);
         }
-        if (!LatinIME.VOICE_INSTALLED
-                || !SpeechRecognizer.isRecognitionAvailable(this)) {
-            getPreferenceScreen().removePreference(mVoicePreference);
-        } else {
-            updateVoiceModeSummary();
-        }
         //updateSettingsKeySummary();
         updateLanguageKeySummary();
         updateKeyboardLayoutSummary();
@@ -170,26 +142,10 @@ public class IMESettings extends PreferenceActivity
         	}
         }
         
-        // If turning on voice input, show dialog
-        if (key.equals(VOICE_SETTINGS_KEY) && !mVoiceOn) {
-            if (!prefs.getString(VOICE_SETTINGS_KEY, mVoiceModeOff)
-                    .equals(mVoiceModeOff)) {
-                showVoiceConfirmation();
-            }
-        }
-        mVoiceOn = !(prefs.getString(VOICE_SETTINGS_KEY, mVoiceModeOff).equals(mVoiceModeOff));
-        updateVoiceModeSummary();
-        // updateSettingsKeySummary();
         updateLanguageKeySummary();
         updateKeyboardLayoutSummary();
         updateTextSizeSummary();
     }
-
-    /*private void updateSettingsKeySummary() {
-        mSettingsKeyPreference.setSummary(
-                getResources().getStringArray(R.array.settings_key_modes)
-                [mSettingsKeyPreference.findIndexOfValue(mSettingsKeyPreference.getValue())]);
-    }*/
     
     private void updateLanguageKeySummary() {
         mLanguageKeyPreference.setSummary(
@@ -208,82 +164,6 @@ public class IMESettings extends PreferenceActivity
 	            getResources().getStringArray(R.array.keyboard_text_size_modes)
 	            [mKeyboardTextSizePreference.findIndexOfValue(mKeyboardTextSizePreference.getValue())]);
 	}
-
-	private void showVoiceConfirmation() {
-        mOkClicked = false;
-        showVoiceComfirmDialog();
-    }
-
-    private void updateVoiceModeSummary() {
-        mVoicePreference.setSummary(
-                getResources().getStringArray(R.array.voice_input_modes_summary)
-                [mVoicePreference.findIndexOfValue(mVoicePreference.getValue())]);
-    }
-
-    protected void showVoiceComfirmDialog() {
-    	DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                if (whichButton == DialogInterface.BUTTON_NEGATIVE) {
-                    mVoicePreference.setValue(mVoiceModeOff);
-                    mLogger.settingsWarningDialogCancel();
-                } else if (whichButton == DialogInterface.BUTTON_POSITIVE) {
-                    mOkClicked = true;
-                    mLogger.settingsWarningDialogOk();
-                }
-                updateVoicePreference();
-            }
-        };
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle(R.string.voice_warning_title)
-                .setPositiveButton(android.R.string.ok, listener)
-                .setNegativeButton(android.R.string.cancel, listener);
-
-        // Get the current list of supported locales and check the current locale against
-        // that list, to decide whether to put a warning that voice input will not work in
-        // the current language as part of the pop-up confirmation dialog.
-        String supportedLocalesString = SettingsUtil.getSettingsString(
-                getContentResolver(),
-                SettingsUtil.LATIN_IME_VOICE_INPUT_SUPPORTED_LOCALES,
-                LatinIME.DEFAULT_VOICE_INPUT_SUPPORTED_LOCALES);
-        ArrayList<String> voiceInputSupportedLocales =
-                LatinIME.newArrayList(supportedLocalesString.split("\\s+"));
-        boolean localeSupported = voiceInputSupportedLocales.contains(
-                Locale.getDefault().toString());
-
-        if (localeSupported) {
-            String message = getString(R.string.voice_warning_may_not_understand) + "\n\n" +
-                    getString(R.string.voice_hint_dialog_message);
-            builder.setMessage(message);
-        } else {
-            String message = getString(R.string.voice_warning_locale_not_supported) +
-                    "\n\n" + getString(R.string.voice_warning_may_not_understand) + "\n\n" +
-                    getString(R.string.voice_hint_dialog_message);
-            builder.setMessage(message);
-        }
-
-        AlertDialog dialog = builder.create();
-        dialog.setOnDismissListener(this);
-        mLogger.settingsWarningDialogShown();
-        dialog.show();
-    }
-
-    public void onDismiss(DialogInterface dialog) {
-        mLogger.settingsWarningDialogDismissed();
-        if (!mOkClicked) {
-            // This assumes that onPreferenceClick gets called first, and this if the user
-            // agreed after the warning, we set the mOkClicked value to true.
-            mVoicePreference.setValue(mVoiceModeOff);
-        }
-    }
-
-    private void updateVoicePreference() {
-        boolean isChecked = !mVoicePreference.getValue().equals(mVoiceModeOff);
-        if (isChecked) {
-            mLogger.voiceInputSettingEnabled();
-        } else {
-            mLogger.voiceInputSettingDisabled();
-        }
-    }
 
 	@Override
 	public boolean onPreferenceClick(Preference preference) {

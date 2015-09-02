@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2008 The Android Open Source Project
+<!--
+     Copyright (C) 2008 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,202 +16,150 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-        android:title="@string/english_ime_settings"
-        android:key="english_ime_settings">
+    android:key="english_ime_settings"
+    android:title="@string/english_ime_settings" >
 
     <CheckBoxPreference
-            android:key="application_icon"
-            android:title="@string/title_app_icon"
-            android:defaultValue="@bool/default_application_icon"
-            android:summaryOn="@string/summary_app_icon_true"
-            android:summaryOff="@string/summary_app_icon_false"
-            android:persistent="true"
-            />
-    
+        android:defaultValue="@bool/default_application_icon"
+        android:key="application_icon"
+        android:persistent="true"
+        android:summaryOff="@string/summary_app_icon_false"
+        android:summaryOn="@string/summary_app_icon_true"
+        android:title="@string/title_app_icon" />
     <CheckBoxPreference
-            android:key="vibrate_on"
-            android:title="@string/vibrate_on_keypress"
-            android:persistent="true"
-            />
-
+        android:key="vibrate_on"
+        android:persistent="true"
+        android:title="@string/vibrate_on_keypress" />
     <CheckBoxPreference
-            android:key="sound_on"
-            android:title="@string/sound_on_keypress"
-            android:persistent="true" 
-            />
-
+        android:key="sound_on"
+        android:persistent="true"
+        android:title="@string/sound_on_keypress" />
     <CheckBoxPreference
-            android:key="popup_on"
-            android:title="@string/popup_on_keypress"
-            android:persistent="true"
-            android:defaultValue="@bool/default_popup_preview"
-            />
-
+        android:defaultValue="@bool/default_popup_preview"
+        android:key="popup_on"
+        android:persistent="true"
+        android:title="@string/popup_on_keypress" />
     <CheckBoxPreference
-            android:key="recorrection_enabled"
-            android:title="@string/prefs_enable_recorrection"
-            android:summary="@string/prefs_enable_recorrection_summary"
-            android:persistent="true"
-            android:defaultValue="@bool/default_recorrection_enabled"
-            />
-
+        android:defaultValue="@bool/default_recorrection_enabled"
+        android:key="recorrection_enabled"
+        android:persistent="true"
+        android:summary="@string/prefs_enable_recorrection_summary"
+        android:title="@string/prefs_enable_recorrection" />
     <CheckBoxPreference
-            android:key="auto_cap"
-            android:title="@string/auto_cap"
-            android:persistent="true"
-            android:defaultValue="true"
-            />
+        android:defaultValue="true"
+        android:key="auto_cap"
+        android:persistent="true"
+        android:title="@string/auto_cap" />
 
     <PreferenceCategory
-            android:title="@string/layout_category"
-            android:key="layout_settings">
-            
-    	<!-- <ListPreference
-            android:key="settings_key"
-            android:title="@string/prefs_settings_key"
-            android:persistent="true"
-            android:entryValues="@array/settings_key_modes_values"
-            android:entries="@array/settings_key_modes"
-            android:defaultValue="@string/settings_key_mode_auto"
-            /> -->
+        android:key="layout_settings"
+        android:title="@string/layout_category" >
         <CheckBoxPreference
-            android:key="settings_key"
-            android:title="@string/prefs_settings_key"
-            android:persistent="true" 
             android:defaultValue="@bool/default_show_settings_key"
-            android:summaryOn="@string/settings_key_mode_always_show_name"
+            android:key="settings_key"
+            android:persistent="true"
             android:summaryOff="@string/settings_key_mode_always_hide_name"
-            />
+            android:summaryOn="@string/settings_key_mode_always_show_name"
+            android:title="@string/prefs_settings_key" />
 
-    	<ListPreference
-            android:key="language_key"
-            android:title="@string/prefs_language_key"
-            android:persistent="true"
-            android:entryValues="@array/language_key_modes_values"
-            android:entries="@array/language_key_modes"
+        <ListPreference
             android:defaultValue="@string/default_language_key_mode"
-            />
-            
+            android:entries="@array/language_key_modes"
+            android:entryValues="@array/language_key_modes_values"
+            android:key="language_key"
+            android:persistent="true"
+            android:title="@string/prefs_language_key" />
         <ListPreference
-            android:key="voice_mode"
-            android:title="@string/voice_input"
-            android:persistent="true"
-            android:entryValues="@array/voice_input_modes_values"
-            android:entries="@array/voice_input_modes"
-            android:defaultValue="@string/voice_mode_off"
-            />
-    
-    	<ListPreference
-            android:key="keyboard_layout"
-            android:title="@string/keyboard_layout"
-            android:persistent="true"
-            android:entryValues="@array/keyboard_layout_modes_values"
-            android:entries="@array/keyboard_layout_modes"
             android:defaultValue="@string/layout_ics_value"
-            />
-    	
-    	<ListPreference
-            android:key="key_text_size"
-            android:title="@string/keyboard_text_size"
+            android:entries="@array/keyboard_layout_modes"
+            android:entryValues="@array/keyboard_layout_modes_values"
+            android:key="keyboard_layout"
             android:persistent="true"
-            android:entryValues="@array/keyboard_text_size_modes_values"
-            android:entries="@array/keyboard_text_size_modes"
+            android:title="@string/keyboard_layout" />
+        <ListPreference
             android:defaultValue="@string/text_size_median_value"
-            />
-    	
-    	<CheckBoxPreference
-            android:key="fullscreen_override"
-            android:title="@string/title_fullscreen_override"
-            android:persistent="true" 
-            android:defaultValue="@bool/default_fullscreen_override"
-            android:summaryOn="@string/summary_fullscreen_override_true"
-            android:summaryOff="@string/summary_fullscreen_override_false"
-            />
-
-    	<CheckBoxPreference
-            android:key="force_keyboard_on"
-            android:title="@string/title_force_keyboard_on"
-            android:persistent="true" 
-            android:defaultValue="@bool/default_force_keyboard_on"
-            android:summaryOn="@string/summary_force_keyboard_on_true"
-            android:summaryOff="@string/summary_force_keyboard_on_false"
-            />
-    	
-    	<CheckBoxPreference
-            android:key="auto_hide_minikeyboard"
-            android:title="@string/auto_hide_minikeyboard"
+            android:entries="@array/keyboard_text_size_modes"
+            android:entryValues="@array/keyboard_text_size_modes_values"
+            android:key="key_text_size"
             android:persistent="true"
-            android:defaultValue="true"
-            android:summaryOn="@string/auto_hide_minikeyboard_true"
-            android:summaryOff="@string/auto_hide_minikeyboard_false"
-            />
-
-    	<PreferenceScreen
-            android:title="@string/language_selection_title"
-            android:summary="@string/language_selection_summary">
-        	<intent
-                android:action="com.s16.inputmethod.skeyboard.INPUT_LANGUAGE_SELECTION"/>
-    	</PreferenceScreen>
-    </PreferenceCategory>
-
-    <PreferenceCategory
-            android:title="@string/prediction_category"
-            android:key="prediction_settings">
+            android:title="@string/keyboard_text_size" />
 
         <CheckBoxPreference
-            android:key="quick_fixes"
-            android:title="@string/quick_fixes"
-            android:summary="@string/quick_fixes_summary"
+            android:defaultValue="@bool/default_fullscreen_override"
+            android:key="fullscreen_override"
             android:persistent="true"
+            android:summaryOff="@string/summary_fullscreen_override_false"
+            android:summaryOn="@string/summary_fullscreen_override_true"
+            android:title="@string/title_fullscreen_override" />
+        <CheckBoxPreference
+            android:defaultValue="@bool/default_force_keyboard_on"
+            android:key="force_keyboard_on"
+            android:persistent="true"
+            android:summaryOff="@string/summary_force_keyboard_on_false"
+            android:summaryOn="@string/summary_force_keyboard_on_true"
+            android:title="@string/title_force_keyboard_on" />
+        <CheckBoxPreference
             android:defaultValue="true"
-            />
+            android:key="auto_hide_minikeyboard"
+            android:persistent="true"
+            android:summaryOff="@string/auto_hide_minikeyboard_false"
+            android:summaryOn="@string/auto_hide_minikeyboard_true"
+            android:title="@string/auto_hide_minikeyboard" />
+
+        <PreferenceScreen
+            android:summary="@string/language_selection_summary"
+            android:title="@string/language_selection_title" >
+            <intent android:action="com.s16.inputmethod.skeyboard.INPUT_LANGUAGE_SELECTION" />
+        </PreferenceScreen>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="prediction_settings"
+        android:title="@string/prediction_category" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="quick_fixes"
+            android:persistent="true"
+            android:summary="@string/quick_fixes_summary"
+            android:title="@string/quick_fixes" />
 
         <ListPreference
-            android:key="show_suggestions"
-            android:title="@string/show_suggestions"
-            android:summary="@string/show_suggestions_summary"
-            android:persistent="true"
-            android:entryValues="@array/suggestion_visibility_values"
-            android:entries="@array/suggestion_visibilities"
             android:defaultValue="@string/suggestion_visibility_default_value"
-            />
+            android:entries="@array/suggestion_visibilities"
+            android:entryValues="@array/suggestion_visibility_values"
+            android:key="show_suggestions"
+            android:persistent="true"
+            android:summary="@string/show_suggestions_summary"
+            android:title="@string/show_suggestions" />
 
         <CheckBoxPreference
-            android:key="auto_complete"
-            android:title="@string/auto_complete"
-            android:summary="@string/auto_complete_summary"
-            android:persistent="true" 
             android:defaultValue="@bool/enable_autocorrect"
             android:dependency="show_suggestions"
-            />
-        
+            android:key="auto_complete"
+            android:persistent="true"
+            android:summary="@string/auto_complete_summary"
+            android:title="@string/auto_complete" />
         <CheckBoxPreference
-            android:key="used_unicode"
-            android:title="@string/title_used_unicode"
-            android:persistent="true" 
             android:defaultValue="@bool/default_used_unicode"
-            android:summaryOn="@string/summary_used_unicode_true"
+            android:key="used_unicode"
+            android:persistent="true"
             android:summaryOff="@string/summary_used_unicode_false"
-            />
-        
+            android:summaryOn="@string/summary_used_unicode_true"
+            android:title="@string/title_used_unicode" />
         <CheckBoxPreference
-            android:key="used_jbfix"
-            android:title="@string/title_used_jbfix"
-            android:persistent="true" 
             android:defaultValue="@bool/default_used_jbfix"
-            android:summaryOn="@string/summary_used_jbfix_true"
+            android:key="used_jbfix"
+            android:persistent="true"
             android:summaryOff="@string/summary_used_jbfix_false"
-            />
-        
-    </PreferenceCategory> 
-    
+            android:summaryOn="@string/summary_used_jbfix_true"
+            android:title="@string/title_used_jbfix" />
+    </PreferenceCategory>
     <PreferenceCategory
-            android:title="@string/about_category"
-            android:key="about_settings">
-        <com.s16.inputmethod.skeyboard.PreferenceItem 
+        android:key="about_settings"
+        android:title="@string/about_category" >
+        <com.s16.inputmethod.skeyboard.PreferenceItem
             android:key="about_keyboard"
             android:summary=""
             android:title="@string/title_about" />
-	</PreferenceCategory>
-	
+    </PreferenceCategory>
+
 </PreferenceScreen>
