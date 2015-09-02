@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 
 public class EmojiInput {
 
@@ -153,7 +154,7 @@ public class EmojiInput {
 			EmojiIconTextView textView = (EmojiIconTextView)convertView;
 			if (textView == null) {
 				textView = new EmojiIconTextView(getContext());
-				textView.setLayoutParams(new ViewGroup.LayoutParams(mIconSize, mIconSize));
+				textView.setLayoutParams(new GridView.LayoutParams(mIconSize, mIconSize));
 				textView.setGravity(Gravity.CENTER);
 				textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.emoji_icon_text_size));
 				textView.setTextColor(getResources().getColor(R.color.bright_foreground_holo_dark));

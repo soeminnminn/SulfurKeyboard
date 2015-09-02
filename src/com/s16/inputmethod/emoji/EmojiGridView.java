@@ -27,10 +27,6 @@ public class EmojiGridView extends GridView {
     
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    	try {
-    		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    	} catch (ClassCastException e) {
-    		e.printStackTrace();
-    	}
+    	super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

@@ -29,23 +29,25 @@ public class ZawGyiCorrection {
 	private static final int NULL_CHAR = 0x00;
 	private static final int JBFIX_CHAR = 0x200C; // 0x200C || 0xFEFF;
 	
-	private static final int CHARINDEX_ThaWaiHtoe = 0;
-	private static final int CHARINDEX_RaRitt = 1;
-	private static final int CHARINDEX_Consonant = 2;
-	private static final int CHARINDEX_DoubleConsonant = 3;
-	private static final int CHARINDEX_LowerConsonant = 4;
-	private static final int CHARINDEX_LoneGyiTin = 5; 
-	private static final int CHARINDEX_HaHtoe = 6; 
-	private static final int CHARINDEX_WaSwal = 7; 
-	private static final int CHARINDEX_YaPint = 8;
-	private static final int CHARINDEX_TeeTeeTin = 9;
-	private static final int CHARINDEX_ChangNyin = 10; 
-	private static final int CHARINDEX_NoutPyit = 11; 
-	private static final int CHARINDEX_YeeKhya = 12;
-	private static final int CHARINDEX_AThart = 13;
-	private static final int CHARINDEX_OutNyint = 14;
-	private static final int CHARINDEX_WittSaPout = 15;
-	private static final int CHARINDEX_Other = 16;
+	private static final class CharIndex {
+		public static final int ThaWaiHtoe = 0;
+		public static final int RaRitt = 1;
+		public static final int Consonant = 2;
+		public static final int DoubleConsonant = 3;
+		public static final int LowerConsonant = 4;
+		public static final int LoneGyiTin = 5; 
+		public static final int HaHtoe = 6; 
+		public static final int WaSwal = 7; 
+		public static final int YaPint = 8;
+		public static final int TeeTeeTin = 9;
+		public static final int ChangNyin = 10; 
+		public static final int NoutPyit = 11; 
+		public static final int YeeKhya = 12;
+		public static final int AThart = 13;
+		public static final int OutNyint = 14;
+		public static final int WittSaPout = 15;
+		public static final int Other = 16;
+	}
 	
 	private static String[] patterns;
 	
@@ -140,7 +142,7 @@ public class ZawGyiCorrection {
 	}
 	
 	private static int getCharIndex(int code) {
-		int result = CHARINDEX_Other;
+		int result = CharIndex.Other;
 		switch(code)
 		{
             // Consonant
@@ -192,7 +194,7 @@ public class ZawGyiCorrection {
             // Sign
             case 0x104A:
             case 0x104B:
-                result = CHARINDEX_Consonant;
+                result = CharIndex.Consonant;
                 break;
 
             // DoubleConsonant
@@ -220,7 +222,7 @@ public class ZawGyiCorrection {
             case 0x106B:
             case 0x1086:
             case 0x1091:
-                result = CHARINDEX_DoubleConsonant;
+                result = CharIndex.DoubleConsonant;
                 break;
 
             // LowerConsonant
@@ -251,11 +253,11 @@ public class ZawGyiCorrection {
             case 0x1085:
             case 0x1093:
             case 0x1096:
-                result = CHARINDEX_LowerConsonant;
+                result = CharIndex.LowerConsonant;
                 break;
 
             case 0x1031:
-                result = CHARINDEX_ThaWaiHtoe;
+                result = CharIndex.ThaWaiHtoe;
                 break;
 
 			case 0x103B:
@@ -266,7 +268,7 @@ public class ZawGyiCorrection {
 			case 0x1082:
 			case 0x1083:
 			case 0x1084:
-                result = CHARINDEX_RaRitt;
+                result = CharIndex.RaRitt;
                 break;
 			
 			case 0x102D:
@@ -274,22 +276,22 @@ public class ZawGyiCorrection {
 			case 0x108B:
 			case 0x108C:
 			case 0x108E:
-                result = CHARINDEX_LoneGyiTin;
+                result = CharIndex.LoneGyiTin;
                 break;
 
 			case 0x103C:
 			case 0x108A:
-                result = CHARINDEX_WaSwal;
+                result = CharIndex.WaSwal;
                 break;
 
 			case 0x103D:
 			case 0x1087:
-                result = CHARINDEX_HaHtoe;
+                result = CharIndex.HaHtoe;
                 break;
 
 			case 0x103A:
 			case 0x107D:
-                result = CHARINDEX_YaPint;
+                result = CharIndex.YaPint;
                 break;
 
 			case 0x102F:
@@ -298,41 +300,41 @@ public class ZawGyiCorrection {
 			case 0x1034:
 			case 0x1088:
 			case 0x1089:
-                result = CHARINDEX_ChangNyin;
+                result = CharIndex.ChangNyin;
                 break;
 
 			case 0x1036:
-                result = CHARINDEX_TeeTeeTin;
+                result = CharIndex.TeeTeeTin;
                 break;
 
 			case 0x1037:
 			case 0x1094:
 			case 0x1095:
-                result = CHARINDEX_OutNyint;
+                result = CharIndex.OutNyint;
                 break;
 
 			case 0x1039:
 			case 0x1064:
 			case 0x108D:
-                result = CHARINDEX_AThart;
+                result = CharIndex.AThart;
                 break;
 
 			case 0x1032:
-                result = CHARINDEX_NoutPyit;
+                result = CharIndex.NoutPyit;
                 break;
 
 			case 0x102B:
 			case 0x102C:
 			case 0x105A:
-                result = CHARINDEX_YeeKhya;
+                result = CharIndex.YeeKhya;
                 break;
 
 			case 0x1038:
-                result = CHARINDEX_WittSaPout;
+                result = CharIndex.WittSaPout;
                 break;
 			
 			default:
-                result = CHARINDEX_Other;
+                result = CharIndex.Other;
                 break;
 		}
 		
@@ -419,13 +421,13 @@ public class ZawGyiCorrection {
 	public static boolean isAlphabet(int code) {
 		int charIndex = getCharIndex(code);
 		switch(charIndex) {
-			case CHARINDEX_ThaWaiHtoe:
-			case CHARINDEX_RaRitt:
-			case CHARINDEX_Consonant:
-			case CHARINDEX_DoubleConsonant:
+			case CharIndex.ThaWaiHtoe:
+			case CharIndex.RaRitt:
+			case CharIndex.Consonant:
+			case CharIndex.DoubleConsonant:
 				return true;
 				
-			case CHARINDEX_Other:
+			case CharIndex.Other:
 			default:
 				return Character.isLetter(code);
 		}
@@ -486,11 +488,11 @@ public class ZawGyiCorrection {
             //System.Diagnostics.Debug.WriteLine(code.ToString() + " =   " + ((char)code).ToString());
 
 			int charIndex = getCharIndex(code);
-            boolean firstChar = ((charIndex == CHARINDEX_ThaWaiHtoe) 
-                || (charIndex == CHARINDEX_RaRitt) 
-                || (charIndex == CHARINDEX_Consonant) 
-                || (charIndex == CHARINDEX_DoubleConsonant)
-                || (charIndex == CHARINDEX_Other));
+            boolean firstChar = ((charIndex == CharIndex.ThaWaiHtoe) 
+                || (charIndex == CharIndex.RaRitt) 
+                || (charIndex == CharIndex.Consonant) 
+                || (charIndex == CharIndex.DoubleConsonant)
+                || (charIndex == CharIndex.Other));
 
             if (word.hasConsonant() && firstChar)
             {
@@ -500,7 +502,7 @@ public class ZawGyiCorrection {
                 //System.Diagnostics.Debug.WriteLine("--------------------------------------");
             }
 
-            if (charIndex == CHARINDEX_Other)
+            if (charIndex == CharIndex.Other)
             	resultList.add(code);
             else
             	word.setValue((int)charIndex, code);
@@ -638,518 +640,525 @@ public class ZawGyiCorrection {
         }
         
         private void fixThaWaiHtoe() {
-            if (this.mWord[(int)CHARINDEX_ThaWaiHtoe] == NULL_CHAR) return;
+            if (this.mWord[(int)CharIndex.ThaWaiHtoe] == NULL_CHAR) return;
             // No Change
         }
 
 		private void fixRaYitt() {
-            if (this.mWord[(int)CHARINDEX_RaRitt] == NULL_CHAR) return;
+            if (this.mWord[(int)CharIndex.RaRitt] == NULL_CHAR) return;
 
-			boolean upper = ((this.mWord[(int)CHARINDEX_LoneGyiTin] != NULL_CHAR) 
-                                || (this.mWord[(int)CHARINDEX_NoutPyit] != NULL_CHAR)
-                                || (this.mWord[(int)CHARINDEX_TeeTeeTin] != NULL_CHAR)
-                                || (this.mWord[(int)CHARINDEX_AThart] == 0x1064)
-                                || (this.mWord[(int)CHARINDEX_AThart] == 0x108D));
+			boolean upper = ((this.mWord[(int)CharIndex.LoneGyiTin] != NULL_CHAR) 
+                                || (this.mWord[(int)CharIndex.NoutPyit] != NULL_CHAR)
+                                || (this.mWord[(int)CharIndex.TeeTeeTin] != NULL_CHAR)
+                                || (this.mWord[(int)CharIndex.AThart] == 0x1064)
+                                || (this.mWord[(int)CharIndex.AThart] == 0x108D));
 
-			boolean lower = ((this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR) 
-							|| (this.mWord[(int)CHARINDEX_LowerConsonant] != NULL_CHAR));
+			boolean lower = ((this.mWord[(int)CharIndex.WaSwal] != NULL_CHAR) 
+							|| (this.mWord[(int)CharIndex.LowerConsonant] != NULL_CHAR));
 
-			if (this.mWord[(int)CHARINDEX_Consonant] != NULL_CHAR)
+			if (this.mWord[(int)CharIndex.Consonant] != NULL_CHAR)
 			{
 				if (upper && lower)
 				{
-					this.mWord[(int)CHARINDEX_RaRitt] = 0x1083;
+					this.mWord[(int)CharIndex.RaRitt] = 0x1083;
 				}
 				else if (upper)
 				{
-					this.mWord[(int)CHARINDEX_RaRitt] = 0x107F;
+					this.mWord[(int)CharIndex.RaRitt] = 0x107F;
 				}
 				else if (lower)
 				{
-					this.mWord[(int)CHARINDEX_RaRitt] = 0x1081;
+					this.mWord[(int)CharIndex.RaRitt] = 0x1081;
 				}
 				else
 				{
-					this.mWord[(int)CHARINDEX_RaRitt] = 0x103B;
+					this.mWord[(int)CharIndex.RaRitt] = 0x103B;
 				}
 			}
 			else
 			{
 				if (upper && lower)
 				{
-					this.mWord[(int)CHARINDEX_RaRitt] = 0x1084;
+					this.mWord[(int)CharIndex.RaRitt] = 0x1084;
 				}
 				else if (upper)
 				{
-					this.mWord[(int)CHARINDEX_RaRitt] = 0x1080;
+					this.mWord[(int)CharIndex.RaRitt] = 0x1080;
 				}
 				else if (lower)
 				{
-					this.mWord[(int)CHARINDEX_RaRitt] = 0x1082;
+					this.mWord[(int)CharIndex.RaRitt] = 0x1082;
 				}
 				else
 				{
-					this.mWord[(int)CHARINDEX_RaRitt] = 0x107E;
+					this.mWord[(int)CharIndex.RaRitt] = 0x107E;
 				}
 			}
 		}
 		
 		private void fixConsonant() {
-            if ((this.mWord[(int)CHARINDEX_Consonant] == NULL_CHAR) && (this.mWord[(int)CHARINDEX_DoubleConsonant] == NULL_CHAR)) return;
+            if ((this.mWord[(int)CharIndex.Consonant] == NULL_CHAR) && (this.mWord[(int)CharIndex.DoubleConsonant] == NULL_CHAR)) return;
 
-			if ((this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x100A) 
-			    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x106B)) // ·Ää
+			if ((this.mWord[(int)CharIndex.DoubleConsonant] == 0x100A) 
+			    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x106B)) // ·Ää
 			{
-				if((this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
-				  || (this.mWord[(int)CHARINDEX_LowerConsonant] != NULL_CHAR))
+				if((this.mWord[(int)CharIndex.WaSwal] != NULL_CHAR)
+				  || (this.mWord[(int)CharIndex.LowerConsonant] != NULL_CHAR))
 				{
-					this.mWord[(int)CHARINDEX_DoubleConsonant] = 0x106B;
+					this.mWord[(int)CharIndex.DoubleConsonant] = 0x106B;
 				}
 				else
 				{
-					this.mWord[(int)CHARINDEX_DoubleConsonant] = 0x100A;
+					this.mWord[(int)CharIndex.DoubleConsonant] = 0x100A;
 				}
 			}
 			
-			if ((this.mWord[(int)CHARINDEX_Consonant] == 0x1014) 
-			    || (this.mWord[(int)CHARINDEX_Consonant] == 0x108F)) // ·Äî
+			if ((this.mWord[(int)CharIndex.Consonant] == 0x1014) 
+			    || (this.mWord[(int)CharIndex.Consonant] == 0x108F)) // ·Äî
 			{
-				if((this.mWord[(int)CHARINDEX_RaRitt] != NULL_CHAR)
-				   || (this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
-				   || (this.mWord[(int)CHARINDEX_HaHtoe] != NULL_CHAR)
-				   || (this.mWord[(int)CHARINDEX_YaPint] != NULL_CHAR)
-				   || (this.mWord[(int)CHARINDEX_ChangNyin] != NULL_CHAR)
-				   || (this.mWord[(int)CHARINDEX_LowerConsonant] != NULL_CHAR)
+				if((this.mWord[(int)CharIndex.RaRitt] != NULL_CHAR)
+				   || (this.mWord[(int)CharIndex.WaSwal] != NULL_CHAR)
+				   || (this.mWord[(int)CharIndex.HaHtoe] != NULL_CHAR)
+				   || (this.mWord[(int)CharIndex.YaPint] != NULL_CHAR)
+				   || (this.mWord[(int)CharIndex.ChangNyin] != NULL_CHAR)
+				   || (this.mWord[(int)CharIndex.LowerConsonant] != NULL_CHAR)
 				   )
 				{
-					this.mWord[(int)CHARINDEX_Consonant] = 0x108F;
+					this.mWord[(int)CharIndex.Consonant] = 0x108F;
 				}
 				else
 				{
-					this.mWord[(int)CHARINDEX_Consonant] = 0x1014;
+					this.mWord[(int)CharIndex.Consonant] = 0x1014;
 				}
 			}
-			if ((this.mWord[(int)CHARINDEX_Consonant] == 0x101B) 
-			    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1090)) // ·Äõ
+			if ((this.mWord[(int)CharIndex.Consonant] == 0x101B) 
+			    || (this.mWord[(int)CharIndex.Consonant] == 0x1090)) // ·Äõ
 			{
-				if(this.mWord[(int)CHARINDEX_ChangNyin] != NULL_CHAR)
+				if(this.mWord[(int)CharIndex.ChangNyin] != NULL_CHAR)
 				{
-					this.mWord[(int)CHARINDEX_Consonant] = 0x1090;
+					this.mWord[(int)CharIndex.Consonant] = 0x1090;
 				}
 				else
 				{
-					this.mWord[(int)CHARINDEX_Consonant] = 0x101B;
+					this.mWord[(int)CharIndex.Consonant] = 0x101B;
 				}
 			}
-			if ((this.mWord[(int)CHARINDEX_Consonant] == 0x1025) 
-			    || (this.mWord[(int)CHARINDEX_Consonant] == 0x106A)) // ·Ä•
+			if ((this.mWord[(int)CharIndex.Consonant] == 0x1025) 
+			    || (this.mWord[(int)CharIndex.Consonant] == 0x106A)) // ·Ä•
 			{
-				if((this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
-				  || (this.mWord[(int)CHARINDEX_LowerConsonant] != NULL_CHAR))
+				if((this.mWord[(int)CharIndex.WaSwal] != NULL_CHAR)
+				  || (this.mWord[(int)CharIndex.LowerConsonant] != NULL_CHAR))
 				{
-					this.mWord[(int)CHARINDEX_Consonant] = 0x106A;
+					this.mWord[(int)CharIndex.Consonant] = 0x106A;
 				}
 				else
 				{
-					this.mWord[(int)CHARINDEX_Consonant] = 0x1025;
+					this.mWord[(int)CharIndex.Consonant] = 0x1025;
 				}
 			}
 		}
 
         private void fixLowerConsonant() {
-            if (this.mWord[(int)CHARINDEX_LowerConsonant] == NULL_CHAR) return;
+            if (this.mWord[(int)CharIndex.LowerConsonant] == NULL_CHAR) return;
 
-            if ((this.mWord[(int)CHARINDEX_LowerConsonant] == 0x1066)
-                || (this.mWord[(int)CHARINDEX_LowerConsonant] == 0x1067))
+            if ((this.mWord[(int)CharIndex.LowerConsonant] == 0x1066)
+                || (this.mWord[(int)CharIndex.LowerConsonant] == 0x1067))
             {
-                if (this.mWord[(int)CHARINDEX_DoubleConsonant] != NULL_CHAR)
+                if (this.mWord[(int)CharIndex.DoubleConsonant] != NULL_CHAR)
 				{
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = 0x1066;
+                    this.mWord[(int)CharIndex.LowerConsonant] = 0x1066;
 				}
                 else
 				{
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = 0x1067;
+                    this.mWord[(int)CharIndex.LowerConsonant] = 0x1067;
 				}
             }
 
-            if ((this.mWord[(int)CHARINDEX_LowerConsonant] == 0x1071)
-                || (this.mWord[(int)CHARINDEX_LowerConsonant] == 0x1072))
+            if ((this.mWord[(int)CharIndex.LowerConsonant] == 0x1071)
+                || (this.mWord[(int)CharIndex.LowerConsonant] == 0x1072))
             {
-                if (this.mWord[(int)CHARINDEX_DoubleConsonant] != NULL_CHAR)
+                if (this.mWord[(int)CharIndex.DoubleConsonant] != NULL_CHAR)
 				{
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = 0x1071;
+                    this.mWord[(int)CharIndex.LowerConsonant] = 0x1071;
 				}
                 else
 				{
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = 0x1072;
+                    this.mWord[(int)CharIndex.LowerConsonant] = 0x1072;
 				}
             }
 
-            if ((this.mWord[(int)CHARINDEX_LowerConsonant] == 0x1073)
-                || (this.mWord[(int)CHARINDEX_LowerConsonant] == 0x1074))
+            if ((this.mWord[(int)CharIndex.LowerConsonant] == 0x1073)
+                || (this.mWord[(int)CharIndex.LowerConsonant] == 0x1074))
             {
-                if (this.mWord[(int)CHARINDEX_DoubleConsonant] != NULL_CHAR)
+                if (this.mWord[(int)CharIndex.DoubleConsonant] != NULL_CHAR)
 				{
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = 0x1073;
+                    this.mWord[(int)CharIndex.LowerConsonant] = 0x1073;
 				}
                 else
 				{
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = 0x1074;
+                    this.mWord[(int)CharIndex.LowerConsonant] = 0x1074;
 				}
             }
 
-            if ((this.mWord[(int)CHARINDEX_LowerConsonant] == 0x107B)
-                || (this.mWord[(int)CHARINDEX_LowerConsonant] == 0x1093))
+            if ((this.mWord[(int)CharIndex.LowerConsonant] == 0x107B)
+                || (this.mWord[(int)CharIndex.LowerConsonant] == 0x1093))
             {
-                if (this.mWord[(int)CHARINDEX_DoubleConsonant] != NULL_CHAR)
+                if (this.mWord[(int)CharIndex.DoubleConsonant] != NULL_CHAR)
 				{
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = 0x107B;
+                    this.mWord[(int)CharIndex.LowerConsonant] = 0x107B;
 				}
                 else
 				{
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = 0x1093;
+                    this.mWord[(int)CharIndex.LowerConsonant] = 0x1093;
 				}
             }
         }
 		
 		private void fixLoneGyiTin() {
-			if (this.mWord[(int)CHARINDEX_LoneGyiTin] == NULL_CHAR) return;
+			if (this.mWord[(int)CharIndex.LoneGyiTin] == NULL_CHAR) return;
 			
-			if (this.mWord[(int)CHARINDEX_AThart] == 0x1064)
+			if (this.mWord[(int)CharIndex.AThart] == 0x1064)
 			{
-				if (this.mWord[(int)CHARINDEX_LoneGyiTin] == 0x102D)
+				if (this.mWord[(int)CharIndex.LoneGyiTin] == 0x102D)
 				{
-					this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x108B;
+					this.mWord[(int)CharIndex.LoneGyiTin] = 0x108B;
 				}
 				else
 				{
-					this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x108C;
+					this.mWord[(int)CharIndex.LoneGyiTin] = 0x108C;
 				}
-				this.mWord[(int)CHARINDEX_AThart] = NULL_CHAR;
+				this.mWord[(int)CharIndex.AThart] = NULL_CHAR;
 			}
-			else if (this.mWord[(int)CHARINDEX_TeeTeeTin] != NULL_CHAR)
+			else if (this.mWord[(int)CharIndex.TeeTeeTin] != NULL_CHAR)
 			{
-				this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x108E;
-				this.mWord[(int)CHARINDEX_AThart] = NULL_CHAR;
+				this.mWord[(int)CharIndex.LoneGyiTin] = 0x108E;
+				this.mWord[(int)CharIndex.AThart] = NULL_CHAR;
 			}
-			else if ((this.mWord[(int)CHARINDEX_LoneGyiTin] == 0x102D) 
-			         || (this.mWord[(int)CHARINDEX_LoneGyiTin] == 0x108B)
-			         || (this.mWord[(int)CHARINDEX_LoneGyiTin] == 0x108E))
+			else if ((this.mWord[(int)CharIndex.LoneGyiTin] == 0x102D) 
+			         || (this.mWord[(int)CharIndex.LoneGyiTin] == 0x108B)
+			         || (this.mWord[(int)CharIndex.LoneGyiTin] == 0x108E))
 			{
-				this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x102D;
+				this.mWord[(int)CharIndex.LoneGyiTin] = 0x102D;
 			}
-			else if ((this.mWord[(int)CHARINDEX_LoneGyiTin] == 0x102E)
-			         || (this.mWord[(int)CHARINDEX_LoneGyiTin] == 0x108C))
+			else if ((this.mWord[(int)CharIndex.LoneGyiTin] == 0x102E)
+			         || (this.mWord[(int)CharIndex.LoneGyiTin] == 0x108C))
 			{
-				this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x102E;
+				this.mWord[(int)CharIndex.LoneGyiTin] = 0x102E;
 			}
 		}
 		
 		private void fixHaHtoe() {
-			if (this.mWord[(int)CHARINDEX_HaHtoe] == NULL_CHAR) return;
+			if (this.mWord[(int)CharIndex.HaHtoe] == NULL_CHAR) return;
 			
-			if ((this.mWord[(int)CHARINDEX_RaRitt] != NULL_CHAR)
-					|| (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x100A)
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1009)
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x106B)
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x100C)
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1029)
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x102A)
+			if ((this.mWord[(int)CharIndex.RaRitt] != NULL_CHAR)
+					|| (this.mWord[(int)CharIndex.DoubleConsonant] == 0x100A)
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1009)
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x106B)
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x100C)
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1029)
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x102A)
                     )
 			{
-				this.mWord[(int)CHARINDEX_HaHtoe] = 0x1087;
+				this.mWord[(int)CharIndex.HaHtoe] = 0x1087;
 			}
 			else
 			{
-				this.mWord[(int)CHARINDEX_HaHtoe] = 0x103D;
+				this.mWord[(int)CharIndex.HaHtoe] = 0x103D;
 			}
 		}
 		
 		private void fixWaSwal() {
-			if (this.mWord[(int)CHARINDEX_WaSwal] == NULL_CHAR) return;
+			if (this.mWord[(int)CharIndex.WaSwal] == NULL_CHAR) return;
 			
-			if (this.mWord[(int)CHARINDEX_HaHtoe] != NULL_CHAR)
+			if (this.mWord[(int)CharIndex.HaHtoe] != NULL_CHAR)
 			{
-				this.mWord[(int)CHARINDEX_WaSwal] = 0x108A;
-				this.mWord[(int)CHARINDEX_HaHtoe] = NULL_CHAR;
+				this.mWord[(int)CharIndex.WaSwal] = 0x108A;
+				this.mWord[(int)CharIndex.HaHtoe] = NULL_CHAR;
 			}
 			else
 			{
-				this.mWord[(int)CHARINDEX_WaSwal] = 0x103C;
+				this.mWord[(int)CharIndex.WaSwal] = 0x103C;
 			}
 		}
 		
 		private void fixYaPint() {
-			if (this.mWord[(int)CHARINDEX_YaPint] == NULL_CHAR) return;
+			if (this.mWord[(int)CharIndex.YaPint] == NULL_CHAR) return;
 
-            if (this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
+            if (this.mWord[(int)CharIndex.WaSwal] != NULL_CHAR)
 			{
-				this.mWord[(int)CHARINDEX_YaPint] = 0x107D;
+				this.mWord[(int)CharIndex.YaPint] = 0x107D;
 			}
 			else
 			{
-				this.mWord[(int)CHARINDEX_YaPint] = 0x103A;
+				this.mWord[(int)CharIndex.YaPint] = 0x103A;
 			}
 		}
 		
 		private void fixChangNyin() {
-			if (this.mWord[(int)CHARINDEX_ChangNyin] == NULL_CHAR) return;
+			if (this.mWord[(int)CharIndex.ChangNyin] == NULL_CHAR) return;
 			
-			boolean isLong = ((this.mWord[(int)CHARINDEX_RaRitt] != NULL_CHAR)
-                    || (this.mWord[(int)CHARINDEX_YaPint] != NULL_CHAR)
-                    || (this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
-                    || (this.mWord[(int)CHARINDEX_LowerConsonant] != NULL_CHAR)
+			boolean isLong = ((this.mWord[(int)CharIndex.RaRitt] != NULL_CHAR)
+                    || (this.mWord[(int)CharIndex.YaPint] != NULL_CHAR)
+                    || (this.mWord[(int)CharIndex.WaSwal] != NULL_CHAR)
+                    || (this.mWord[(int)CharIndex.LowerConsonant] != NULL_CHAR)
                     
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1008) // ·Äà
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x100B) // ·Äã
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x100C) // ·Äå
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x100D) // ·Ä?
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1020) // ·Ä†
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1025) // ·Ä•
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1026) // ·Ä¶
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x106A) // ·?™
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x104C) // ·?å
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x104D) // ·??
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1092) // ·Çí
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x106E) // ·?Æ
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x106F) // ·?Ø
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1097) // ·Çó
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1008) // ·Äà
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x100B) // ·Äã
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x100C) // ·Äå
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x100D) // ·Äç
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1020) // ·Ä†
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1025) // ·Ä•
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1026) // ·Ä¶
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x106A) // ·Å™
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x104C) // ·Åå
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x104D) // ·Åç
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1092) // ·Çí
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x106E) // ·ÅÆ
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x106F) // ·ÅØ
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1097) // ·Çó
 
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1042) // ·?Ç
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1043) // ·?É
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1044) // ·?Ñ
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1045) // ·?Ö
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1046) // ·?Ü
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1047) // ·?á
-                    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1049) // ·?â
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1042) // ·ÅÇ
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1043) // ·ÅÉ
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1044) // ·ÅÑ
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1045) // ·ÅÖ
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1046) // ·ÅÜ
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1047) // ·Åá
+                    || (this.mWord[(int)CharIndex.Consonant] == 0x1049) // ·Åâ
 
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x100A) // ·Ää
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1009) // ·Äâ
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x106B) // ·?´
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1023) // ·Ä£
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1024) // ·Ä§
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1029) // ·Ä©
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x102A) // ·Ä™
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x104E) // ·?é
-                    || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1091) // ·Çë
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x100A) // ·Ää
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1009) // ·Äâ
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x106B) // ·Å´
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1023) // ·Ä£
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1024) // ·Ä§
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1029) // ·Ä©
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x102A) // ·Ä™
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x104E) // ·Åé
+                    || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1091) // ·Çë
                     );
 			
-			if ((this.mWord[(int)CHARINDEX_ChangNyin] == 0x102F) 
-				|| (this.mWord[(int)CHARINDEX_ChangNyin] == 0x1033))
+			if ((this.mWord[(int)CharIndex.ChangNyin] == 0x102F) 
+				|| (this.mWord[(int)CharIndex.ChangNyin] == 0x1033))
 			{
 				if (isLong)
 				{
-                    this.mWord[(int)CHARINDEX_ChangNyin] = 0x1033;
+                    this.mWord[(int)CharIndex.ChangNyin] = 0x1033;
 				}
-				else if(this.mWord[(int)CHARINDEX_HaHtoe] != NULL_CHAR) 
+				else if(this.mWord[(int)CharIndex.HaHtoe] != NULL_CHAR) 
 				{
-                    this.mWord[(int)CHARINDEX_ChangNyin] = 0x1088;
-					this.mWord[(int)CHARINDEX_HaHtoe] = NULL_CHAR;
+                    this.mWord[(int)CharIndex.ChangNyin] = 0x1088;
+					this.mWord[(int)CharIndex.HaHtoe] = NULL_CHAR;
 				}
 				else
 				{
-                    this.mWord[(int)CHARINDEX_ChangNyin] = 0x102F;
+                    this.mWord[(int)CharIndex.ChangNyin] = 0x102F;
 				}
 			}
 			else // 0x1030 | 0x1034
 			{
 				if (isLong)
 				{
-                    this.mWord[(int)CHARINDEX_ChangNyin] = 0x1034;
+                    this.mWord[(int)CharIndex.ChangNyin] = 0x1034;
 				}
-				else if(this.mWord[(int)CHARINDEX_HaHtoe] != NULL_CHAR) 
+				else if(this.mWord[(int)CharIndex.HaHtoe] != NULL_CHAR) 
 				{
-                    this.mWord[(int)CHARINDEX_ChangNyin] = 0x1089;
-					this.mWord[(int)CHARINDEX_HaHtoe] = NULL_CHAR;
+                    this.mWord[(int)CharIndex.ChangNyin] = 0x1089;
+					this.mWord[(int)CharIndex.HaHtoe] = NULL_CHAR;
 				}
 				else
 				{
-                    this.mWord[(int)CHARINDEX_ChangNyin] = 0x1030;
+                    this.mWord[(int)CharIndex.ChangNyin] = 0x1030;
 				}
 			}
 		}
 		
 		private void fixTeeTeeTin() {
-			if (this.mWord[(int)CHARINDEX_TeeTeeTin] == NULL_CHAR) return;
+			if (this.mWord[(int)CharIndex.TeeTeeTin] == NULL_CHAR) return;
 			// No Change 
 		}
 		
 		private void fixNoutPyit() {
-			if (this.mWord[(int)CHARINDEX_NoutPyit] == NULL_CHAR) return;
+			if (this.mWord[(int)CharIndex.NoutPyit] == NULL_CHAR) return;
 			// No Change
 		}
 		
 		private void fixYeeKhya() {
-			if (this.mWord[(int)CHARINDEX_YeeKhya] == NULL_CHAR) return;
+			if (this.mWord[(int)CharIndex.YeeKhya] == NULL_CHAR) return;
 			
-			if((   (this.mWord[(int)CHARINDEX_Consonant] == 0x1001)  // ·Ä?
-			    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1002)  // ·ÄÇ
-			    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1004)  // ·ÄÑ
-			    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1012)  // ·Äí
-			    || (this.mWord[(int)CHARINDEX_Consonant] == 0x1015)  // ·Äï
-			    || (this.mWord[(int)CHARINDEX_Consonant] == 0x101D)) // ·Ä?
+			if((   (this.mWord[(int)CharIndex.Consonant] == 0x1001)  // ·ÄÅ
+			    || (this.mWord[(int)CharIndex.Consonant] == 0x1002)  // ·ÄÇ
+			    || (this.mWord[(int)CharIndex.Consonant] == 0x1004)  // ·ÄÑ
+			    || (this.mWord[(int)CharIndex.Consonant] == 0x1012)  // ·Äí
+			    || (this.mWord[(int)CharIndex.Consonant] == 0x1015)  // ·Äï
+			    || (this.mWord[(int)CharIndex.Consonant] == 0x101D)) // ·Äù
 		        && 
-		   		(  (this.mWord[(int)CHARINDEX_RaRitt] == NULL_CHAR)
-		    	&& (this.mWord[(int)CHARINDEX_LowerConsonant] == NULL_CHAR)
-                && (this.mWord[(int)CHARINDEX_LoneGyiTin] == NULL_CHAR)
-                && (this.mWord[(int)CHARINDEX_HaHtoe] == NULL_CHAR)
-                && (this.mWord[(int)CHARINDEX_WaSwal] == NULL_CHAR)
-                && (this.mWord[(int)CHARINDEX_YaPint] == NULL_CHAR)
-                && (this.mWord[(int)CHARINDEX_ChangNyin] == NULL_CHAR)
+		   		(  (this.mWord[(int)CharIndex.RaRitt] == NULL_CHAR)
+		    	&& (this.mWord[(int)CharIndex.LowerConsonant] == NULL_CHAR)
+                && (this.mWord[(int)CharIndex.LoneGyiTin] == NULL_CHAR)
+                && (this.mWord[(int)CharIndex.HaHtoe] == NULL_CHAR)
+                && (this.mWord[(int)CharIndex.WaSwal] == NULL_CHAR)
+                && (this.mWord[(int)CharIndex.YaPint] == NULL_CHAR)
+                && (this.mWord[(int)CharIndex.ChangNyin] == NULL_CHAR)
 		    	))
 			{
-				if ((this.mWord[(int)CHARINDEX_YeeKhya] != NULL_CHAR)
-                    && (this.mWord[(int)CHARINDEX_AThart] == 0x1039))
+				if ((this.mWord[(int)CharIndex.YeeKhya] != NULL_CHAR)
+                    && (this.mWord[(int)CharIndex.AThart] == 0x1039))
 				{
-					this.mWord[(int)CHARINDEX_YeeKhya] = 0x105A;
-                    this.mWord[(int)CHARINDEX_AThart] = NULL_CHAR;
+					this.mWord[(int)CharIndex.YeeKhya] = 0x105A;
+                    this.mWord[(int)CharIndex.AThart] = NULL_CHAR;
 				}
 				else
 				{
-					this.mWord[(int)CHARINDEX_YeeKhya] = 0x102B;
+					this.mWord[(int)CharIndex.YeeKhya] = 0x102B;
 				}
 			}
 			else
 			{
-				this.mWord[(int)CHARINDEX_YeeKhya] = 0x102C;
+				this.mWord[(int)CharIndex.YeeKhya] = 0x102C;
 			}
 		}
 
         private void fixAThart() {
-            if (this.mWord[(int)CHARINDEX_AThart] == NULL_CHAR) return;
-            if (this.mWord[(int)CHARINDEX_AThart] == 0x1064) 
+            if (this.mWord[(int)CharIndex.AThart] == NULL_CHAR) return;
+            if (this.mWord[(int)CharIndex.AThart] == 0x1064) 
             {
-                if (this.mWord[(int)CHARINDEX_TeeTeeTin] != NULL_CHAR) 
+                if (this.mWord[(int)CharIndex.TeeTeeTin] != NULL_CHAR) 
                 {
-                    this.mWord[(int)CHARINDEX_AThart] = 0x108D;
-					this.mWord[(int)CHARINDEX_TeeTeeTin] = NULL_CHAR;
+                    this.mWord[(int)CharIndex.AThart] = 0x108D;
+					this.mWord[(int)CharIndex.TeeTeeTin] = NULL_CHAR;
                 } 
                 else 
                 {
-                    this.mWord[(int)CHARINDEX_AThart] = 0x1064;
+                    this.mWord[(int)CharIndex.AThart] = 0x1064;
                 }
             }
         }
 
         private void fixOutNyint() {
-            if (this.mWord[(int)CHARINDEX_OutNyint] == NULL_CHAR) return;
-            if ((this.mWord[(int)CHARINDEX_YeeKhya] == NULL_CHAR) && ( 
-				(this.mWord[(int)CHARINDEX_RaRitt] != NULL_CHAR)
-                || (this.mWord[(int)CHARINDEX_WaSwal] != NULL_CHAR)
-                || (this.mWord[(int)CHARINDEX_YaPint] != NULL_CHAR)
-                || ((this.mWord[(int)CHARINDEX_ChangNyin] != NULL_CHAR) && (this.mWord[(int)CHARINDEX_ChangNyin] != 0x102F))
-                || (this.mWord[(int)CHARINDEX_LowerConsonant] != NULL_CHAR)
+            if (this.mWord[(int)CharIndex.OutNyint] == NULL_CHAR) return;
+            if ((this.mWord[(int)CharIndex.YeeKhya] == NULL_CHAR) && ( 
+				(this.mWord[(int)CharIndex.RaRitt] != NULL_CHAR)
+                || (this.mWord[(int)CharIndex.WaSwal] != NULL_CHAR)
+                || (this.mWord[(int)CharIndex.YaPint] != NULL_CHAR)
+                || ((this.mWord[(int)CharIndex.ChangNyin] != NULL_CHAR) && (this.mWord[(int)CharIndex.ChangNyin] != 0x102F))
+                || (this.mWord[(int)CharIndex.LowerConsonant] != NULL_CHAR)
                 
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1008)// ·Äà
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x100B)  // ·Äã
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x100C)  // ·Äå
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x100D)  // ·Ä?
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1020)  // ·Ä†
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x101B)  // ·Äõ
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1090) // ·Ç?
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x104C) // ·?å
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x104D) // ·??
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1092) // ·Çí
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x106E) // ·?Æ
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x106F) // ·?Ø
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1097) // ·Çó
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1008)// ·Äà
+                || (this.mWord[(int)CharIndex.Consonant] == 0x100B)  // ·Äã
+                || (this.mWord[(int)CharIndex.Consonant] == 0x100C)  // ·Äå
+                || (this.mWord[(int)CharIndex.Consonant] == 0x100D)  // ·Äç
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1020)  // ·Ä†
+                || (this.mWord[(int)CharIndex.Consonant] == 0x101B)  // ·Äõ
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1090) // ·Çê
+                || (this.mWord[(int)CharIndex.Consonant] == 0x104C) // ·Åå
+                || (this.mWord[(int)CharIndex.Consonant] == 0x104D) // ·Åç
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1092) // ·Çí
+                || (this.mWord[(int)CharIndex.Consonant] == 0x106E) // ·ÅÆ
+                || (this.mWord[(int)CharIndex.Consonant] == 0x106F) // ·ÅØ
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1097) // ·Çó
 
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1042) // ·?Ç
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1043) // ·?É
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1044) // ·?Ñ
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1045) // ·?Ö
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1046) // ·?Ü
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1047) // ·?á
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1049) // ·?â
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1042) // ·ÅÇ
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1043) // ·ÅÉ
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1044) // ·ÅÑ
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1045) // ·ÅÖ
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1046) // ·ÅÜ
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1047) // ·Åá
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1049) // ·Åâ
 				
-                || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1023) // ·Ä£
-                || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1024) // ·Ä§
-                || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1029) // ·Ä©
-                || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x102A) // ·Ä™
-                || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x104E) // ·?é
-                || (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x1091) // ·Çë
+                || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1023) // ·Ä£
+                || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1024) // ·Ä§
+                || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1029) // ·Ä©
+                || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x102A) // ·Ä™
+                || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x104E) // ·Åé
+                || (this.mWord[(int)CharIndex.DoubleConsonant] == 0x1091) // ·Çë
                 ))
             {
-                this.mWord[(int)CHARINDEX_OutNyint] = 0x1095;
+                this.mWord[(int)CharIndex.OutNyint] = 0x1095;
             } 
-            else if ((this.mWord[(int)CHARINDEX_YeeKhya] == NULL_CHAR) && ( 
-				(this.mWord[(int)CHARINDEX_HaHtoe] != NULL_CHAR)
-                || (this.mWord[(int)CHARINDEX_ChangNyin] == 0x102F)
-                || (this.mWord[(int)CHARINDEX_Consonant] == 0x1014)) // ·Äî 
+            else if ((this.mWord[(int)CharIndex.YeeKhya] == NULL_CHAR) && ( 
+				(this.mWord[(int)CharIndex.HaHtoe] != NULL_CHAR)
+                || (this.mWord[(int)CharIndex.ChangNyin] == 0x102F)
+                || (this.mWord[(int)CharIndex.Consonant] == 0x1014)) // ·Äî 
 				)
             {
-                this.mWord[(int)CHARINDEX_OutNyint] = 0x1094;
+                this.mWord[(int)CharIndex.OutNyint] = 0x1094;
             } 
             else 
             {
-                this.mWord[(int)CHARINDEX_OutNyint] = 0x1037;
+                this.mWord[(int)CharIndex.OutNyint] = 0x1037;
             }
         }
 
         private void fixWittSaPout() {
-			if (this.mWord[(int)CHARINDEX_WittSaPout] == NULL_CHAR) return;
+			if (this.mWord[(int)CharIndex.WittSaPout] == NULL_CHAR) return;
 			// No Change
 		}
         
         private void fixMixChar() {
-			if((this.mWord[(int)CHARINDEX_Consonant] == 0x100D)
-				&& (this.mWord[(int)CHARINDEX_LowerConsonant] == 0x106E)) 
+			if((this.mWord[(int)CharIndex.Consonant] == 0x100D)
+				&& (this.mWord[(int)CharIndex.LowerConsonant] == 0x106E)) 
 			{
-				this.mWord[(int)CHARINDEX_Consonant] = 0x106E;
-				this.mWord[(int)CHARINDEX_LowerConsonant] = NULL_CHAR;
+				this.mWord[(int)CharIndex.Consonant] = 0x106E;
+				this.mWord[(int)CharIndex.LowerConsonant] = NULL_CHAR;
 			}
 			
-        	if((this.mWord[(int)CHARINDEX_Consonant] == 0x100E) 
-        		&& (this.mWord[(int)CHARINDEX_LowerConsonant] == 0x106F)) 
+        	if((this.mWord[(int)CharIndex.Consonant] == 0x100E) 
+        		&& (this.mWord[(int)CharIndex.LowerConsonant] == 0x106F)) 
     		{
-        		this.mWord[(int)CHARINDEX_Consonant] = 0x106F;
-        		this.mWord[(int)CHARINDEX_LowerConsonant] = NULL_CHAR;
+        		this.mWord[(int)CharIndex.Consonant] = 0x106F;
+        		this.mWord[(int)CharIndex.LowerConsonant] = NULL_CHAR;
     		}
         	
-        	if((this.mWord[(int)CHARINDEX_Consonant] == 0x100B) 
-    			&& (this.mWord[(int)CHARINDEX_LowerConsonant] == 0x1097))
+        	if((this.mWord[(int)CharIndex.Consonant] == 0x100B) 
+    			&& (this.mWord[(int)CharIndex.LowerConsonant] == 0x1097))
         	{
-        		this.mWord[(int)CHARINDEX_Consonant] = 0x1097;
-        		this.mWord[(int)CHARINDEX_LowerConsonant] = NULL_CHAR;
+        		this.mWord[(int)CharIndex.Consonant] = 0x1097;
+        		this.mWord[(int)CharIndex.LowerConsonant] = NULL_CHAR;
         	}
         	
-        	if((this.mWord[(int)CHARINDEX_ThaWaiHtoe] == 0x1031)
-        		&& (this.mWord[(int)CHARINDEX_RaRitt] == 0x107E)
-            	&& (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x101E)
-            	&& (this.mWord[(int)CHARINDEX_YeeKhya] == 0x102C)
-            	&& (this.mWord[(int)CHARINDEX_AThart] == 0x1039)) 
+        	if((this.mWord[(int)CharIndex.ThaWaiHtoe] == 0x1031)
+        		&& (this.mWord[(int)CharIndex.RaRitt] == 0x107E)
+            	&& (this.mWord[(int)CharIndex.DoubleConsonant] == 0x101E)
+            	&& (this.mWord[(int)CharIndex.YeeKhya] == 0x102C)
+            	&& (this.mWord[(int)CharIndex.AThart] == 0x1039)) 
         	{
-        		this.mWord[(int)CHARINDEX_ThaWaiHtoe] = NULL_CHAR;
-                this.mWord[(int)CHARINDEX_RaRitt] = NULL_CHAR;
-                this.mWord[(int)CHARINDEX_DoubleConsonant] = 0x102A;
-                this.mWord[(int)CHARINDEX_YeeKhya] = NULL_CHAR;
-                this.mWord[(int)CHARINDEX_AThart] = NULL_CHAR;
+        		this.mWord[(int)CharIndex.ThaWaiHtoe] = NULL_CHAR;
+                this.mWord[(int)CharIndex.RaRitt] = NULL_CHAR;
+                this.mWord[(int)CharIndex.DoubleConsonant] = 0x102A;
+                this.mWord[(int)CharIndex.YeeKhya] = NULL_CHAR;
+                this.mWord[(int)CharIndex.AThart] = NULL_CHAR;
         	}
         	
-        	if((this.mWord[(int)CHARINDEX_RaRitt] == 0x107E)
-    			&& (this.mWord[(int)CHARINDEX_DoubleConsonant] == 0x101E)) 
+        	if((this.mWord[(int)CharIndex.RaRitt] == 0x107E)
+    			&& (this.mWord[(int)CharIndex.DoubleConsonant] == 0x101E)) 
         	{
-        		this.mWord[(int)CHARINDEX_RaRitt] = NULL_CHAR;
-        		this.mWord[(int)CHARINDEX_DoubleConsonant] = 0x1029;
+        		this.mWord[(int)CharIndex.RaRitt] = NULL_CHAR;
+        		this.mWord[(int)CharIndex.DoubleConsonant] = 0x1029;
         	}
         	
-        	if((this.mWord[(int)CHARINDEX_LoneGyiTin] == 0x102E)
-    			&& (this.mWord[(int)CHARINDEX_Consonant] == 0x1025)) 
+        	if((this.mWord[(int)CharIndex.LoneGyiTin] == 0x102E)
+    			&& (this.mWord[(int)CharIndex.Consonant] == 0x1025)) 
         	{
-        		this.mWord[(int)CHARINDEX_LoneGyiTin] = NULL_CHAR;
-        		this.mWord[(int)CHARINDEX_Consonant] = 0x1026;
+        		this.mWord[(int)CharIndex.LoneGyiTin] = NULL_CHAR;
+        		this.mWord[(int)CharIndex.Consonant] = 0x1026;
         	}
         	
-        	if((this.mWord[(int)CHARINDEX_Consonant] == 0x1044)
-        		&& (this.mWord[(int)CHARINDEX_LowerConsonant] == 0x1004)
-        		&& (this.mWord[(int)CHARINDEX_AThart] == 0x1039)
-        		&& (this.mWord[(int)CHARINDEX_WittSaPout] == 0x1038))
+        	if((this.mWord[(int)CharIndex.Consonant] == 0x1044)
+        		&& (this.mWord[(int)CharIndex.LowerConsonant] == 0x1004)
+        		&& (this.mWord[(int)CharIndex.AThart] == 0x1039)
+        		&& (this.mWord[(int)CharIndex.WittSaPout] == 0x1038))
         	{
-        		this.mWord[(int)CHARINDEX_Consonant] = 0x104E;
-                this.mWord[(int)CHARINDEX_LowerConsonant] = NULL_CHAR;
-                this.mWord[(int)CHARINDEX_AThart] = NULL_CHAR;
-                this.mWord[(int)CHARINDEX_WittSaPout] = NULL_CHAR;
+        		this.mWord[(int)CharIndex.Consonant] = 0x104E;
+                this.mWord[(int)CharIndex.LowerConsonant] = NULL_CHAR;
+                this.mWord[(int)CharIndex.AThart] = NULL_CHAR;
+                this.mWord[(int)CharIndex.WittSaPout] = NULL_CHAR;
         	}
+			
+			if ((this.mWord[(int)CharIndex.Consonant] == 0x1005)
+				&& (this.mWord[(int)CharIndex.YaPint] == 0x103A))
+			{
+				this.mWord[(int)CharIndex.Consonant] = 0x1008;
+				this.mWord[(int)CharIndex.YaPint] = NULL_CHAR;
+			}
 		}
         
         private void addToList(int code, ArrayList<Integer> list) {
@@ -1160,7 +1169,7 @@ public class ZawGyiCorrection {
         
         public void fix() {
             if (this.mWord == null) return;
-			if((this.mWord[(int)CHARINDEX_Consonant] == NULL_CHAR) && (this.mWord[(int)CHARINDEX_DoubleConsonant] == NULL_CHAR)) return;
+			if((this.mWord[(int)CharIndex.Consonant] == NULL_CHAR) && (this.mWord[(int)CharIndex.DoubleConsonant] == NULL_CHAR)) return;
 
             this.fixThaWaiHtoe();
             this.fixRaYitt();
@@ -1185,94 +1194,94 @@ public class ZawGyiCorrection {
         }
 
         public boolean hasConsonant() {
-            return (this.mWord[(int)CHARINDEX_Consonant] != NULL_CHAR) || (this.mWord[(int)CHARINDEX_DoubleConsonant] != NULL_CHAR);
+            return (this.mWord[(int)CharIndex.Consonant] != NULL_CHAR) || (this.mWord[(int)CharIndex.DoubleConsonant] != NULL_CHAR);
         }
         
         public void setValue(int charIndex, int code) {
         	if(charIndex < 0) return;
-        	if(charIndex > CHARINDEX_Other) return;
+        	if(charIndex > CharIndex.Other) return;
         	
         	switch (code)
             {
                 case 0x106E: // ·?Æ
-                    this.mWord[(int)CHARINDEX_Consonant] = 0x100D;
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = code;
+                    this.mWord[(int)CharIndex.Consonant] = 0x100D;
+                    this.mWord[(int)CharIndex.LowerConsonant] = code;
                     break;
 
                 case 0x106F: // ·?Ø
-                    this.mWord[(int)CHARINDEX_Consonant] = 0x100E;
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = code;
+                    this.mWord[(int)CharIndex.Consonant] = 0x100E;
+                    this.mWord[(int)CharIndex.LowerConsonant] = code;
                     break;
 
                 case 0x1097: // ·Çó
-                    this.mWord[(int)CHARINDEX_Consonant] = 0x100B;
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = code;
+                    this.mWord[(int)CharIndex.Consonant] = 0x100B;
+                    this.mWord[(int)CharIndex.LowerConsonant] = code;
                     break;
 
                 case 0x102A: // ·Ä™
-                    this.mWord[(int)CHARINDEX_ThaWaiHtoe] = 0x1031;
-                    this.mWord[(int)CHARINDEX_RaRitt] = 0x107E;
-                    this.mWord[(int)CHARINDEX_DoubleConsonant] = 0x101E;
-                    this.mWord[(int)CHARINDEX_YeeKhya] = 0x102C;
-                    this.mWord[(int)CHARINDEX_AThart] = 0x1039;
+                    this.mWord[(int)CharIndex.ThaWaiHtoe] = 0x1031;
+                    this.mWord[(int)CharIndex.RaRitt] = 0x107E;
+                    this.mWord[(int)CharIndex.DoubleConsonant] = 0x101E;
+                    this.mWord[(int)CharIndex.YeeKhya] = 0x102C;
+                    this.mWord[(int)CharIndex.AThart] = 0x1039;
                     break;
                     
                 case 0x1029: // ·Ä©
-                    this.mWord[(int)CHARINDEX_RaRitt] = 0x107E;
-                    this.mWord[(int)CHARINDEX_DoubleConsonant] = 0x101E;
+                    this.mWord[(int)CharIndex.RaRitt] = 0x107E;
+                    this.mWord[(int)CharIndex.DoubleConsonant] = 0x101E;
                     break;
 
                 case 0x1026: // ·Ä¶
-                    this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x102E;
-                    this.mWord[(int)CHARINDEX_Consonant] = 0x1025;
+                    this.mWord[(int)CharIndex.LoneGyiTin] = 0x102E;
+                    this.mWord[(int)CharIndex.Consonant] = 0x1025;
                     break;
 
                 // TODO Need to fix up
                 case 0x104E: // ·?é
-                    this.mWord[(int)CHARINDEX_Consonant] = 0x1044;
-                    this.mWord[(int)CHARINDEX_LowerConsonant] = 0x1004;
-                    this.mWord[(int)CHARINDEX_AThart] = 0x1039;
-                    this.mWord[(int)CHARINDEX_WittSaPout] = 0x1038;
+                    this.mWord[(int)CharIndex.Consonant] = 0x1044;
+                    this.mWord[(int)CharIndex.LowerConsonant] = 0x1004;
+                    this.mWord[(int)CharIndex.AThart] = 0x1039;
+                    this.mWord[(int)CharIndex.WittSaPout] = 0x1038;
                     break;
 
                 case 0x105A: // x·?ö
-                    this.mWord[(int)CHARINDEX_YeeKhya] = 0x102C;
-                    this.mWord[(int)CHARINDEX_AThart] = 0x1039;
+                    this.mWord[(int)CharIndex.YeeKhya] = 0x102C;
+                    this.mWord[(int)CharIndex.AThart] = 0x1039;
                     break;
 
                 case 0x1088: // ‚Ä?√ó
-                    this.mWord[(int)CHARINDEX_HaHtoe] = 0x103D;
-                    this.mWord[(int)CHARINDEX_ChangNyin] = 0x102F;
+                    this.mWord[(int)CharIndex.HaHtoe] = 0x103D;
+                    this.mWord[(int)CharIndex.ChangNyin] = 0x102F;
                     break;
 
                 case 0x1089: // √ó·Çâ
-                    this.mWord[(int)CHARINDEX_HaHtoe] = 0x103D;
-                    this.mWord[(int)CHARINDEX_ChangNyin] = 0x1030;
+                    this.mWord[(int)CharIndex.HaHtoe] = 0x103D;
+                    this.mWord[(int)CharIndex.ChangNyin] = 0x1030;
                     break;
 
                 case 0x108A: // √ó‚Ä?·Çä
-                    this.mWord[(int)CHARINDEX_WaSwal] = 0x103C;
-                    this.mWord[(int)CHARINDEX_HaHtoe] = 0x103D;
+                    this.mWord[(int)CharIndex.WaSwal] = 0x103C;
+                    this.mWord[(int)CharIndex.HaHtoe] = 0x103D;
                     break;
 
                 case 0x108B: // ‚Ä?√ó·Çã
-                    this.mWord[(int)CHARINDEX_AThart] = 0x1064;
-                    this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x102D;
+                    this.mWord[(int)CharIndex.AThart] = 0x1064;
+                    this.mWord[(int)CharIndex.LoneGyiTin] = 0x102D;
                     break;
 
                 case 0x108C: // ‚Ä?√ó·Çå
-                    this.mWord[(int)CHARINDEX_AThart] = 0x1064;
-                    this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x102E;
+                    this.mWord[(int)CharIndex.AThart] = 0x1064;
+                    this.mWord[(int)CharIndex.LoneGyiTin] = 0x102E;
                     break;
 
                 case 0x108D: // √ó·Ç?
-                    this.mWord[(int)CHARINDEX_AThart] = 0x1064;
-                    this.mWord[(int)CHARINDEX_TeeTeeTin] = 0x1036;
+                    this.mWord[(int)CharIndex.AThart] = 0x1064;
+                    this.mWord[(int)CharIndex.TeeTeeTin] = 0x1036;
                     break;
 
                 case 0x108E: // √ó·Çé
-                    this.mWord[(int)CHARINDEX_LoneGyiTin] = 0x102D;
-                    this.mWord[(int)CHARINDEX_TeeTeeTin] = 0x1036;
+                    this.mWord[(int)CharIndex.LoneGyiTin] = 0x102D;
+                    this.mWord[(int)CharIndex.TeeTeeTin] = 0x1036;
                     break;
 
                 default:
@@ -1283,39 +1292,39 @@ public class ZawGyiCorrection {
 	
         public int[] getResult() {
         	
-        	boolean fixAThart = ((this.mWord[(int)CHARINDEX_ThaWaiHtoe] == NULL_CHAR)
-                    && (this.mWord[(int)CHARINDEX_YaPint] != NULL_CHAR)
-                    && (this.mWord[(int)CHARINDEX_AThart] != NULL_CHAR));
+        	boolean fixAThart = ((this.mWord[(int)CharIndex.ThaWaiHtoe] == NULL_CHAR)
+                    && (this.mWord[(int)CharIndex.YaPint] != NULL_CHAR)
+                    && (this.mWord[(int)CharIndex.AThart] != NULL_CHAR));
         	
-			if ((this.mWord[(int)CHARINDEX_AThart] == 0x1064)
-				|| (this.mWord[(int)CHARINDEX_AThart] == 0x108D))
+			if ((this.mWord[(int)CharIndex.AThart] == 0x1064)
+				|| (this.mWord[(int)CharIndex.AThart] == 0x108D))
 			{
 				fixAThart = true;
 			}
 			
-        	final boolean fixLoneGyiTin = (this.mWord[(int)CHARINDEX_YaPint] != NULL_CHAR);
+        	final boolean fixLoneGyiTin = (this.mWord[(int)CharIndex.YaPint] != NULL_CHAR);
         	
         	ArrayList<Integer> list = new ArrayList<Integer>();
         	
-        	this.addToList(this.mWord[(int)CHARINDEX_ThaWaiHtoe], list);
-            this.addToList(this.mWord[(int)CHARINDEX_RaRitt], list);
-            this.addToList(this.mWord[(int)CHARINDEX_Consonant], list);
-            this.addToList(this.mWord[(int)CHARINDEX_DoubleConsonant], list);
-            this.addToList(this.mWord[(int)CHARINDEX_LowerConsonant], list);
-            if(!fixLoneGyiTin) this.addToList(this.mWord[(int)CHARINDEX_LoneGyiTin], list);
-            this.addToList(this.mWord[(int)CHARINDEX_HaHtoe], list);
-            this.addToList(this.mWord[(int)CHARINDEX_WaSwal], list);
-            this.addToList(this.mWord[(int)CHARINDEX_YaPint], list);
-            if (fixAThart) this.addToList(this.mWord[(int)CHARINDEX_AThart], list);
-            this.addToList(this.mWord[(int)CHARINDEX_TeeTeeTin], list);
-            this.addToList(this.mWord[(int)CHARINDEX_ChangNyin], list);
-            if(fixLoneGyiTin) this.addToList(this.mWord[(int)CHARINDEX_LoneGyiTin], list);
-            this.addToList(this.mWord[(int)CHARINDEX_NoutPyit], list);
-            this.addToList(this.mWord[(int)CHARINDEX_YeeKhya], list);
-            if (!fixAThart) this.addToList(this.mWord[(int)CHARINDEX_AThart], list);
-            this.addToList(this.mWord[(int)CHARINDEX_OutNyint], list);
-            this.addToList(this.mWord[(int)CHARINDEX_WittSaPout], list);
-            this.addToList(this.mWord[(int)CHARINDEX_Other], list);
+        	this.addToList(this.mWord[(int)CharIndex.ThaWaiHtoe], list);
+            this.addToList(this.mWord[(int)CharIndex.RaRitt], list);
+            this.addToList(this.mWord[(int)CharIndex.Consonant], list);
+            this.addToList(this.mWord[(int)CharIndex.DoubleConsonant], list);
+            this.addToList(this.mWord[(int)CharIndex.LowerConsonant], list);
+            if(!fixLoneGyiTin) this.addToList(this.mWord[(int)CharIndex.LoneGyiTin], list);
+            this.addToList(this.mWord[(int)CharIndex.HaHtoe], list);
+            this.addToList(this.mWord[(int)CharIndex.WaSwal], list);
+            this.addToList(this.mWord[(int)CharIndex.YaPint], list);
+            if (fixAThart) this.addToList(this.mWord[(int)CharIndex.AThart], list);
+            this.addToList(this.mWord[(int)CharIndex.TeeTeeTin], list);
+            this.addToList(this.mWord[(int)CharIndex.ChangNyin], list);
+            if(fixLoneGyiTin) this.addToList(this.mWord[(int)CharIndex.LoneGyiTin], list);
+            this.addToList(this.mWord[(int)CharIndex.NoutPyit], list);
+            this.addToList(this.mWord[(int)CharIndex.YeeKhya], list);
+            if (!fixAThart) this.addToList(this.mWord[(int)CharIndex.AThart], list);
+            this.addToList(this.mWord[(int)CharIndex.OutNyint], list);
+            this.addToList(this.mWord[(int)CharIndex.WittSaPout], list);
+            this.addToList(this.mWord[(int)CharIndex.Other], list);
         	
             int[] result = new int[list.size()];
             int count = 0;
