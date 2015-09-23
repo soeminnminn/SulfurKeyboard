@@ -20,89 +20,94 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Title for Latin keyboard -->
-    <string name="english_ime_name" translatable="false">Sulfur\'s Keyboard</string>
+    <string name="english_ime_name">Sulfur\'s Keyboard</string>
     <!-- Title for Latin keyboard settings activity / dialog -->
-    <string name="english_ime_settings" translatable="false">Settings for Sulfur\'s Keyboard</string>
+    <string name="english_ime_settings">Settings for Sulfur\'s Keyboard</string>
     <!-- Title for Latin keyboard input options dialog -->
-    <string name="english_ime_input_options" translatable="false">Input options</string>
+    <string name="english_ime_input_options">Input options</string>
     
-    <string name="english_ime_description" translatable="false">English and Myanmar</string>
+    <string name="english_ime_description">English and Myanmar</string>
 
     <!-- Option to provide vibrate/haptic feedback on keypress -->
-    <string name="vibrate_on_keypress" translatable="false">Vibrate on keypress</string>
+    <string name="vibrate_on_keypress">Vibrate on keypress</string>
 
     <!-- Option to play back sound on keypress in soft keyboard -->
-    <string name="sound_on_keypress" translatable="false">Sound on keypress</string>
+    <string name="sound_on_keypress">Sound on keypress</string>
 
     <!-- Option to pop up the character with a larger font above soft keyboard -->
-    <string name="popup_on_keypress" translatable="false">Popup on keypress</string>
+    <string name="popup_on_keypress">Popup on keypress</string>
 
     <!-- Option to enable using nearby keys when correcting/predicting -->
-    <string name="hit_correction" translatable="false">Correct typing errors</string>
+    <string name="hit_correction">Correct typing errors</string>
 
     <!-- Description for hit_correction -->
-    <string name="hit_correction_summary" translatable="false">Enable input error correction</string>
+    <string name="hit_correction_summary">Enable input error correction</string>
 
     <!-- Option to enable using nearby keys when correcting/predicting in landscape -->
-    <string name="hit_correction_land" translatable="false">Landscape input errors</string>
+    <string name="hit_correction_land">Landscape input errors</string>
 
     <!-- Description for hit_correction in landscape -->
-    <string name="hit_correction_land_summary" translatable="false">Enable input error correction</string>
+    <string name="hit_correction_land_summary">Enable input error correction</string>
 
     <!-- Option to automatically correct word on hitting space -->
-    <string name="auto_correction" translatable="false">Word suggestions</string>
+    <string name="auto_correction">Word suggestions</string>
 
     <!-- Description for auto_correction -->
-    <string name="auto_correction_summary" translatable="false">Automatically correct the previous word</string>
+    <string name="auto_correction_summary">Automatically correct the previous word</string>
 
     <!-- Option to enable text prediction -->
-    <string name="prediction" translatable="false">Word suggestions</string>
+    <string name="prediction">Word suggestions</string>
     <!-- Category title for text prediction -->
-    <string name="prediction_category" translatable="false">Word suggestion settings</string>
+    <string name="prediction_category">Word suggestion settings</string>
     <!-- Description for text prediction -->
-    <string name="prediction_summary" translatable="false">Enable auto completion while typing</string>
+    <string name="prediction_summary">Enable auto completion while typing</string>
 
     <!-- Dialog title for auto complete choices -->
-    <string name="auto_complete_dialog_title" translatable="false">Auto completion</string>
+    <string name="auto_complete_dialog_title">Auto completion</string>
 
     <!-- Option to enable text prediction in landscape -->
-    <string name="prediction_landscape" translatable="false">Increase text field size</string>
+    <string name="prediction_landscape">Increase text field size</string>
     <!-- Description for text prediction -->
-    <string name="prediction_landscape_summary" translatable="false">Hide word suggestions in landscape view</string>
+    <string name="prediction_landscape_summary">Hide word suggestions in landscape view</string>
 
     <!-- Option to enable auto capitalization of sentences -->
-    <string name="auto_cap" translatable="false">Auto-capitalization</string>
+    <string name="auto_cap">Auto-capitalization</string>
     <!-- Description for auto cap -->
-    <string name="auto_cap_summary" translatable="false">Capitalize the start of a sentence</string>
+    <string name="auto_cap_summary">Capitalize the start of a sentence</string>
     <!-- Option to enable auto punctuate -->
-    <string name="auto_punctuate" translatable="false">Auto-punctuate</string>
+    <string name="auto_punctuate">Auto-punctuate</string>
     <!-- Description for auto punctuate -->
-    <string name="auto_punctuate_summary" translatable="false"></string>
+    <string name="auto_punctuate_summary"></string>
 
     <!-- Option to enable quick fixes -->
-    <string name="quick_fixes" translatable="false">Quick fixes</string>
+    <string name="quick_fixes">Quick fixes</string>
     <!-- Description for quick fixes -->
-    <string name="quick_fixes_summary" translatable="false">Corrects commonly typed mistakes</string>
+    <string name="quick_fixes_summary">Corrects commonly typed mistakes</string>
 
     <!-- Option to enable showing suggestions -->
-    <string name="show_suggestions" translatable="false">Show suggestions</string>
+    <string name="show_suggestions">Show suggestions</string>
     <!-- Description for show suggestions -->
-    <string name="show_suggestions_summary" translatable="false">Display suggested words while typing</string>
+    <string name="show_suggestions_summary">Display suggested words while typing</string>
     
+    <!-- Don't translate -->
     <string name="suggestion_visibility_default_value" translatable="false">0</string>
+    <!-- Don't translate -->
 	<string name="suggestion_visibility_show_value" translatable="false">0</string>
+	<!-- Don't translate -->
 	<string name="suggestion_visibility_show_only_portrait_value" translatable="false">1</string>
+	<!-- Don't translate -->
 	<string name="suggestion_visibility_hide_value" translatable="false">2</string>
 	<!-- Array of the suggestions show mode values -->
-	<string-array name="suggestion_visibility_values">
+	<!-- Don't translate -->
+	<string-array name="suggestion_visibility_values" translatable="false">
 		<item>@string/suggestion_visibility_show_value</item>
 		<item>@string/suggestion_visibility_show_only_portrait_value</item>
 		<item>@string/suggestion_visibility_hide_value</item>
 	</string-array>
 	
-	<string name="suggestion_visibility_show" translatable="false">Always show</string>
-	<string name="suggestion_visibility_show_only_portrait" translatable="false">Show on portrait mode</string>
-	<string name="suggestion_visibility_hide" translatable="false">Always hide</string>
+	<string name="suggestion_visibility_show">Always show</string>
+	<string name="suggestion_visibility_show_only_portrait">Show on portrait mode</string>
+	<string name="suggestion_visibility_hide">Always hide</string>
 	<!-- Array of the suggestions show mode -->
 	<string-array name="suggestion_visibilities">
 		<item>@string/suggestion_visibility_show</item>
@@ -111,18 +116,18 @@
 	</string-array>
 
     <!-- Option to enable auto completion -->
-    <string name="auto_complete" translatable="false">Auto-complete</string>
+    <string name="auto_complete">Auto-complete</string>
     <!-- Description for auto completion -->
-    <string name="auto_complete_summary" translatable="false">Spacebar and punctuation automatically insert highlighted word</string>
+    <string name="auto_complete_summary">Spacebar and punctuation automatically insert highlighted word</string>
     
     <!-- Option to enable auto hiding mini keyboard -->
-    <string name="auto_hide_minikeyboard" translatable="false">Auto hide morekeys keyboard</string>
+    <string name="auto_hide_minikeyboard">Auto hide morekeys keyboard</string>
     <!-- Description for auto hide mini keyboard -->
-    <string name="auto_hide_minikeyboard_true" translatable="false">Auto hide morekeys keyboard when release touch.</string>
-    <string name="auto_hide_minikeyboard_false" translatable="false">Still morekeys keyboard when release touch.</string>
+    <string name="auto_hide_minikeyboard_true">Auto hide morekeys keyboard when release touch.</string>
+    <string name="auto_hide_minikeyboard_false">Still morekeys keyboard when release touch.</string>
     
     <!-- Option to show/hide the settings key -->
-    <string name="prefs_settings_key" translatable="false">Show settings key</string>
+    <string name="prefs_settings_key">Show settings key</string>
     <!-- Array of the settings key mode values -->
     <string-array name="settings_key_modes_values" translatable="false">
         <item>@string/settings_key_mode_auto</item>
@@ -130,11 +135,11 @@
         <item>@string/settings_key_mode_always_hide</item>
     </string-array>
     <!-- Option to automatically decide to show/hide the settings key -->
-    <string name="settings_key_mode_auto_name" translatable="false">Automatic</string>
+    <string name="settings_key_mode_auto_name">Automatic</string>
     <!-- Option to always show the settings key -->
-    <string name="settings_key_mode_always_show_name" translatable="false">Always show</string>
+    <string name="settings_key_mode_always_show_name">Always show</string>
     <!-- Option to always hide the settings key -->
-    <string name="settings_key_mode_always_hide_name" translatable="false">Always hide</string>
+    <string name="settings_key_mode_always_hide_name">Always hide</string>
     <!-- Array of the settings key modes -->
     <string-array name="settings_key_modes">
         <item>@string/settings_key_mode_auto_name</item>
@@ -143,12 +148,12 @@
     </string-array>
 
     <!-- Option to enable bigram completion -->
-    <string name="bigram_suggestion" translatable="false">Bigram Suggestions</string>
+    <string name="bigram_suggestion">Bigram Suggestions</string>
     <!-- Description for auto completion -->
-    <string name="bigram_suggestion_summary" translatable="false">Use previous word to improve suggestion</string>
+    <string name="bigram_suggestion_summary">Use previous word to improve suggestion</string>
 
     <!-- Array of prediction modes -->
-    <string-array name="prediction_modes" translatable="false">
+    <string-array name="prediction_modes">
         <item>None</item>
         <item>Basic</item>
         <item>Advanced</item>
@@ -168,9 +173,9 @@
     </string-array>
     
     <!-- Option to show/hide the language key -->
-    <string name="prefs_language_key" translatable="false">Language switch key</string>
+    <string name="prefs_language_key">Language switch key</string>
     <!-- Array of language key modes -->
-    <string-array name="language_key_modes" translatable="false">
+    <string-array name="language_key_modes">
         <item>Both Slide and Toggle</item>
         <item>Slide Spacebar</item>
         <item>Toggle Key</item>
@@ -193,39 +198,6 @@
     <!-- Indicates that a word has been added to the dictionary -->
     <string name="added_word" translatable="false"><xliff:g id="word">%s</xliff:g> : Saved</string>
 
-    <!-- Tip to long press on keys -->
-    <string name="tip_long_press" translatable="false">Hold a key down to see accents (ø, ö, etc.)</string>
-    <!-- Tip to dismiss keyboard -->
-    <string name="tip_dismiss" translatable="false">Press the back key \u21B6 to close the keyboard at any point</string>
-    <!-- Tip to press ?123 to access numbers and symbols -->
-    <string name="tip_access_symbols" translatable="false">Access numbers and symbols</string>
-    <!-- Tip to long press on typed word to add to dictionary -->
-    <string name="tip_add_to_dictionary" translatable="false">Press and hold the left-most word to add it to the dictionary</string>
-
-    <!-- Instruction to touch the bubble to continue -->
-    <string name="touch_to_continue" translatable="false">Touch this hint to continue »</string>
-
-    <!-- Instruction to touch the bubble to start typing -->
-    <string name="touch_to_finish" translatable="false">Touch here to close this hint and start typing!</string>
-
-    <!-- Tutorial tip 1 - The keyboard opens any time you touch a text field -->
-    <string name="tip_to_open_keyboard" translatable="false"><b>The keyboard opens any time you touch a text field</b></string>
-
-    <!-- Tutorial tip 2 - Touch and hold a key to view accents (examples) -->
-    <string name="tip_to_view_accents" translatable="false"><b>Touch &amp; hold a key to view accents\n(ø, ö, ô, ó, and so on)</b></string>
-
-    <!-- Tutorial tip 3 - How to switch to number/symbol keyboard -->
-    <string name="tip_to_open_symbols" translatable="false"><b>Switch to numbers and symbols by touching this key</b></string>
-
-    <!-- Tutorial tip 4 - How to switch back to alphabet keyboard -->
-    <string name="tip_to_close_symbols" translatable="false"><b>Go back to letters by touching this key again</b></string>
-
-    <!-- Tutorial tip 5 - How to launch keyboard settings -->
-    <string name="tip_to_launch_settings" translatable="false"><b>Touch &amp; hold this key to change keyboard settings, like auto complete</b></string>
-
-    <!-- Tutorial tip 6 - Done with the tutorial -->
-    <string name="tip_to_start_typing" translatable="false"><b>Try it!</b></string>
-
     <!-- Label for soft enter key when it performs GO action.  Must be short to fit on key! -->
     <string name="label_go_key">Go</string>
     <!-- Label for soft enter key when it performs NEXT action.  Must be short to fit on key! -->
@@ -246,21 +218,7 @@
     <string name="label_phone_alt_key">\uF0DC\uF0DD</string>
     <!-- Label for Num ALT modifier key.  Must be short to fit on key! -->
     <string name="label_num_alt_key">+ %</string>
-
-    <!-- IME Tutorial screen (ROMAN) -->
-    <skip />
-    <!-- appears above image showing the user to click on a TextView to show the IME -->
-    <string name="open_the_keyboard" translatable="false"><font size="17"><b>Open the keyboard\n</b></font><font size="3">\n</font>Touch any text field.</string>
-
-    <!-- appears above the image showing the back button used to close the keyboard -->
-    <string name="close_the_keyboard" translatable="false"><font size="17"><b>Close the keyboard\n</b></font><font size="3">\n</font>Press the Back key.</string>
-
-    <!-- appears above image showing how to use touch and hold -->
-    <string name="touch_and_hold" translatable="false"><font size="17"><b>Touch \u0026 hold a key for options\n</b></font><font size="3">\n</font>Access punctuation and accents.</string>
-
-    <!-- appears above image showing how to access keyboard settings -->
-    <string name="keyboard_settings" translatable="false"><font size="17"><b>Keyboard settings\n</b></font><font size="3">\n</font>Touch \u0026 hold the <b>\?123\</b> key.</string>
-
+    
     <!-- popular web domains for the locale - most popular, displayed on the keyboard -->
     <string name="popular_domain_0" translatable="false">".com"</string>
     <!-- popular web domains for the locale - item 1, displayed in the popup -->
@@ -273,49 +231,50 @@
     <string name="popular_domain_4" translatable="false">".edu"</string>
 
     <!-- Menu item for launching Input method picker -->
-    <string name="selectInputMethod" translatable="false">Select input method</string>
+    <string name="selectInputMethod">Select input method</string>
 
     <!-- Title for input language selection screen -->
-    <string name="language_selection_title" translatable="false">Input languages</string>
+    <string name="language_selection_title">Input languages</string>
     <!-- Title summary for input language selection screen -->
-    <string name="language_selection_summary" translatable="false">Slide finger on spacebar to change language</string>
+    <string name="language_selection_summary">Slide finger on spacebar to change language</string>
     
+    <!-- Don't translate -->
     <string-array name="available_languages" translatable="false">
         <item>en_US</item>
         <item>my_MM</item>
     </string-array>
 
     <!-- Add to dictionary hint -->
-    <string name="hint_add_to_dictionary" translatable="false">\u2190 Touch again to save</string>
+    <string name="hint_add_to_dictionary">\u2190 Touch again to save</string>
 
     <!-- Inform the user that a particular language has an available dictionary -->
-    <string name="has_dictionary" translatable="false">Dictionary available</string>
+    <string name="has_dictionary">Dictionary available</string>
 
     <!-- Preferences item for enabling to send user statistics to Google -->
-    <string name="prefs_enable_log" translatable="false">Enable user feedback</string>
+    <string name="prefs_enable_log">Enable user feedback</string>
     <!-- Description for enabling to send user statistics to Google -->
-    <string name="prefs_description_log" translatable="false">Help improve this input method editor by automatically sending usage statistics and crash reports to Google.</string>
+    <string name="prefs_description_log">Help improve this input method editor by automatically sending usage statistics and crash reports to Google.</string>
     <!-- Preferences item for enabling to correct suggestions by touching words you have typed -->
-    <string name="prefs_enable_recorrection" translatable="false">Touch to correct words</string>
+    <string name="prefs_enable_recorrection">Touch to correct words</string>
     <!-- The summary for the preferences item for enabling to correct suggestions by touching words you have typed -->
-    <string name="prefs_enable_recorrection_summary" translatable="false">Touch entered words to correct them</string>
+    <string name="prefs_enable_recorrection_summary">Touch entered words to correct them</string>
 
     <!-- Category title for Layout -->
-    <string name="layout_category" translatable="false">Layout Settings</string>
+    <string name="layout_category">Layout Settings</string>
     
     <!-- Description for keyboard theme switcher -->
-    <string name="keyboard_layout" translatable="false">Keyboard Theme</string>
-    <string name="layout_basic" translatable="false">Basic</string>
-    <string name="layout_stone" translatable="false">Stone</string>
-    <string name="layout_white" translatable="false">White</string>
-    <string name="layout_iphone" translatable="false">iPhone</string>
-    <string name="layout_gingerbread" translatable="false">Gingerbread</string>
-    <string name="layout_ics" translatable="false">Ice cream sandwich</string>
-    <string name="layout_klp" translatable="false">Kitkat</string>
-    <string name="layout_galaxy" translatable="false">Galaxy</string>
-    <string name="layout_pink" translatable="false">Pink</string>
+    <string name="keyboard_layout">Keyboard Theme</string>
+    <string name="layout_basic">Basic</string>
+    <string name="layout_stone">Stone</string>
+    <string name="layout_white">White</string>
+    <string name="layout_iphone">iPhone</string>
+    <string name="layout_gingerbread">Gingerbread</string>
+    <string name="layout_ics">Ice cream sandwich</string>
+    <string name="layout_klp">Kitkat</string>
+    <string name="layout_galaxy">Galaxy</string>
+    <string name="layout_pink">Pink</string>
 
-    <string-array name="keyboard_layout_modes" translatable="false">
+    <string-array name="keyboard_layout_modes">
         <item>@string/layout_basic</item>
         <item>@string/layout_stone</item>
         <item>@string/layout_white</item>
@@ -351,12 +310,12 @@
     </string-array>
     
     <!-- Description for keyboard font size switcher -->
-    <string name="keyboard_text_size" translatable="false">Key Text Size</string>
-    <string name="text_size_small" translatable="false">Small</string>
-    <string name="text_size_median" translatable="false">Medium</string>
-    <string name="text_size_large" translatable="false">Large</string>
-    <string name="text_size_huge" translatable="false">Huge</string>
-    <string-array name="keyboard_text_size_modes" translatable="false">
+    <string name="keyboard_text_size">Key Text Size</string>
+    <string name="text_size_small">Small</string>
+    <string name="text_size_median">Medium</string>
+    <string name="text_size_large">Large</string>
+    <string name="text_size_huge">Huge</string>
+    <string-array name="keyboard_text_size_modes">
         <item>@string/text_size_small</item>
         <item>@string/text_size_median</item>
         <item>@string/text_size_large</item>
@@ -375,39 +334,39 @@
     </string-array>
     
     <!-- Option to enable suggestions in landscape mode -->
-    <string name="title_suggestions_in_landscape" translatable="false">Suggestions in landscape mode</string>
-    <string name="summary_suggestions_in_landscape_true" translatable="false">Same as in portrait mode</string>
-    <string name="summary_suggestions_in_landscape_false" translatable="false">Hide suggestions in landscape mode</string>
+    <string name="title_suggestions_in_landscape">Suggestions in landscape mode</string>
+    <string name="summary_suggestions_in_landscape_true">Same as in portrait mode</string>
+    <string name="summary_suggestions_in_landscape_false">Hide suggestions in landscape mode</string>
 
     <!-- Option to enable full scren editor in landscape mode -->
-    <string name="title_fullscreen_override" translatable="false">Landscape mode fullscreen editor</string>
-    <string name="summary_fullscreen_override_true" translatable="false">Enabled on small devices</string>
-    <string name="summary_fullscreen_override_false" translatable="false">Disabled, use standard view</string>
+    <string name="title_fullscreen_override">Landscape mode fullscreen editor</string>
+    <string name="summary_fullscreen_override_true">Enabled on small devices</string>
+    <string name="summary_fullscreen_override_false">Disabled, use standard view</string>
 
     <!-- Option to show softkeyboard -->
-    <string name="title_force_keyboard_on" translatable="false">Show soft keyboard</string>
-    <string name="summary_force_keyboard_on_true" translatable="false">Always</string>
-    <string name="summary_force_keyboard_on_false" translatable="false">When no hardware keyboard is available</string>
+    <string name="title_force_keyboard_on">Show soft keyboard</string>
+    <string name="summary_force_keyboard_on_true">Always</string>
+    <string name="summary_force_keyboard_on_false">When no hardware keyboard is available</string>
     
     <!-- Option to used unicode -->
-    <string name="title_used_unicode" translatable="false">Used unicode</string>
-    <string name="summary_used_unicode_true" translatable="false">Using unicode 5.1 above, such as Myanmar 3 font.</string>
-    <string name="summary_used_unicode_false" translatable="false">Not used unicode conversion.</string>
+    <string name="title_used_unicode">Used unicode</string>
+    <string name="summary_used_unicode_true">Using unicode 5.1 above, such as Myanmar 3 font.</string>
+    <string name="summary_used_unicode_false">Not used unicode conversion.</string>
     
     <!-- Option to used jelly bean fix -->
-    <string name="title_used_jbfix" translatable="false">Used Jelly Bean fix</string>
-    <string name="summary_used_jbfix_true" translatable="false">Using jelly bean fix for Zawgyi font.</string>
-    <string name="summary_used_jbfix_false" translatable="false">Not used jelly bean fix.</string>
+    <string name="title_used_jbfix">Used Jelly Bean fix</string>
+    <string name="summary_used_jbfix_true">Using jelly bean fix for Zawgyi font.</string>
+    <string name="summary_used_jbfix_false">Not used jelly bean fix.</string>
     
     <!-- Option to hide/show application icon -->
-    <string name="title_app_icon" translatable="false">Application icon</string>
-    <string name="summary_app_icon_true" translatable="false">Show on launcher</string>
-    <string name="summary_app_icon_false" translatable="false">Hide from launcher</string>
+    <string name="title_app_icon">Application icon</string>
+    <string name="summary_app_icon_true">Show on launcher</string>
+    <string name="summary_app_icon_false">Hide from launcher</string>
     
-    <string name="about_category" translatable="false">About</string>
-    <string name="title_about" translatable="false">About Keyboard</string>
-    <string name="version_name" translatable="false">Version</string>
-    <string name="about_text" translatable="false"><Data>
+    <string name="about_category">About</string>
+    <string name="title_about">About Keyboard</string>
+    <string name="version_name">Version</string>
+    <string name="about_text"><Data>
       <![CDATA["
       <p>Android ginger bread stock keyboard with Myanmar(Zawgyi) Language</p>
       <p>Develop by <a href='http://www.facebook.com/soeminnminn'>Soe Minn Minn</a></p>
@@ -418,34 +377,44 @@
     <string name="subtype_mode_keyboard" translatable="false">keyboard</string>
 
     <!-- Title for Latin keyboard debug settings activity / dialog -->
-    <string name="english_ime_debug_settings" translatable="false">Android keyboard Debug settings</string>
-    <string name="prefs_debug_mode" translatable="false">Debug Mode</string>
+    <string name="english_ime_debug_settings">Sulfur\'s keyboard Debug settings</string>
+    <string name="prefs_debug_mode">Debug Mode</string>
     
     <!-- Alert Messages -->
-    <string name="alert_installocation_title" translatable="false">Wrong Installation!</string>
-    <string name="alert_installocation_message" translatable="false">Keyboard may not work installed on sdcard.\nPlease, move to phone(internal storage).</string>
+    <string name="alert_installocation_title">Wrong Installation!</string>
+    <string name="alert_installocation_message">Keyboard may not work installed on sdcard.\nPlease, move to phone(internal storage).</string>
     
     <!-- Activity -->
-    <string name="hint_text_normal" translatable="false">Normal</string>
-    <string name="hint_text_personname" translatable="false">Person Name</string>
-    <string name="hint_text_filter" translatable="false">Filter</string>
-    <string name="hint_text_email" translatable="false">Email</string>
-    <string name="hint_text_uri" translatable="false">Uri</string>
-    <string name="hint_text_webedittext" translatable="false">Web Edit Text</string>
-    <string name="hint_text_message" translatable="false">Message</string>
-    <string name="hint_text_phone" translatable="false">Phone</string>
-    <string name="hint_text_number" translatable="false">Number</string>
-    <string name="hint_text_datetime" translatable="false">Date Time</string>
-    <string name="hint_text_mutiline" translatable="false">Multi-line</string>
+    <string name="hint_text_normal">Normal</string>
+    <string name="hint_text_personname">Person Name</string>
+    <string name="hint_text_filter">Filter</string>
+    <string name="hint_text_email">Email</string>
+    <string name="hint_text_uri">Uri</string>
+    <string name="hint_text_webedittext">Web Edit Text</string>
+    <string name="hint_text_message">Message</string>
+    <string name="hint_text_phone">Phone</string>
+    <string name="hint_text_number">Number</string>
+    <string name="hint_text_datetime">Date Time</string>
+    <string name="hint_text_mutiline">Multi-line</string>
+    <string name="hint_text_unicode">Unicode</string>
+    <string name="hint_text_zawgyi">Zawgyi One</string>
     
-    <string name="title_activity_enable_keyboard" translatable="false">Enable Keyboard</string>
-    <string name="title_activity_set_input_method" translatable="false">Set Input Method</string>
-    <string name="title_activity_input_test" translatable="false">Test Keyboard</string>
-    <string name="title_activity_settings" translatable="false">Keyboard Settings</string>
+    <string name="title_activity_enable_keyboard">Enable Keyboard</string>
+    <string name="title_activity_set_input_method">Set Input Method</string>
+    <string name="title_activity_input_test">Test Keyboard</string>
+    <string name="title_activity_converter">Font Converter</string>
+    <string name="title_activity_settings">Keyboard Settings</string>
     
-    <string name="action_settings" translatable="false">Settings</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_copy">Copy</string>
+    <string-array name="choose_action_copy">
+        <item>Copy Both</item>
+        <item>Copy Unicode</item>
+        <item>Copy Zawgyi-One</item>
+    </string-array>
+    <string name="message_copy_success">Text copied to clipboard</string>
 
-    <string name="main_body" translatable="false"><Data>
+    <string name="main_body"><Data>
       <![CDATA["
         <h2>Enabling Sulfur's Keyboard</h2>
         

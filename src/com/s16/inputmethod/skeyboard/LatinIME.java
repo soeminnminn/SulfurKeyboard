@@ -925,16 +925,12 @@ public class LatinIME extends InputMethodService
     
     // SMM {
     private CharSequence getWordCorrection(CharSequence text) {
-    	return getWordCorrection(text, mQuickFixes);
-    }
-    
-    private CharSequence getWordCorrection(CharSequence text, boolean quickFix) {
-    	String output = text.toString();
-    	if(quickFix) {
-	    	output = ZawGyiCorrection.getWord(text).toString();
+    	CharSequence output = text;
+    	if(mQuickFixes) {
+	    	output = MyanmarIMEUtils.getZawgyiFixed(output);
     	}
     	if(mUsedUnicode) {
-    		return ZawGyiCorrection.getZawGyiToUni(output, getResources());
+    		return MyanmarIMEUtils.zawgyiToUni(output);
     	}
     	if(mJellyBeanFix) {
     		return ZawGyiCorrection.getJellyBeanFix(output);
@@ -1829,8 +1825,7 @@ public class LatinIME extends InputMethodService
         InputConnection ic = getCurrentInputConnection();
         if (ic != null) {
             rememberReplacedWord(suggestion);
-            //ic.commitText(suggestion, 1);
-            ic.commitText(getWordCorrection(suggestion, false), 1); // SMM
+            ic.commitText(suggestion, 1);
         }
         saveWordInHistory(suggestion);
         mPredicting = false;

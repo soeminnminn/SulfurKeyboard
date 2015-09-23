@@ -17,13 +17,7 @@
 
 package com.s16.inputmethod.skeyboard;
 
-import com.s16.inputmethod.skeyboard.R;
-
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import android.content.res.Resources;
 
 public class ZawGyiCorrection {
 	private static final int NULL_CHAR = 0x00;
@@ -48,8 +42,6 @@ public class ZawGyiCorrection {
 		public static final int WittSaPout = 15;
 		public static final int Other = 16;
 	}
-	
-	private static String[] patterns;
 	
 	private ZawGyiCorrection() {
 	}
@@ -341,67 +333,6 @@ public class ZawGyiCorrection {
 		return result;
 	}
 	
-	private static CharSequence RegexReplace(CharSequence data, CharSequence find, CharSequence replacement) {
-		if ((data == null) || (data == "")) return data;
-		StringBuffer result = new StringBuffer();
-		Pattern pattern = Pattern.compile(find.toString());
-		Matcher m = pattern.matcher(data);
-		while(m.find()) {
-			StringBuffer replacementBuffer = new StringBuffer();
-			boolean foundGroup = false;
-			for(int c = 0; c < replacement.length(); c++) {
-				char ch = replacement.charAt(c);
-				if(foundGroup) {
-					switch(ch) {
-						case '1':
-							replacementBuffer.append((m.group(1) == null ? "" : "$1"));
-							break;
-						case '2':
-							replacementBuffer.append((m.group(2) == null ? "" : "$2"));
-							break;
-						case '3':
-							replacementBuffer.append((m.group(3) == null ? "" : "$3"));
-							break;
-						case '4':
-							replacementBuffer.append((m.group(4) == null ? "" : "$4"));
-							break;
-						case '5':
-							replacementBuffer.append((m.group(5) == null ? "" : "$5"));
-							break;
-						case '6':
-							replacementBuffer.append((m.group(6) == null ? "" : "$6"));
-							break;
-						case '7':
-							replacementBuffer.append((m.group(7) == null ? "" : "$7"));
-							break;
-						case '8':
-							replacementBuffer.append((m.group(8) == null ? "" : "$8"));
-							break;
-						case '9':
-							replacementBuffer.append((m.group(9) == null ? "" : "$9"));
-							break;
-						default:
-							break;
-					}
-					
-					foundGroup = false;
-					continue;
-				}
-				
-				if (ch == '$') {
-					foundGroup = true;
-					continue;
-				}
-				
-				replacementBuffer.append(ch);
-			}
-			
-			m.appendReplacement(result, replacementBuffer.toString());
-		}
-		m.appendTail(result);
-		return result.toString();
-	}
-	
 	public static boolean isMyChar(int code) {
 		return (code >= 0x1000 && code <= 0x109F) || (code >= 0xAA60 && code <= 0xAA7B);
 	}
@@ -520,71 +451,6 @@ public class ZawGyiCorrection {
 		
 		return arrChar;
     }
-    /*
-	@SuppressWarnings("unused")
-	private static String decode(String str, char unknownCh) {
-		StringBuffer sb = new StringBuffer();
-		int i1 = 0;
-		int i2 = 0;
-
-		while (i2 < str.length()) {
-			i1 = str.indexOf("&#", i2);
-			if (i1 == -1) {
-				sb.append(str.substring(i2));
-				break;
-			}
-			sb.append(str.substring(i2, i1));
-			i2 = str.indexOf(";", i1);
-			if (i2 == -1) {
-				sb.append(str.substring(i1));
-				break;
-			}
-
-			String tok = str.substring(i1 + 2, i2);
-			try {
-				int radix = 10;
-				if ((tok.charAt(0) == 'x') || (tok.charAt(0) == 'X')) {
-				  radix = 16;
-				  tok = tok.substring(1);
-				}
-				sb.append((char)Integer.parseInt(tok, radix));
-			} catch (NumberFormatException exp) {
-				sb.append(unknownCh);
-			}
-			i2++;
-		}
-		return sb.toString();
-	  }
-
-	 @SuppressWarnings("unused")
-	private static String encode(String str) {
-		char[] ch = str.toCharArray();
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < ch.length; i++) {
-			if ((ch[i] < ' ') || (ch[i] > '\u007F'))
-				sb.append("&#").append(ch[i]).append(";");
-			else
-				sb.append(ch[i]);
-		}
-		return sb.toString();
-	}
-	*/
-	public static CharSequence getZawGyiToUni(CharSequence zString, Resources res) {
-		
-		if(patterns == null) {
-			patterns = res.getStringArray(R.array.zawgyi_unicode);
-		}
-		
-		CharSequence data = zString;
-		final String[] strPatterns = patterns;
-		final int patCount = strPatterns.length / 2;
-		for (int i = 0; i < patCount; i++) {
-			final int idx = i * 2;
-			data = RegexReplace(data, strPatterns[idx], strPatterns[(idx + 1)]);
-		}
-	
-		return data;
-	}
 	
 	public static CharSequence getJellyBeanFix(CharSequence input) {
 		ArrayList<Integer> resultList = new ArrayList<Integer>();

@@ -34,7 +34,8 @@
             android:paddingStart="@dimen/actionbar_horizontal_margin"
             android:paddingLeft="@dimen/actionbar_horizontal_margin"
             android:text="@string/english_ime_name"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
         
     </RelativeLayout>
 
@@ -102,12 +103,12 @@
 	                android:text="@string/title_activity_settings" />
 	
 	            <Button
-	                android:id="@+id/btnShowInputTest"
+	                android:id="@+id/btnShowConverter"
 	                style="@style/HoloButton"
 	                android:layout_width="0dip"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="1"
-	                android:text="@string/title_activity_input_test" />
+	                android:text="@string/title_activity_converter" />
             
             </LinearLayout>
 

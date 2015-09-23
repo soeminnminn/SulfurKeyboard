@@ -18,6 +18,8 @@ You can get it from [Google Play](https://play.google.com/store/apps/details?id=
 #### Version 1.5.4.0
 - Remove speak input.
 - Clean Tutorial code.
+- Fix Unicode mode
+- Add new Font Converter (Uinicode <=> Zawgyi)
 
 #### Version 1.5.3.0
 - Fix Settings Not open error.

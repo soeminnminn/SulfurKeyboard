@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-        
+		
         Spanned content = Html.fromHtml(html);
         TextView description = (TextView) findViewById(R.id.txtHelp);
         description.setMovementMethod(LinkMovementMethod.getInstance());
@@ -62,12 +62,28 @@ public class MainActivity extends Activity {
             }
         });
 		
-		final Button btnShowInputTest = (Button)findViewById(R.id.btnShowInputTest);
+		final Button btnShowInputTest = (Button)findViewById(R.id.btnShowConverter);
 		btnShowInputTest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this.getBaseContext(), InputTestActivity.class));
+                startActivity(new Intent(MainActivity.this.getBaseContext(), ConverterActivity.class));
             }
         });
+		
+		if (KeyboardApp.isDebug()) {
+			btnShowInputTest.setLongClickable(true);
+			btnShowInputTest.setOnLongClickListener(new View.OnLongClickListener() {
+				
+				@Override
+				public boolean onLongClick(View v) {
+					startActivity(new Intent(MainActivity.this.getBaseContext(), InputTestActivity.class));
+					return true;
+				}
+			});
+			
+		} else {
+			final TextView textResMode = (TextView)findViewById(R.id.textResourceMode);
+			textResMode.setVisibility(View.GONE);
+		}
 	}
 
 	@Override

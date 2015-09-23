@@ -6,6 +6,7 @@
     tools:context=".InputTestActivity" >
 
     <RelativeLayout
+        android:id="@+id/frameActionbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/action_bar_default_height"
         android:layout_gravity="top"
@@ -33,7 +34,8 @@
             android:paddingStart="@dimen/actionbar_horizontal_margin"
             android:paddingLeft="@dimen/actionbar_horizontal_margin"
             android:text="@string/title_activity_input_test"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 

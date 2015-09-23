@@ -94,4 +94,7 @@
 		<item>&#x101E;&#x103C;</item><item>&#x1029;</item>
 		<item>&#x101E;&#x103C;&#x1031;&#x102C;&#x103A;</item><item>&#x102A;</item>
 	</string-array>
+	
+	<string-array name="unicode_zawgyi" translatable="false">
+	</string-array>
 </resources>

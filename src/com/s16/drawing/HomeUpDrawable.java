@@ -136,7 +136,7 @@ public class HomeUpDrawable extends Drawable implements Animatable {
 		}
 	}
 	
-	private static int getDefaultIntrinsicSize(Context context) {
+	public static int getDefaultIntrinsicSize(Context context) {
 		int screenLayout = (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK);
 		switch (screenLayout) {
 			case 1: // mdpi
