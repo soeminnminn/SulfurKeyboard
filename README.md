@@ -15,6 +15,9 @@ You can get it from [Google Play](https://play.google.com/store/apps/details?id=
 
 ## Change Log
 
+#### Version 1.5.5.0
+- Fix not working on some devices
+
 #### Version 1.5.4.0
 - Remove speak input.
 - Clean Tutorial code.

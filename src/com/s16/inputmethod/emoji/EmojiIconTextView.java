@@ -1,7 +1,5 @@
 package com.s16.inputmethod.emoji;
 
-import com.s16.inputmethod.skeyboard.KeyboardTheme;
-
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -11,6 +9,8 @@ import android.text.TextPaint;
 import android.text.style.MetricAffectingSpan;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
+import com.s16.inputmethod.skeyboard.KeyboardTheme;
 
 public class EmojiIconTextView extends TextView {
 	
@@ -35,6 +35,7 @@ public class EmojiIconTextView extends TextView {
 	}
 	
 	private Typeface mEmojiTypeface = null;
+	private EmojiIconKey mIconKey;
 	
 	public EmojiIconTextView(Context context) {
         super(context);
@@ -55,6 +56,17 @@ public class EmojiIconTextView extends TextView {
     	if (android.os.Build.VERSION.SDK_INT < 14) {
     		setTypeface(KeyboardTheme.getEmojiTypeFace(context));
     	}
+    }
+    
+    public void setIconKey(EmojiIconKey key) {
+    	mIconKey = key;
+    	if (mIconKey != null && !mIconKey.isEmpty()) {
+    		setText(mIconKey.label);
+    	}
+    }
+    
+    public EmojiIconKey getIconKey() {
+    	return mIconKey;
     }
     
     @Override

@@ -13,6 +13,7 @@ import android.widget.TextView;
 public class EmojiIconsTabBar extends LinearLayout {
 
 	private ViewPager mPager;
+	private ViewPager.OnPageChangeListener mDelegatePageListener;
 	private int mSelectedIndex;
 	private int mTextColor;
 	private int mSelectedTextColor;
@@ -29,14 +30,23 @@ public class EmojiIconsTabBar extends LinearLayout {
 		public void onPageSelected(int position) {
 			mSelectedIndex = position;
 			onSelectedIndexChanged();
+			if (mDelegatePageListener != null) {
+				mDelegatePageListener.onPageSelected(position);
+			}
 		}
 		
 		@Override
 		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			if (mDelegatePageListener != null) {
+				mDelegatePageListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
+			}
 		}
 		
 		@Override
 		public void onPageScrollStateChanged(int state) {
+			if (mDelegatePageListener != null) {
+				mDelegatePageListener.onPageScrollStateChanged(state);
+			}
 		}
 	};
 	
@@ -140,6 +150,10 @@ public class EmojiIconsTabBar extends LinearLayout {
     		}
     	}
     }
+    
+    public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
+		mDelegatePageListener = listener;
+	}
     
     public void setSelectedIndex(int index) {
     	mSelectedIndex = index;

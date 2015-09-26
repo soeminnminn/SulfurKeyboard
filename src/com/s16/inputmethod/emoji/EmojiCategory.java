@@ -1,5 +1,8 @@
 package com.s16.inputmethod.emoji;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -7,6 +10,7 @@ import com.s16.inputmethod.skeyboard.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
@@ -35,7 +39,7 @@ public enum EmojiCategory {
 	private static boolean S_RecentsUpdated = true;
 	
 	private final int mIndex;
-	private String[] mRecentsArray;
+	private String[] mCodesArray;
     
     EmojiCategory(int index) {
     	mIndex = index;
@@ -43,6 +47,30 @@ public enum EmojiCategory {
     
     int getIndex() {
     	return mIndex;
+    }
+    
+    public void init(Context context) {
+    	if (mIndex > 0 && mCodesArray == null) {
+    		int resId = sResourceArray[mIndex];
+    		if (resId != 0) {
+    			String[] resArray = context.getResources().getStringArray(resId);
+    			List<String> list = new ArrayList<String>();
+    			for(String codesArraySpec : resArray) {
+    				if (codesArraySpec.matches("^[0-9a-fA-F]+\\|[0-9a-fA-F]+\\,[0-9a-fA-F]+\\|[0-9]+$") 
+    						|| codesArraySpec.matches("^[0-9a-fA-F]+\\|\\|[0-9]+$")) {
+    					int supportedMinSdkVersion = CodesArrayParser.getMinSupportSdkVersion(codesArraySpec);
+    					if (Build.VERSION.SDK_INT >= supportedMinSdkVersion) {
+    						list.add(codesArraySpec);
+    					}
+    					
+    				} else {
+    					list.add(codesArraySpec);
+    				}
+    			}
+    			mCodesArray = new String[list.size()];
+    			mCodesArray = list.toArray(mCodesArray);
+    		}
+    	}
     }
     
     private String[] getRecentsArray(Context context) {
@@ -58,7 +86,7 @@ public enum EmojiCategory {
 				}
 			}
 			if (jsonArray != null) {
-				mRecentsArray = new String[jsonArray.length()];
+				mCodesArray = new String[jsonArray.length()];
 				for(int i=0; i<jsonArray.length(); i++) {
 					String codesArraySpec = null;
 					try {
@@ -66,13 +94,13 @@ public enum EmojiCategory {
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
-					mRecentsArray[i] = codesArraySpec;
+					mCodesArray[i] = codesArraySpec;
 				}
 			}
 			
 			S_RecentsUpdated = false;
     	}
-		return mRecentsArray;
+		return mCodesArray;
     }
     
     public void updateKey(Context context, EmojiIconKey key) {
@@ -129,46 +157,42 @@ public enum EmojiCategory {
     }
     
     public int getCount(Context context) {
-		int resid = sResourceArray[mIndex];
-		if (resid == 0) {
+		if (mIndex == 0) {
 			String[] recentsArray = getRecentsArray(context);
 			if (recentsArray != null) {
 				return recentsArray.length;
 			}
-		} else {
-			return context.getResources().getStringArray(resid).length;
+		} else if (mCodesArray != null) {
+			return mCodesArray.length;
 		}
 		return 0;
 	}
     
     public String getItemText(Context context, int position) {
     	String result = "";
-		int resid = sResourceArray[mIndex];
-		if (resid == 0) {
+		if (mIndex == 0) {
 			String[] recentsArray = getRecentsArray(context);
 			if (recentsArray != null) {
 				result = CodesArrayParser.parseOutputText(recentsArray[position]);
 			}
-		} else {
-			String codesArraySpec = context.getResources().getStringArray(resid)[position];
+		} else if (mCodesArray != null) {
+			String codesArraySpec = mCodesArray[position];
 			result = CodesArrayParser.parseOutputText(codesArraySpec);
 		}
 		return result;
     }
 	
     public EmojiIconKey getItem(Context context, int position) {
-    	
-		int resid = sResourceArray[mIndex];
 		String codesArraySpec = null;
-		if (resid == 0) {
+		if (mIndex == 0) {
 			String[] recentsArray = getRecentsArray(context);
 			if (recentsArray != null) {
 				codesArraySpec = recentsArray[position];
 			}
-		} else {
-			codesArraySpec = context.getResources().getStringArray(resid)[position];
+		} else if (mCodesArray != null) {
+			codesArraySpec = mCodesArray[position];
 		}
 		
-		return EmojiIconKey.from(codesArraySpec);
+		return EmojiIconKey.from(context, codesArraySpec);
 	}
 }

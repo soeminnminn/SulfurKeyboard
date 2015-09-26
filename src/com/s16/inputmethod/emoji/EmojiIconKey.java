@@ -3,6 +3,8 @@ package com.s16.inputmethod.emoji;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 
 public class EmojiIconKey {
@@ -18,17 +20,29 @@ public class EmojiIconKey {
 		
 	}
 	
-	static EmojiIconKey from(String codesArraySpec) {
+	static EmojiIconKey from(Context context, String codesArraySpec) {
 		EmojiIconKey key = new EmojiIconKey();
 		if (codesArraySpec != null) {
 			key.codesArraySpec = codesArraySpec; 
-			if (codesArraySpec.matches("^[0-9a-fA-F]+\\|[0-9a-fA-F]+\\,[0-9a-fA-F]+\\|[0-9a-fA-F]+$") 
-					|| codesArraySpec.matches("^[0-9a-fA-F]+$")) {
+			if (codesArraySpec.matches("^[0-9a-fA-F]+\\|[0-9a-fA-F]+\\,[0-9a-fA-F]+\\|[0-9]+$") 
+					|| codesArraySpec.matches("^[0-9a-fA-F]+\\|\\|[0-9]+$")) {
+				
+				int supportedMinSdkVersion = CodesArrayParser.getMinSupportSdkVersion(codesArraySpec);
+				if (Build.VERSION.SDK_INT < supportedMinSdkVersion) {
+					return key;
+				}
 				
 				int codePoint = CodesArrayParser.parseCode(codesArraySpec);
 				key.label = CodesArrayParser.parseLabel(codesArraySpec);
 				key.codes = new int[] { codePoint };
 				key.outputText = CodesArrayParser.parseOutputText(codesArraySpec);
+				
+			} else if (codesArraySpec.matches("^[0-9a-fA-F]+$")) {
+				int codePoint = CodesArrayParser.parseCode(codesArraySpec);
+				key.label = CodesArrayParser.parseLabel(codesArraySpec);
+				key.codes = new int[] { codePoint };
+				key.outputText = CodesArrayParser.parseOutputText(codesArraySpec);
+				
 			} else {
 				key.label = codesArraySpec;
 				key.codes = new int[] { CodesArrayParser.CODE_OUTPUT_TEXT };
@@ -39,14 +53,18 @@ public class EmojiIconKey {
 		return key;
 	}
 	
-	static EmojiIconKey from(JSONObject jsonObject) {
+	static EmojiIconKey from(Context context, JSONObject jsonObject) {
 		if (jsonObject != null) {
 			String codesArraySpec = getJSONString(jsonObject, JSON_KEY);
 			if (!TextUtils.isEmpty(codesArraySpec)) {
-				return EmojiIconKey.from(codesArraySpec);
+				return EmojiIconKey.from(context, codesArraySpec);
 			}
 		}
 		return null;
+	}
+	
+	boolean isEmpty() {
+		return codes == null;
 	}
 	
 	JSONObject toJSONObject() {

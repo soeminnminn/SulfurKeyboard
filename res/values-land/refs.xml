@@ -1,0 +1,5 @@
+<resources>
+
+	<item name="activity_converter" type="layout">@layout/activity_converter_land</item>
+
+</resources>

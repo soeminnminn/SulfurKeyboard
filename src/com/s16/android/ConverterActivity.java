@@ -145,9 +145,9 @@ public class ConverterActivity extends Activity {
         });
 		
 		int iconColor = getResources().getColor(R.color.dim_foreground_holo_dark);
-		int intrinsicSize = IconFontDrawable.getDefaultIntrinsicSize(getContext());
+		//int intrinsicSize = IconFontDrawable.getDefaultIntrinsicSize(getContext());
 		final ImageButton buttonCopy = (ImageButton)findViewById(R.id.imageButtonTitleCopy);
-		buttonCopy.setImageDrawable(new IconFontDrawable(typefaceZawgyi, '\uE042', iconColor, intrinsicSize));
+		buttonCopy.setImageDrawable(new IconFontDrawable(typefaceZawgyi, '\uE042', iconColor, 48));
 		buttonCopy.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

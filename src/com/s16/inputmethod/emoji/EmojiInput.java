@@ -10,7 +10,9 @@ import com.s16.inputmethod.skeyboard.SoftKeyboardView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
@@ -59,10 +61,15 @@ public class EmojiInput {
 		
 		@Override
 		public void onClick(View v) {
-			Object tag = v.getTag();
-			if (tag != null && mKeyboardActionListener != null) {
-				EmojiIconKey key = (EmojiIconKey)tag;
+			if (v instanceof EmojiIconTextView) {
+				EmojiIconKey key = ((EmojiIconTextView)v).getIconKey();
 				onKey(key);
+			} else {
+				Object tag = v.getTag();
+				if (tag != null && mKeyboardActionListener != null) {
+					EmojiIconKey key = (EmojiIconKey)tag;
+					onKey(key);
+				}
 			}
 		}
 	};
@@ -85,7 +92,7 @@ public class EmojiInput {
 			
 			EmojiIconsAdapter iconAdapter = mIconsAdapterList[category.getIndex()]; 
 			if (iconAdapter == null) {
-				iconAdapter = new EmojiIconsAdapter(category);
+				iconAdapter = new EmojiIconsAdapter(getContext(), category);
 				mIconsAdapterList[category.getIndex()] = iconAdapter;
 			}
 			gridView.setAdapter(iconAdapter);
@@ -129,8 +136,11 @@ public class EmojiInput {
 
 		private final EmojiCategory mCategory;
 		
-		EmojiIconsAdapter(EmojiCategory category) {
+		EmojiIconsAdapter(Context context, EmojiCategory category) {
 			mCategory = category;
+			if (mCategory != null) {
+				mCategory.init(context);
+			}
 		}
 		
 		@Override
@@ -162,14 +172,31 @@ public class EmojiInput {
 				textView.setEmojiTypeface(KeyboardTheme.getEmojiTypeFace(getContext()));
 				textView.setOnClickListener(mEmojiClick);
 			}
-			textView.setText(key.label);
-			textView.setTag(key);
+			textView.setIconKey(key);
 			
 			return textView;
 		}
 		
 	}
 	
+	private ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
+		
+		@Override
+		public void onPageSelected(int position) {
+			setLastSelectedCategory(position);
+		}
+		
+		@Override
+		public void onPageScrolled(int position, float positionOffset,
+				int positionOffsetPixels) {
+		}
+		
+		@Override
+		public void onPageScrollStateChanged(int state) {
+		}
+	};
+	
+	private static final String PREFS_LAST_SELECTED_CATEGORY = "prefs_emoji_last_sel_category";
 	private Context mContext;
 	private KeyboardSwitcher mKeyboardSwitcher;
 	private ViewGroup mEmojiInputView;
@@ -196,6 +223,23 @@ public class EmojiInput {
 		return mContext.getResources();
 	}
 	
+	protected int getLastSelectedCategory() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+		if (preferences != null) {
+			return preferences.getInt(PREFS_LAST_SELECTED_CATEGORY, 0);
+		}
+		return 0;
+	}
+	
+	protected void setLastSelectedCategory(int position) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+		if (preferences != null) {
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putInt(PREFS_LAST_SELECTED_CATEGORY, position);
+			editor.commit();
+		}
+	}
+	
 	@SuppressLint("InflateParams")
 	public void newView() {
 		LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -218,7 +262,8 @@ public class EmojiInput {
 		mPagerAdapter = new EmojisPagerAdapter();
 		viewPager.setAdapter(mPagerAdapter);
 		tabBar.setViewPager(viewPager);
-		tabBar.setSelectedIndex(0);
+		tabBar.setSelectedIndex(getLastSelectedCategory());
+		tabBar.setOnPageChangeListener(mPageChangeListener);
 	}
 	
 	private void updateKeyboardView() {
