@@ -449,37 +449,39 @@ public class PointerTracker {
             } else {
                 //int code = key.codes[0];
             	int code = key.getCode(); // SMM
-                //TextEntryState.keyPressedAt(key, x, y);
-                int[] codes = mKeyDetector.newCodeArray();
-                mKeyDetector.getKeyIndexAndNearbyCodes(x, y, codes);
-                // Multi-tap
-                if (mInMultiTap) {
-                	if(DEBUG) {
-                		Log.i(TAG, "InMultiTap");
-                	}
-                    if (mTapCount != -1) {
-                        mListener.onKey(KeyCodes.KEYCODE_DELETE, KEY_DELETE, x, y);
-                    } else {
-                        mTapCount = 0;
-                    }
-                    code = key.codes[mTapCount];
-                }
-                /*
-                 * Swap the first and second values in the codes array if the primary code is not
-                 * the first value but the second value in the array. This happens when key
-                 * debouncing is in effect.
-                 */
-                if (codes.length >= 2 && codes[0] != code && codes[1] == code) {
-                    codes[1] = codes[0];
-                    codes[0] = code;
-                }
-                if (listener != null) {
-                	if(DEBUG) {
-                		Log.i("PointerTracker", "Send Key Code = " + code + ", Code[0] = " + (codes != null && codes.length > 0 ? codes[0] : 0));
-                	}
-                    listener.onKey(code, codes, x, y);
-                    listener.onRelease(code);
-                }
+            	if (code != 0) {
+	                //TextEntryState.keyPressedAt(key, x, y);
+	                int[] codes = mKeyDetector.newCodeArray();
+	                mKeyDetector.getKeyIndexAndNearbyCodes(x, y, codes);
+	                // Multi-tap
+	                if (mInMultiTap) {
+	                	if(DEBUG) {
+	                		Log.i(TAG, "InMultiTap");
+	                	}
+	                    if (mTapCount != -1) {
+	                        mListener.onKey(KeyCodes.KEYCODE_DELETE, KEY_DELETE, x, y);
+	                    } else {
+	                        mTapCount = 0;
+	                    }
+	                    code = key.codes[mTapCount];
+	                }
+	                /*
+	                 * Swap the first and second values in the codes array if the primary code is not
+	                 * the first value but the second value in the array. This happens when key
+	                 * debouncing is in effect.
+	                 */
+	                if (codes.length >= 2 && codes[0] != code && codes[1] == code) {
+	                    codes[1] = codes[0];
+	                    codes[0] = code;
+	                }
+	                if (listener != null) {
+	                	if(DEBUG) {
+	                		Log.i("PointerTracker", "Send Key Code = " + code + ", Code[0] = " + (codes != null && codes.length > 0 ? codes[0] : 0));
+	                	}
+	                    listener.onKey(code, codes, x, y);
+	                    listener.onRelease(code);
+	                }
+            	}
             }
             mLastSentIndex = index;
             mLastTapTime = eventTime;

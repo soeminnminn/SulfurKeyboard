@@ -15,6 +15,12 @@ You can get it from [Google Play](https://play.google.com/store/apps/details?id=
 
 ## Change Log
 
+#### Version 2.0.0.0
+- Add 5 rows mode
+- Add 5 new themes (Samsung White, iOS Light, iOS Dark, Material Light & Material Dark)
+- Add user changeable keyboard background color.
+- Bug Fix
+
 #### Version 1.5.5.0
 - Fix not working on some devices
 
@@ -88,13 +94,13 @@ License
 -------
 
     Copyright 2014 Soe Minn Minn
-    
+
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-    
+
     http://www.apache.org/licenses/LICENSE-2.0
-    
+
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.

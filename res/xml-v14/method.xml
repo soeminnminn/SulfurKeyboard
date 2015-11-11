@@ -21,7 +21,7 @@
 <!-- for the Input Method Manager. -->
 
 <input-method xmlns:android="http://schemas.android.com/apk/res/android"
-        android:settingsActivity="com.s16.inputmethod.skeyboard.IMESettings"
+        android:settingsActivity="com.s16.inputmethod.skeyboard.IMESettingsActivity"
         android:isDefault="@bool/im_is_default">
         
 	<subtype android:label="@string/english_ime_description" android:imeSubtypeLocale="en" android:imeSubtypeMode="keyboard" />

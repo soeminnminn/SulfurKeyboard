@@ -16,6 +16,7 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="english_ime_settings"
     android:title="@string/english_ime_settings" >
 
@@ -26,25 +27,30 @@
         android:summaryOff="@string/summary_app_icon_false"
         android:summaryOn="@string/summary_app_icon_true"
         android:title="@string/title_app_icon" />
+    
     <CheckBoxPreference
         android:key="vibrate_on"
         android:persistent="true"
         android:title="@string/vibrate_on_keypress" />
+    
     <CheckBoxPreference
         android:key="sound_on"
         android:persistent="true"
         android:title="@string/sound_on_keypress" />
+    
     <CheckBoxPreference
         android:defaultValue="@bool/default_popup_preview"
         android:key="popup_on"
         android:persistent="true"
         android:title="@string/popup_on_keypress" />
+    
     <CheckBoxPreference
         android:defaultValue="@bool/default_recorrection_enabled"
         android:key="recorrection_enabled"
         android:persistent="true"
         android:summary="@string/prefs_enable_recorrection_summary"
         android:title="@string/prefs_enable_recorrection" />
+    
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="auto_cap"
@@ -54,6 +60,7 @@
     <PreferenceCategory
         android:key="layout_settings"
         android:title="@string/layout_category" >
+        
         <CheckBoxPreference
             android:defaultValue="@bool/default_show_settings_key"
             android:key="settings_key"
@@ -69,6 +76,7 @@
             android:key="language_key"
             android:persistent="true"
             android:title="@string/prefs_language_key" />
+        
         <ListPreference
             android:defaultValue="@string/layout_ics_value"
             android:entries="@array/keyboard_layout_modes"
@@ -76,6 +84,7 @@
             android:key="keyboard_layout"
             android:persistent="true"
             android:title="@string/keyboard_layout" />
+        
         <ListPreference
             android:defaultValue="@string/text_size_median_value"
             android:entries="@array/keyboard_text_size_modes"
@@ -83,6 +92,18 @@
             android:key="key_text_size"
             android:persistent="true"
             android:title="@string/keyboard_text_size" />
+        
+        <com.s16.preference.ColorPickerPreference
+            android:defaultValue="@color/keyboard_background"
+            android:key="keyboard_background_color"
+            android:title="@string/title_keyboard_background_color"
+            android:summary="@string/summary_keyboard_background_color"
+            android:negativeButtonText="@string/action_cancel"
+            android:positiveButtonText="@string/action_set_default"
+            app:cpp_showDefault="true"
+            app:cpp_showCancel="true"
+            app:cpp_itemLayout="@layout/calendar_grid_item_color"
+            app:cpp_numColumns="4" />
 
         <CheckBoxPreference
             android:defaultValue="@bool/default_fullscreen_override"
@@ -91,6 +112,7 @@
             android:summaryOff="@string/summary_fullscreen_override_false"
             android:summaryOn="@string/summary_fullscreen_override_true"
             android:title="@string/title_fullscreen_override" />
+        
         <CheckBoxPreference
             android:defaultValue="@bool/default_force_keyboard_on"
             android:key="force_keyboard_on"
@@ -98,23 +120,35 @@
             android:summaryOff="@string/summary_force_keyboard_on_false"
             android:summaryOn="@string/summary_force_keyboard_on_true"
             android:title="@string/title_force_keyboard_on" />
+        
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="@bool/default_auto_hide_minikeyboard"
             android:key="auto_hide_minikeyboard"
             android:persistent="true"
             android:summaryOff="@string/auto_hide_minikeyboard_false"
             android:summaryOn="@string/auto_hide_minikeyboard_true"
             android:title="@string/auto_hide_minikeyboard" />
+        
+        <ListPreference
+            android:defaultValue="@string/enabled_extened_row_default_value"
+            android:entries="@array/enabled_extened_row_visibilities"
+            android:entryValues="@array/enabled_extened_row_values"
+            android:key="extended_row"
+            android:persistent="true"
+            android:title="@string/title_enabled_extened_row" />
 
         <PreferenceScreen
             android:summary="@string/language_selection_summary"
             android:title="@string/language_selection_title" >
             <intent android:action="com.s16.inputmethod.skeyboard.INPUT_LANGUAGE_SELECTION" />
         </PreferenceScreen>
+        
     </PreferenceCategory>
+    
     <PreferenceCategory
         android:key="prediction_settings"
         android:title="@string/prediction_category" >
+        
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="quick_fixes"
@@ -138,28 +172,18 @@
             android:persistent="true"
             android:summary="@string/auto_complete_summary"
             android:title="@string/auto_complete" />
-        <CheckBoxPreference
-            android:defaultValue="@bool/default_used_unicode"
-            android:key="used_unicode"
-            android:persistent="true"
-            android:summaryOff="@string/summary_used_unicode_false"
-            android:summaryOn="@string/summary_used_unicode_true"
-            android:title="@string/title_used_unicode" />
-        <CheckBoxPreference
-            android:defaultValue="@bool/default_used_jbfix"
-            android:key="used_jbfix"
-            android:persistent="true"
-            android:summaryOff="@string/summary_used_jbfix_false"
-            android:summaryOn="@string/summary_used_jbfix_true"
-            android:title="@string/title_used_jbfix" />
+        
     </PreferenceCategory>
+    
     <PreferenceCategory
         android:key="about_settings"
         android:title="@string/about_category" >
-        <com.s16.inputmethod.skeyboard.PreferenceItem
+        
+        <com.s16.preference.AboutPreference
             android:key="about_keyboard"
             android:summary=""
-            android:title="@string/title_about" />
+            android:title="@string/prefs_about" />
+        
     </PreferenceCategory>
 
 </PreferenceScreen>

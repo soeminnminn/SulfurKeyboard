@@ -35,7 +35,12 @@ public class KeyboardTheme {
 	public static final int ICON_DELETE_KEY = 10;
 	public static final int ICON_DONE_KEY = 11;
 	public static final int ICON_EMOJI = 12;
-	public static final int ICON_HINT_POPUP = 13;
+	public static final int ICON_DPAD_UP = 13;
+	public static final int ICON_DPAD_DOWN = 14;
+	public static final int ICON_DPAD_LEFT = 15;
+	public static final int ICON_DPAD_RIGHT = 16;
+	public static final int ICON_DPAD_CENTER = 17;
+	public static final int ICON_HINT_POPUP = 18;
 	private static final int ICON_LAST = ICON_HINT_POPUP; 
 	
 	private static int[] mIconValues;
@@ -54,6 +59,11 @@ public class KeyboardTheme {
 		mIconValues[ICON_DELETE_KEY] = 0xE041;
 		mIconValues[ICON_DONE_KEY] = 0xE018;
 		mIconValues[ICON_EMOJI] = 0xE017;
+		mIconValues[ICON_DPAD_UP] = 0xF035;
+		mIconValues[ICON_DPAD_DOWN] = 0xF036;
+		mIconValues[ICON_DPAD_LEFT] = 0xF033;
+		mIconValues[ICON_DPAD_RIGHT] = 0xF034;
+		mIconValues[ICON_DPAD_CENTER] = 0xF068;
 		mIconValues[ICON_HINT_POPUP] = 0x2026;
 	}
 	
@@ -66,6 +76,11 @@ public class KeyboardTheme {
 	public static final int THEME_KITKLP = 6;
 	public static final int THEME_GALAXY = 7;
 	public static final int THEME_PINK = 8;
+	public static final int THEME_SAMSUNG_WHITE = 9;
+	public static final int THEME_IOS_LIGHT = 10;
+	public static final int THEME_IOS_DARK = 11;
+	public static final int THEME_MATERIAL_LIGHT = 12;
+	public static final int THEME_MATERIAL_DARK = 13;
 	private static int[] mThemesResIdArray = new int[] {
 		R.style.KeyboardBaseView_basic,
 		R.style.KeyboardBaseView_stone,
@@ -75,7 +90,12 @@ public class KeyboardTheme {
 		R.style.KeyboardBaseView_holo,
 		R.style.KeyboardBaseView_kitkat,
 		R.style.KeyboardBaseView_galaxy, 
-		R.style.KeyboardBaseView_pink
+		R.style.KeyboardBaseView_pink,
+		R.style.KeyboardBaseView_samsungwhite,
+		R.style.KeyboardBaseView_ioslight,
+		R.style.KeyboardBaseView_iosdark,
+		R.style.KeyboardBaseView_materiallight,
+		R.style.KeyboardBaseView_materialdark
 	};
 	
 	public static class ThemedIconsParams {

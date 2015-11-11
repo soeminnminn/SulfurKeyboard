@@ -320,6 +320,9 @@
             android:keyWidth="30%p"
             android:isModifier="true" />
         <Key
+            android:keyLabel="/"
+			android:isModifier="true" />
+        <Key
             android:keyLabel="."
             android:keyIconId="@integer/icon_keyboard_hint_popup"
             android:popupKeyboard="@xml/popup_punctuation"
@@ -327,7 +330,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
-            android:keyWidth="25%p"
+            android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
     </Row>
@@ -354,6 +357,9 @@
             android:keyWidth="30%p"
             android:isModifier="true" />
         <Key
+            android:keyLabel=","
+			android:isModifier="true" />
+        <Key
             android:keyLabel="."
             android:keyIconId="@integer/icon_keyboard_hint_popup"
             android:popupKeyboard="@xml/popup_punctuation"
@@ -361,7 +367,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
-            android:keyWidth="25%p"
+            android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
     </Row>
@@ -388,6 +394,9 @@
             android:keyWidth="30%p"
             android:isModifier="true" />
         <Key
+            android:keyLabel="/"
+			android:isModifier="true" />
+        <Key
             android:keyLabel="."
             android:keyIconId="@integer/icon_keyboard_hint_popup"
             android:popupKeyboard="@xml/popup_punctuation"
@@ -395,7 +404,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
-            android:keyWidth="25%p"
+            android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
     </Row>
@@ -422,6 +431,9 @@
             android:keyWidth="30%p"
             android:isModifier="true" />
         <Key
+            android:keyLabel="/"
+			android:isModifier="true" />
+        <Key
             android:keyLabel="."
             android:keyIconId="@integer/icon_keyboard_hint_popup"
             android:popupKeyboard="@xml/popup_punctuation"
@@ -429,7 +441,7 @@
         <Key
             android:codes="@integer/key_emoji"
             android:keyIconId="@integer/icon_keyboard_emoji"
-            android:keyWidth="25%p"
+            android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
     </Row>

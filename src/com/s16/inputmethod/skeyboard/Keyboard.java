@@ -76,6 +76,9 @@ public class Keyboard {
     public static final int EDGE_RIGHT = 0x02;
     public static final int EDGE_TOP = 0x04;
     public static final int EDGE_BOTTOM = 0x08;
+    
+    public static final int ROW_NORMAL = 0x00;
+    public static final int ROW_EXTENDED = 0x01;
 
     /** Keyboard label **/
     protected CharSequence mLabel;
@@ -140,6 +143,12 @@ public class Keyboard {
     /** Key text weight, def 2.  */
     protected int mKeyTextWeight;
     
+    /** Maximum height to fit the keyboard */
+    protected int mMaxHeight;
+
+    /** Minimum height to fit the keyboard */
+    protected int mMinHeight;
+    
     //protected KeyboardIconsSet mIconsSet;
 
     // Variables for pre-computing nearest keys.
@@ -176,6 +185,8 @@ public class Keyboard {
         public float defaultHorizontalGap;
         /** Vertical gap following this row. */
         public int verticalGap;
+        /** Row type for this row. */
+        public int rowType;
 
         ArrayList<Key> mKeys = new ArrayList<Key>();
 
@@ -214,8 +225,12 @@ public class Keyboard {
             a = res.obtainAttributes(Xml.asAttributeSet(parser),
                     R.styleable.Keyboard_Row);
             rowEdgeFlags = a.getInt(R.styleable.Keyboard_Row_rowEdgeFlags, 0);
-            mode = a.getResourceId(R.styleable.Keyboard_Row_keyboardMode,
-                    0);
+            mode = a.getResourceId(R.styleable.Keyboard_Row_keyboardMode, 0);
+            rowType = a.getInt(R.styleable.Keyboard_Row_rowType, 0);
+            
+            if (rowType == ROW_EXTENDED) {
+            	defaultHeight = (int)(((float)defaultHeight / 100.0f) * 80.0f);
+            }
         }
     }
 
@@ -267,6 +282,8 @@ public class Keyboard {
         public int gap;
         /** Whether this key is sticky, i.e., a toggle key */
         public boolean sticky;
+        /** Whether this key is spacer */
+        public boolean spacer;
         /** X coordinate of the key in the keyboard layout */
         public int x;
         /** Y coordinate of the key in the keyboard layout */
@@ -275,6 +292,8 @@ public class Keyboard {
         public boolean pressed;
         /** If this is a sticky key, is it on? */
         public boolean on;
+        /** If this is a action key */
+        public boolean actionKey;
         /** Text to output when pressed. This can be multiple characters, like ".com" */
         public CharSequence text;
         /** Popup characters */
@@ -332,6 +351,15 @@ public class Keyboard {
         private final static int[] KEY_STATE_PRESSED_OFF = { 
             android.R.attr.state_pressed, 
             android.R.attr.state_checkable 
+        };
+        
+        private final static int[] KEY_STATE_ACTIVE = {
+        	android.R.attr.state_active
+        };
+        
+        private final static int[] KEY_STATE_ACTIVE_PRESSED = {
+        	android.R.attr.state_pressed, 
+            android.R.attr.state_active
         };
         
         private final static int[] KEY_STATE_NORMAL = {
@@ -425,6 +453,8 @@ public class Keyboard {
             repeatable = a.getBoolean(R.styleable.Keyboard_Key_isRepeatable, false);
             modifier = a.getBoolean(R.styleable.Keyboard_Key_isModifier, false);
             sticky = a.getBoolean(R.styleable.Keyboard_Key_isSticky, false);
+            actionKey = a.getBoolean(R.styleable.Keyboard_Key_isAction, false);
+            spacer = a.getBoolean(R.styleable.Keyboard_Key_isSpacer, false);
             edgeFlags = a.getInt(R.styleable.Keyboard_Key_keyEdgeFlags, 0);
             edgeFlags |= parent.rowEdgeFlags;
 
@@ -441,14 +471,22 @@ public class Keyboard {
             fullTextSize = a.getBoolean(R.styleable.Keyboard_Key_fullTextSize, false);
             iconic = a.getBoolean(R.styleable.Keyboard_Key_isIconic, false);
             
-            if (codes == null && !TextUtils.isEmpty(label)) {
-                codes = new int[] { label.charAt(0) };
-            }
-            
             a.recycle();
             
-            if(shiftCodes == null && !TextUtils.isEmpty(shiftLabel)) { 
-            	shiftCodes = new int[] { shiftLabel.charAt(0) };
+            if (codes == null) {
+            	if (!TextUtils.isEmpty(label)) {
+            		codes = new int[] { label.charAt(0) };
+            	} else {
+            		codes = new int[] { 0 };
+            	}
+            }
+            
+            if(shiftCodes == null) {
+            	if (!TextUtils.isEmpty(shiftLabel)) {
+            		shiftCodes = new int[] { shiftLabel.charAt(0) };
+            	} else {
+            		shiftCodes = codes;
+            	}
             }
             
             if(popupCharacters != null && !TextUtils.isEmpty(popupCharacters)) {
@@ -546,12 +584,17 @@ public class Keyboard {
          */
         public int[] getCurrentDrawableState() {
             int[] states = KEY_STATE_NORMAL;
-
             if (on) {
                 if (pressed) {
                     states = KEY_STATE_PRESSED_ON;
                 } else {
                     states = KEY_STATE_NORMAL_ON;
+                }
+            } else if (actionKey) {
+            	if (pressed) {
+                    states = KEY_STATE_ACTIVE_PRESSED;
+                } else {
+                    states = KEY_STATE_ACTIVE;
                 }
             } else {
                 if (sticky) {
@@ -573,6 +616,13 @@ public class Keyboard {
             return keyboard.isShifted();
         }
 		
+		public boolean isSpaceKey() {
+			if (codes == null) {
+        		return false;
+        	}
+            return codes[0] == KeyCodes.KEYCODE_SPACE;
+        }
+		
 		public CharSequence getLabel(boolean adjustCase) {
 			CharSequence retLabel = label != null ? label : null;
 	    	if (adjustCase && keyboard.isShifted() && label != null && label.length() < 3) {
@@ -591,6 +641,9 @@ public class Keyboard {
 		}
 		
         public int getCode() {
+        	if (codes == null) {
+        		return 0;
+        	}
         	int code = codes[0];
         	if(keyboard.isShifted() && shiftCodes != null && shiftCodes.length == 1) {
         		code = shiftCodes[0];
@@ -959,7 +1012,7 @@ public class Keyboard {
                     } else if (inRow) {
                         inRow = false;
                         y += currentRow.verticalGap;
-                        y += currentRow.defaultHeight;
+                    	y += currentRow.defaultHeight;
                     } else {
                         // TODO: error or extend?
                     }
@@ -969,6 +1022,7 @@ public class Keyboard {
             Log.e(TAG, "Parse error:" + e);
             e.printStackTrace();
         }
+        
         mTotalHeight = y - mDefaultVerticalGap;
         
         if(DEBUG) {
@@ -1027,11 +1081,11 @@ public class Keyboard {
         
         
         // SMM { // Height fixed
-        int maxHeight = Math.round(res.getFraction(R.fraction.keyboard_max_height, mDisplayHeight, mDisplayHeight));
-        int minHeight = Math.round(res.getFraction(R.fraction.keyboard_min_height, mDisplayHeight, mDisplayHeight));
+        mMaxHeight = Math.round(res.getFraction(R.fraction.keyboard_max_height, mDisplayHeight, mDisplayHeight));
+        mMinHeight = Math.round(res.getFraction(R.fraction.keyboard_min_height, mDisplayHeight, mDisplayHeight));
         
-        mDefaultHeight = Math.max(mDefaultHeight, minHeight / 4);
-        mDefaultHeight = Math.min(mDefaultHeight, maxHeight / 4);
+        mDefaultHeight = Math.max(mDefaultHeight, mMinHeight / 4);
+        mDefaultHeight = Math.min(mDefaultHeight, mMaxHeight / 4);
         // } SMM
     }
     

@@ -6,6 +6,7 @@
     -->
     
     <dimen name="key_height">0.335in</dimen>
+    <dimen name="key_height_5row">0.300in</dimen>
     
     <fraction name="keyboard_max_height">45%</fraction>
     <fraction name="keyboard_min_height">30%</fraction>

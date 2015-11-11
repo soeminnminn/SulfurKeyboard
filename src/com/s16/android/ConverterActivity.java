@@ -2,17 +2,16 @@ package com.s16.android;
 
 import com.s16.app.ClipboardHelper;
 import com.s16.drawing.HomeUpDrawable;
-import com.s16.drawing.IconFontDrawable;
 import com.s16.inputmethod.skeyboard.MMFontConvert;
 import com.s16.inputmethod.skeyboard.R;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -24,7 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class ConverterActivity extends Activity {
+public class ConverterActivity extends FragmentActivity {
 
 	private final TextWatcher mTextUnicodeTextWatcher = new TextWatcher() {
 
@@ -144,10 +143,8 @@ public class ConverterActivity extends Activity {
             }
         });
 		
-		int iconColor = getResources().getColor(R.color.dim_foreground_holo_dark);
 		//int intrinsicSize = IconFontDrawable.getDefaultIntrinsicSize(getContext());
 		final ImageButton buttonCopy = (ImageButton)findViewById(R.id.imageButtonTitleCopy);
-		buttonCopy.setImageDrawable(new IconFontDrawable(typefaceZawgyi, '\uE042', iconColor, 48));
 		buttonCopy.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

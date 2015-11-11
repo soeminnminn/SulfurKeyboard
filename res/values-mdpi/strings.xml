@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="resource_mode" translatable="false">mdpi</string>
+    
+    <!-- Don't translate -->
+    <string name="enabled_extened_row_default_value" translatable="false">0</string>
 </resources>

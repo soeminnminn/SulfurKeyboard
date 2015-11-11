@@ -20,6 +20,7 @@
 <resources>
     <color name="transparent">#00000000</color>
     <color name="extension_background">#A0000000</color>
+    <color name="keyboard_background">#00000000</color>
     
     <color name="candidate_normal">#FFFFFFFF</color>
     <color name="candidate_recommended">#FFFCAE00</color>
@@ -64,4 +65,10 @@
     <color name="link_text_holo_light">#0000ee</color>
     <color name="holo_blue_light">#ff33b5e5</color>
     <color name="holo_blue_dark">#ff0099cc</color>
+    
+    <!-- material -->
+	<color name="material_pressed_highlight_dark">#1AFFFFFF</color>
+	<color name="material_focused_highlight_dark">#77000000</color>
+	<color name="material_pressed_highlight_light">#10000000</color>
+    <color name="material_focused_highlight_light">#40000000</color>
 </resources>

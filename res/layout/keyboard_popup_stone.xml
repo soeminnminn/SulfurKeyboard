@@ -34,6 +34,5 @@
             app:keyBackground="@drawable/btn_keyboard_key_stone"
             app:keyTextColor="@color/key_text_color_light"
             app:shadowColor="@color/shadow_light"
-            app:popupLayout="@layout/keyboard_popup_stone"
-        />
+            app:popupLayout="@layout/keyboard_popup_stone" />
 </LinearLayout>

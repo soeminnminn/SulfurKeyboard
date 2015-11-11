@@ -26,8 +26,8 @@
         android:orientation="horizontal"
         android:background="@drawable/keyboard_popup_panel_background_klp"
         android:paddingLeft="8dip"
-        android:paddingRight="8dip"
-        >
+        android:paddingRight="8dip" >
+        
     <com.s16.inputmethod.skeyboard.SoftKeyboardView
             android:id="@+id/KeyboardBaseView"
             android:layout_width="match_parent"
@@ -35,6 +35,5 @@
             android:background="@color/transparent"
             app:keyBackground="@drawable/btn_keyboard_key_popup_klp"
             app:keyHysteresisDistance="0dip"
-            app:verticalCorrection="@dimen/mini_keyboard_vertical_correction"
-            />
+            app:verticalCorrection="@dimen/mini_keyboard_vertical_correction" />
 </LinearLayout>

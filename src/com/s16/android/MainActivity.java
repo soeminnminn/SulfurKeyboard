@@ -1,13 +1,13 @@
 package com.s16.android;
 
-import com.s16.inputmethod.skeyboard.IMESettings;
+import com.s16.inputmethod.skeyboard.IMESettingsActivity;
 import com.s16.inputmethod.skeyboard.R;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,8 @@ public class MainActivity extends Activity {
 		String html = getString(R.string.main_body);
 		try {
 			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-			html += "<p><i>" + getText(R.string.version_name) + ":" + pInfo.versionName + "</i></p>";
+			String versionText = getResources().getString(R.string.version_text).toString();
+			html += "<p><i>" + String.format(versionText, pInfo.versionName) + "</i></p>";
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -58,7 +59,7 @@ public class MainActivity extends Activity {
 		final Button btnShowSettings = (Button)findViewById(R.id.btnShowSettings);
 		btnShowSettings.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	startActivity(new Intent(MainActivity.this.getBaseContext(), IMESettings.class));
+            	startActivity(new Intent(MainActivity.this.getBaseContext(), IMESettingsActivity.class));
             }
         });
 		

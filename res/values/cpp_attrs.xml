@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ColorPickerPreference">
+        <attr name="cpp_itemLayout" format="reference" />
+        <attr name="cpp_choices" format="reference" />
+        <attr name="cpp_numColumns" format="integer" />
+        <attr name="cpp_showDefault" format="boolean" />
+        <attr name="cpp_showCancel" format="boolean" />
+        <attr name="cpp_mode">
+            <flag name="palette" value="1" />
+            <flag name="progress" value="2" />
+        </attr>
+    </declare-styleable>
+    
+    <string name="cpp_set_default">Default</string>
+</resources>

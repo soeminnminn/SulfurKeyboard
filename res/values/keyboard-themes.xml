@@ -26,6 +26,7 @@
         <item name="keyTextColor">@color/key_text_color_dark</item>
         <item name="keyModifierColor">@color/key_modifier_color_dark</item>
         <item name="keyHintColor">@color/key_hint_color_dark</item>
+        <item name="keyActionColor">@color/key_modifier_color_dark</item>
         <!-- 
         <item name="keyTextSize">@dimen/key_text_size</item>
         <item name="keyLabelTextSize">@dimen/key_label_text_size</item>
@@ -41,6 +42,8 @@
         <item name="languagebarTextColor">@color/languagebar_text_dark</item>
         <item name="languagebarShadowColor">@color/languagebar_shadow_dark</item>
         <item name="spaceAutoCompletionIndicator">@drawable/sym_keyboard_space_led</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key</item>
+        <item name="keyPreviewTextColor">@color/language_feedback_text</item>
         <item name="keyPreviewLayout">@layout/key_preview</item>
         <item name="keyPreviewOffset">@dimen/key_preview_offset</item>
         <item name="keyPreviewHeight">@dimen/key_preview_height</item>
@@ -73,10 +76,12 @@
 	<!-- Stone Themes -->
 	<style name="KeyboardBaseView.stone" parent="KeyboardBaseView">
 	    <item name="keyBackground">@drawable/btn_keyboard_key_stone</item>
+	    <item name="keySpacebarBackground">@drawable/btn_keyboard_key_stone</item>
         <item name="keyTextColor">@color/key_text_color_light</item>
         <item name="keyModifierColor">@color/key_modifier_color_light</item>
         <item name="keyHintColor">@color/key_hint_color_light</item>
         <item name="keyTrailColor">@color/key_trail_color_light</item>
+        <item name="keyActionColor">@color/key_modifier_color_light</item>
         <item name="languagebarTextColor">@color/languagebar_text_light</item>
         <item name="languagebarShadowColor">@color/languagebar_shadow_light</item>
         <item name="shadowColor">@color/shadow_light</item>
@@ -89,6 +94,7 @@
 	    
 	    <item name="keyboardBackground">@drawable/sip_bg_keyboard</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_white</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_white</item>
         <item name="keyTextColor">@color/key_text_color_light</item>
         <item name="keyHintColor">@color/key_hint_color_light</item>
         <item name="keyTrailColor">@color/key_trail_color_light</item>
@@ -103,6 +109,7 @@
 	    
 	    <item name="keyboardBackground">@drawable/sip_bg_keyboard</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_iphone</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_iphone</item>
         <item name="keyTextColor">@color/key_text_color_light</item>
         <item name="keyHintColor">@color/key_hint_color_light</item>
         <item name="keyTrailColor">@color/key_trail_color_light</item>
@@ -118,6 +125,7 @@
         <item name="keyboardBackground">@drawable/keyboard_dark_background</item>
         <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_gingerbread</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_gingerbread</item>
         <item name="keyTextStyle">bold</item>
 	</style>
 	
@@ -128,13 +136,16 @@
         <item name="keyboardBackground">@drawable/keyboard_dark_background</item>
         <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_holo</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_holo</item>
         <item name="keyHorizontalMargin">1dip</item>
         <item name="keyTextStyle">bold</item>
         <item name="spaceAutoCompletionIndicator">@drawable/sym_keyboard_space_led_holo</item>
+        <item name="keyPreviewOffset">@dimen/key_preview_offset_holo</item>
         <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_ics</item>
         <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_ics</item>
         <item name="popupLayout">@layout/keyboard_popup_ics</item>
         
+        <item name="candidateSelection">@drawable/list_selector_background_pressed_ics</item>
         <item name="candidateTextColorNormal">@color/holo_blue_light</item>
         <item name="candidateTextColorRecommended">@color/holo_blue_dark</item>
         <item name="candidateTextColorOther">@color/holo_blue_light</item>
@@ -147,13 +158,16 @@
         <item name="keyboardBackground">@drawable/keyboard_dark_background</item>
         <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_klp</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_klp</item>
         <item name="keyHorizontalMargin">1dip</item>
         <item name="keyTextStyle">bold</item>
         <item name="spaceAutoCompletionIndicator">@drawable/sym_keyboard_space_led_holo</item>
+        <item name="keyPreviewOffset">@dimen/key_preview_offset_holo</item>
         <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_klp</item>
         <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_klp</item>
         <item name="popupLayout">@layout/keyboard_popup_klp</item>
         
+        <item name="candidateSelection">@drawable/list_selector_background_pressed_klp</item>
         <item name="candidateTextColorNormal">@color/bright_foreground_holo_dark</item>
         <item name="candidateTextColorRecommended">@color/bright_foreground_holo_dark</item>
         <item name="candidateTextColorOther">@color/bright_foreground_holo_dark</item>
@@ -166,6 +180,7 @@
         <item name="android:textStyle">bold</item>
 
         <item name="keyBackground">@drawable/btn_keyboard_key_galaxy</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_galaxy</item>
         <item name="keyTextStyle">bold</item>
         
         <item name="hintPopupBottomPadding">8dip</item>
@@ -183,6 +198,7 @@
 
         <item name="keyboardBackground">@drawable/keyboard_background_pink</item>
         <item name="keyBackground">@drawable/btn_keyboard_key_pink</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_pink</item>
         <item name="keyTextColor">#ffff58e2</item>
         <item name="keyModifierColor">#ffff58e2</item>
         <item name="keyHintColor">#ffbf00f6</item>
@@ -197,6 +213,160 @@
         <item name="candidateTextColorNormal">#ffff58e2</item>
         <item name="candidateTextColorRecommended">#ffbf00f6</item>
         <item name="candidateTextColorOther">#ffff58e2</item>
+	</style>
+	
+	<!-- Samsung White Themes -->
+	<style name="KeyboardBaseView.samsungwhite" parent="KeyboardBaseView">
+	    <item name="android:paddingBottom">@dimen/keyboard_bottom_padding</item>
+
+        <item name="keyboardBackground">@drawable/keyboard_background_ssw</item>
+        <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
+        <item name="keyBackground">@drawable/btn_keyboard_key_ssw</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_ssw</item>
+        <item name="keyHorizontalMargin">1dip</item>
+        <item name="keyModifierColor">@color/dim_foreground_holo_light</item>
+        <item name="keyTextStyle">normal</item>
+        <item name="keyTextColor">@color/key_text_color_light</item>
+        <item name="keyActionColor">@color/dim_foreground_holo_light</item>
+        <item name="keyTrailColor">@color/key_trail_color_light</item>
+        <item name="keyPreviewTextColor">@color/dim_foreground_holo_light</item>
+        <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_ssw</item>
+        <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_ssw</item>
+        <item name="languagebarTextColor">@color/dim_foreground_holo_light</item>
+        <item name="popupLayout">@layout/keyboard_popup_ssw</item>
+        <item name="keyPreviewLayout">@layout/key_preview_light</item>
+        
+        <item name="candidateBackground">@drawable/keyboard_suggest_strip_ssw</item>
+        <item name="candidateDivider">@drawable/keyboard_suggest_strip_divider_light</item>
+        <item name="candidateSelection">@drawable/popup_key_bg_pressed_ssw</item>
+        <item name="candidateTextColorNormal">@color/bright_foreground_holo_dark</item>
+        <item name="candidateTextColorRecommended">#ff6df1f3</item>
+        <item name="candidateTextColorOther">@color/bright_foreground_holo_dark</item>
+	</style>
+	
+	<!-- IOS Light Themes -->
+	<style name="KeyboardBaseView.ioslight" parent="KeyboardBaseView">
+	    <item name="android:paddingBottom">@dimen/keyboard_bottom_padding</item>
+
+        <item name="keyboardBackground">@drawable/keyboard_background_ios_light</item>
+        <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
+        <item name="keyBackground">@drawable/btn_keyboard_key_ios_light</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_ios_light</item>
+        <item name="keyHorizontalMargin">1dip</item>
+        <item name="keyModifierColor">@color/dim_foreground_holo_light</item>
+        <item name="keyTextStyle">normal</item>
+        <item name="keyTextColor">@color/key_text_color_light</item>
+        <item name="keyTrailColor">@color/key_trail_color_light</item>
+        <item name="keyHintColor">@color/key_hint_color_light</item>
+        <item name="keyActionColor">@color/key_text_color_light</item>
+        <item name="keyPreviewTextColor">@color/dim_foreground_holo_light</item>
+        <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_ios_light</item>
+        <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_ios_light</item>
+        <item name="languagebarTextColor">@color/dim_foreground_holo_light</item>
+        <item name="popupLayout">@layout/keyboard_popup_ios_light</item>
+        <item name="keyPreviewLayout">@layout/key_preview_light</item>
+        <item name="keyPreviewOffset">@dimen/key_preview_offset_lxx</item>
+        <item name="keyPreviewHeight">@dimen/key_preview_height_lxx</item>
+        
+        <item name="candidateBackground">@drawable/keyboard_suggest_strip_ios_light</item>
+        <item name="candidateSelection">@drawable/list_selector_background_pressed_klp</item>
+        <item name="candidateTextColorNormal">@color/bright_foreground_holo_light</item>
+        <item name="candidateTextColorRecommended">@color/bright_foreground_holo_light</item>
+        <item name="candidateTextColorOther">@color/bright_foreground_holo_light</item>
+	</style>
+	
+	<!-- IOS Dark Themes -->
+	<style name="KeyboardBaseView.iosdark" parent="KeyboardBaseView">
+	    <item name="android:paddingBottom">@dimen/keyboard_bottom_padding</item>
+
+        <item name="keyboardBackground">@drawable/keyboard_background_ios_dark</item>
+        <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
+        <item name="keyBackground">@drawable/btn_keyboard_key_ios_dark</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_key_ios_dark</item>
+        <item name="keyHorizontalMargin">1dip</item>
+        <item name="keyModifierColor">@color/dim_foreground_holo_dark</item>
+        <item name="keyTextStyle">normal</item>
+        <item name="keyTextColor">@color/key_text_color_dark</item>
+        <item name="keyTrailColor">@color/key_trail_color_dark</item>
+        <item name="keyHintColor">@color/dim_foreground_holo_dark</item>
+        <item name="keyActionColor">@android:color/white</item>
+        <item name="keyPreviewTextColor">@color/dim_foreground_holo_dark</item>
+        <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_ios_dark</item>
+        <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_ios_dark</item>
+        <item name="languagebarTextColor">@color/dim_foreground_holo_dark</item>
+        <item name="popupLayout">@layout/keyboard_popup_ios_dark</item>
+        <item name="keyPreviewLayout">@layout/key_preview</item>
+        <item name="keyPreviewOffset">@dimen/key_preview_offset_lxx</item>
+        <item name="keyPreviewHeight">@dimen/key_preview_height_lxx</item>
+        
+        <item name="candidateBackground">@drawable/keyboard_suggest_strip_ios_dark</item>
+        <item name="candidateDivider">@drawable/keyboard_suggest_strip_divider_light</item>
+        <item name="candidateSelection">@drawable/list_selector_background_pressed_klp</item>
+        <item name="candidateTextColorNormal">@color/bright_foreground_holo_dark</item>
+        <item name="candidateTextColorRecommended">@color/bright_foreground_holo_dark</item>
+        <item name="candidateTextColorOther">@color/bright_foreground_holo_dark</item>
+	</style>
+	
+	<!-- Material Light Themes -->
+	<style name="KeyboardBaseView.materiallight" parent="KeyboardBaseView">
+	    <item name="android:paddingBottom">@dimen/keyboard_bottom_padding</item>
+
+        <item name="keyboardBackground">@drawable/keyboard_background_lxx_light</item>
+        <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
+        <item name="keyBackground">@drawable/btn_keyboard_key_lxx_light</item>
+        <item name="keyHorizontalMargin">1dip</item>
+        <item name="keyModifierColor">@color/dim_foreground_holo_light</item>
+        <item name="keyTextStyle">normal</item>
+        <item name="keyTextColor">@color/key_text_color_light</item>
+        <item name="keyTrailColor">@color/key_trail_color_light</item>
+        <item name="keyHintColor">@color/key_hint_color_light</item>
+        <item name="keyActionColor">@color/key_text_color_light</item>
+        <item name="keyPreviewTextColor">@color/dim_foreground_holo_light</item>
+        <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_lxx_light</item>
+        <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_lxx_light</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_spacebar_lxx_light</item>
+        <item name="languagebarTextColor">@color/dim_foreground_holo_light</item>
+        <item name="popupLayout">@layout/keyboard_popup_lxx_light</item>
+        <item name="keyPreviewLayout">@layout/key_preview_light</item>
+        <item name="keyPreviewOffset">@dimen/key_preview_offset_lxx</item>
+        <item name="keyPreviewHeight">@dimen/key_preview_height_lxx</item>
+        
+        <item name="candidateBackground">@drawable/keyboard_suggest_strip_lxx_light</item>
+        <item name="candidateSelection">@drawable/list_selector_background_pressed_klp</item>
+        <item name="candidateTextColorNormal">@color/bright_foreground_holo_light</item>
+        <item name="candidateTextColorRecommended">@color/bright_foreground_holo_light</item>
+        <item name="candidateTextColorOther">@color/bright_foreground_holo_light</item>
+	</style>
+	
+	<!-- Material Dark Themes -->
+	<style name="KeyboardBaseView.materialdark" parent="KeyboardBaseView">
+	    <item name="android:paddingBottom">@dimen/keyboard_bottom_padding</item>
+
+        <item name="keyboardBackground">@drawable/keyboard_background_lxx_dark</item>
+        <item name="keyboardPaddingBottom">@dimen/keyboard_bottom_padding</item>
+        <item name="keyBackground">@drawable/btn_keyboard_key_lxx_dark</item>
+        <item name="keyHorizontalMargin">1dip</item>
+        <item name="keyModifierColor">@color/dim_foreground_holo_dark</item>
+        <item name="keyTextStyle">normal</item>
+        <item name="keyTextColor">@color/key_text_color_dark</item>
+        <item name="keyTrailColor">@color/key_trail_color_dark</item>
+        <item name="keyHintColor">@color/dim_foreground_holo_dark</item>
+        <item name="keyActionColor">@android:color/white</item>
+        <item name="keyPreviewTextColor">@color/dim_foreground_holo_dark</item>
+        <item name="keyPreviewBackground">@drawable/keyboard_key_feedback_lxx_dark</item>
+        <item name="keyPreviewSlideBackground">@drawable/keyboard_key_feedback_slide_lxx_dark</item>
+        <item name="keySpacebarBackground">@drawable/btn_keyboard_spacebar_lxx_dark</item>
+        <item name="languagebarTextColor">@color/dim_foreground_holo_dark</item>
+        <item name="popupLayout">@layout/keyboard_popup_lxx_dark</item>
+        <item name="keyPreviewLayout">@layout/key_preview</item>
+        <item name="keyPreviewOffset">@dimen/key_preview_offset_lxx</item>
+        <item name="keyPreviewHeight">@dimen/key_preview_height_lxx</item>
+        
+        <item name="candidateBackground">@drawable/keyboard_suggest_strip_lxx_dark</item>
+        <item name="candidateSelection">@drawable/list_selector_background_pressed_klp</item>
+        <item name="candidateTextColorNormal">@color/bright_foreground_holo_dark</item>
+        <item name="candidateTextColorRecommended">@color/bright_foreground_holo_dark</item>
+        <item name="candidateTextColorOther">@color/bright_foreground_holo_dark</item>
 	</style>
 	
 </resources>

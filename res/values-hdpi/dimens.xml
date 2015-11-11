@@ -26,6 +26,7 @@
     <dimen name="hint_popup_icon_bottom_padding">5dip</dimen>
     
     <dimen name="key_height">0.335in</dimen>
+    <dimen name="key_height_5row">0.300in</dimen>
 	<dimen name="key_text_size">0.138in</dimen>
     <dimen name="key_label_text_size">0.083in</dimen>
 	<dimen name="key_trail_text_size">0.11in</dimen>

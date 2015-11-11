@@ -46,7 +46,7 @@
             android:layout_marginEnd="@dimen/actionbar_horizontal_margin"
             android:layout_marginRight="@dimen/actionbar_horizontal_margin"
             android:contentDescription="@string/action_copy"
-            android:src="@drawable/abc_ic_ab_back_holo_dark" />
+            android:src="@drawable/ic_action_copy" />
 
     </RelativeLayout>
 
@@ -59,6 +59,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
+        android:fitsSystemWindows="true"
         android:layout_below="@+id/frameActionbar" >
         
         <EditText 

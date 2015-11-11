@@ -29,6 +29,11 @@
     <integer name="icon_keyboard_delete">10</integer>
     <integer name="icon_keyboard_done">11</integer>
     <integer name="icon_keyboard_emoji">12</integer>
-    <integer name="icon_keyboard_hint_popup">13</integer>
+    <integer name="icon_keyboard_dpad_up">13</integer>
+    <integer name="icon_keyboard_dpad_down">14</integer>
+    <integer name="icon_keyboard_dpad_left">15</integer>
+    <integer name="icon_keyboard_dpad_right">16</integer>
+    <integer name="icon_keyboard_dpad_center">17</integer>
+    <integer name="icon_keyboard_hint_popup">18</integer>
 
 </resources>

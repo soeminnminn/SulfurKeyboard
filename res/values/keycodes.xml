@@ -19,6 +19,7 @@
 -->
 
 <resources>
+    <integer name="key_null">0</integer>
     <integer name="key_tab">9</integer>
     <integer name="key_return">10</integer>
     <integer name="key_space">32</integer>

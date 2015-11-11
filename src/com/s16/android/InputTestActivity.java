@@ -4,15 +4,15 @@ import com.s16.inputmethod.skeyboard.R;
 import com.s16.drawing.HomeUpDrawable;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.graphics.Typeface;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-public class InputTestActivity extends Activity {
+public class InputTestActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

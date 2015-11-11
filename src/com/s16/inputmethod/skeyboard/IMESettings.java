@@ -22,30 +22,20 @@ import android.app.backup.BackupManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 //import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
+import android.support.v4.app.PreferenceFragment;
 import android.text.AutoText;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.Menu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.s16.android.KeyboardApp;
-import com.s16.inputmethod.skeyboard.R.color;
 
-public class IMESettings extends PreferenceActivity
-        implements SharedPreferences.OnSharedPreferenceChangeListener,
-        Preference.OnPreferenceClickListener {
+public class IMESettings extends PreferenceFragment
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 	public static final String APPLICATRION_ICON_KEY = "application_icon";
     private static final String QUICK_FIXES_KEY = "quick_fixes";
@@ -53,10 +43,11 @@ public class IMESettings extends PreferenceActivity
     /* package */ static final String PREF_SETTINGS_KEY = "settings_key";
     /* package */ static final String PREF_LANGUAGE_KEY = "language_key";
     /* package */ static final String PREF_AUTO_HIDE_MINIKEYBOARD = "auto_hide_minikeyboard";
+    /* package */ static final String PREF_EXTENDED_ROW = "extended_row";
+    /* package */ static final String PREF_KEYBOARD_BACKGROUND_COLOR = "keyboard_background_color";
     private static final String KEYBOARD_LAYOUT_SETTINGS_KEY = "keyboard_layout";
     private static final String TEXT_SIZE_SETTINGS_KEY = "key_text_size";
     //private static final String USED_UNICODE_SETTINGS_KEY = "used_unicode";
-    private static final String ABOUT_KEY = "about_keyboard";
     
     //private static final String CATEGORY_PREDICTION_KEY = "prediction_category";
 
@@ -66,10 +57,10 @@ public class IMESettings extends PreferenceActivity
     private ListPreference mLanguageKeyPreference;
     private ListPreference mKeyboardLayoutPreference;
     private ListPreference mKeyboardTextSizePreference;
+    private ListPreference mKeyboardExtendedRowPreference;
 
-    @SuppressWarnings("deprecation")
 	@Override
-    protected void onCreate(Bundle icicle) {
+	public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         addPreferencesFromResource(R.xml.prefs);
         
@@ -78,6 +69,7 @@ public class IMESettings extends PreferenceActivity
         mLanguageKeyPreference = (ListPreference) findPreference(PREF_LANGUAGE_KEY);
         mKeyboardLayoutPreference = (ListPreference) findPreference(KEYBOARD_LAYOUT_SETTINGS_KEY);
         mKeyboardTextSizePreference = (ListPreference) findPreference(TEXT_SIZE_SETTINGS_KEY);
+        mKeyboardExtendedRowPreference = (ListPreference) findPreference(PREF_EXTENDED_ROW);
 
         //final PreferenceGroup predictionCategory = (PreferenceGroup) findPreference(CATEGORY_PREDICTION_KEY);
         //predictionCategory.removePreference(findPreference(USED_UNICODE_SETTINGS_KEY));
@@ -87,31 +79,16 @@ public class IMESettings extends PreferenceActivity
 
 		//CheckBoxPreference jbFix = (CheckBoxPreference)findPreference("used_jbfix");
 		//jbFix.setEnabled(Build.VERSION.SDK_INT > 15);
-        
-        PreferenceItem aboutVersion = (PreferenceItem)this.findPreference(ABOUT_KEY);
-		aboutVersion.setOnClickListener(this);
-		try {
-			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-			aboutVersion.setSummary(getText(R.string.version_name) + " " + pInfo.versionName);
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
     }
-    
-    @Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		return false;
-	}
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-        IMESettings.AlertForInstallLocation(this, null);
+        IMESettings.AlertForInstallLocation(getActivity(), null);
     }
     
-    @SuppressWarnings("deprecation")
 	@Override
-    protected void onResume() {
+	public void onResume() {
         super.onResume();
         int autoTextSize = AutoText.getSize(getListView());
         if (autoTextSize < 1) {
@@ -121,30 +98,31 @@ public class IMESettings extends PreferenceActivity
         updateLanguageKeySummary();
         updateKeyboardLayoutSummary();
         updateTextSizeSummary();
+        updateShowExtendedRowSummary();
     }
 
-    @SuppressWarnings("deprecation")
 	@Override
-    protected void onDestroy() {
+	public void onDestroy() {
         getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onDestroy();
     }
 
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        (new BackupManager(this)).dataChanged();
+        (new BackupManager(getActivity())).dataChanged();
         
         if (key.equals(APPLICATRION_ICON_KEY)) {
         	boolean defaultAppIcon = getResources().getBoolean(R.bool.default_application_icon);
         	if (prefs.getBoolean(APPLICATRION_ICON_KEY, defaultAppIcon)) {
-        		KeyboardApp.ShowApplicationIcon(getApplicationContext());
+        		KeyboardApp.ShowApplicationIcon(getActivity().getApplicationContext());
         	} else {
-        		KeyboardApp.HideApplicationIcon(getApplicationContext());
+        		KeyboardApp.HideApplicationIcon(getActivity().getApplicationContext());
         	}
         }
         
         updateLanguageKeySummary();
         updateKeyboardLayoutSummary();
         updateTextSizeSummary();
+        updateShowExtendedRowSummary();
     }
     
     private void updateLanguageKeySummary() {
@@ -164,13 +142,11 @@ public class IMESettings extends PreferenceActivity
 	            getResources().getStringArray(R.array.keyboard_text_size_modes)
 	            [mKeyboardTextSizePreference.findIndexOfValue(mKeyboardTextSizePreference.getValue())]);
 	}
-
-	@Override
-	public boolean onPreferenceClick(Preference preference) {
-		if(preference.getKey().contains(ABOUT_KEY)) {
-			showAboutDialog();
-		}
-		return false;
+    
+    private void updateShowExtendedRowSummary() {
+    	mKeyboardExtendedRowPreference.setSummary(
+	            getResources().getStringArray(R.array.enabled_extened_row_visibilities)
+	            [mKeyboardExtendedRowPreference.findIndexOfValue(mKeyboardExtendedRowPreference.getValue())]);
 	}
 
 	// SMM {
@@ -208,32 +184,5 @@ public class IMESettings extends PreferenceActivity
 		}
 		return true;
 	}
-	
-	private void showAboutDialog() {
-		Context context = this;
-		DisplayMetrics dm = context.getResources().getDisplayMetrics();
-		int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, dm);
-		
-		final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-		dialogBuilder.setIcon(android.R.drawable.ic_dialog_info);
-		dialogBuilder.setTitle(R.string.english_ime_name);
-		
-		String html = context.getText(R.string.about_text).toString();
-		final TextView message = new TextView(context);
-		message.setPadding(padding, padding, padding, padding);
-		message.setTextColor(context.getResources().getColor(color.key_text_color_dark));
-		message.setMovementMethod(LinkMovementMethod.getInstance());
-		message.setText(Html.fromHtml(html));
-		dialogBuilder.setView(message);
-		
-		dialogBuilder.setNegativeButton(context.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-		dialogBuilder.setPositiveButton(null, null);
-		dialogBuilder.show();
-    }
 	// } SMM
 }

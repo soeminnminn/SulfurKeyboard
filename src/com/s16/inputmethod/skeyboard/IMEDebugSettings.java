@@ -23,10 +23,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.PreferenceActivity;
+import android.support.v4.app.PreferenceFragment;
 import android.util.Log;
 
-public class IMEDebugSettings extends PreferenceActivity
+public class IMEDebugSettings extends PreferenceFragment
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "LatinIMEDebugSettings";
@@ -34,9 +34,8 @@ public class IMEDebugSettings extends PreferenceActivity
 
     private CheckBoxPreference mDebugMode;
 
-    @SuppressWarnings("deprecation")
 	@Override
-    protected void onCreate(Bundle icicle) {
+	public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         addPreferencesFromResource(R.xml.prefs_for_debug);
         SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
@@ -62,7 +61,7 @@ public class IMEDebugSettings extends PreferenceActivity
         boolean isDebugMode = mDebugMode.isChecked();
         String version = "";
         try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+            PackageInfo info = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
             version = "Version " + info.versionName;
         } catch (NameNotFoundException e) {
             Log.e(TAG, "Could not find version info.");

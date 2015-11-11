@@ -68,6 +68,9 @@
 
         <!-- Color to use for key trail labels. -->
         <attr name="keyTrailColor" format="color" />
+        
+        <!-- Color to use for action key. -->
+        <attr name="keyActionColor" format="color" />
 
         <!-- Color to use for the language bar label. -->
         <attr name="languagebarTextColor" format="color" />
@@ -89,6 +92,9 @@
 
         <!-- Height of the key press feedback popup. -->
         <attr name="keyPreviewHeight" format="dimension" />
+        
+        <!-- Color to use for the label in a key preview. -->
+        <attr name="keyPreviewTextColor" format="color" />
 
         <!-- Background resource for key preview. -->
         <attr name="keyPreviewBackground" format="reference" />
@@ -113,6 +119,9 @@
 
         <!-- Background dimension amount for key. -->
         <attr name="backgroundDimAmount" format="float" />
+        
+        <!-- Spacebar Key background image. -->
+        <attr name="keySpacebarBackground" format="reference" />
         
         <attr name="candidateBackground" format="reference" />
         <attr name="candidateSelection" format="reference" />

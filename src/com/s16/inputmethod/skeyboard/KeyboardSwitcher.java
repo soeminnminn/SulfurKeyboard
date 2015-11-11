@@ -83,7 +83,10 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     private static final int KBD_PHONE_SYMBOLS = R.xml.kbd_phone_symbols;
     private static final int KBD_SYMBOLS = R.xml.kbd_symbols;
     private static final int KBD_SYMBOLS_SHIFT = R.xml.kbd_symbols_shift;
-    private static final int KBD_QWERTY = R.xml.kbd_qwerty;
+    /* package */ static final int KBD_QWERTY = R.xml.kbd_qwerty;
+    private static final int KBD_SYMBOLS_5ROWS = R.xml.kbd_symbols_5rows;
+    private static final int KBD_SYMBOLS_SHIFT_5ROWS = R.xml.kbd_symbols_shift_5rows;
+    /* package */ static final int KBD_QWERTY_5ROWS = R.xml.kbd_qwerty_5rows;
     private static final int KBD_NUMBER = R.xml.kbd_number;
     private static final int KBD_NUMBER_SYMBOLS = R.xml.kbd_number_symbols;
 
@@ -94,6 +97,11 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     static final int LANGUAGE_SWICH_BOTH = 0;
     static final int LANGUAGE_SWICH_SLIDE = 1;
     static final int LANGUAGE_SWICH_TOGGLE = 2;
+    
+    // Extended Row Show Modes
+    private static final int EXTENDED_ROW_HIDE = 0;
+    private static final int EXTENDED_ROW_SHOW_PORTRAIT = 1;
+    private static final int EXTENDED_ROW_SHOW = 2;
 
     private SoftKeyboardView mInputView;
     private static final int[] ALPHABET_MODES = {
@@ -141,12 +149,14 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     private int mLanguageSwitchMode;
     
     private boolean mAutoHideMiniKeyboard; // SMM
+    private int mKeyboardBackgroundColor; // SMM
 
     private int mLastDisplayWidth;
     private LanguageSwitcher mLanguageSwitcher;
     private Locale mInputLocale;
 
     private int mLayoutId;
+    private int mShowExtendedRow;
 
     public KeyboardSwitcher(LatinIME ims) {
         mInputMethodService = ims;
@@ -156,11 +166,13 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         updateSettingsKeyState(prefs);
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        mKeyboards = new HashMap<KeyboardId, SoftReference<SoftKeyboard>>();
-        mSymbolsId = makeSymbolsId(KBD_SYMBOLS);
-        mSymbolsShiftedId = makeSymbolsId(KBD_SYMBOLS_SHIFT);
-        
         updateAutoHideMiniKeyboardState(PreferenceManager.getDefaultSharedPreferences(mInputMethodService)); // SMM
+        updateKeyboardBackgroundColor(PreferenceManager.getDefaultSharedPreferences(mInputMethodService)); // SMM
+        updateExtendedRowState(PreferenceManager.getDefaultSharedPreferences(mInputMethodService)); // SMM
+        
+        mKeyboards = new HashMap<KeyboardId, SoftReference<SoftKeyboard>>();
+        mSymbolsId = makeSymbolsId(getKeyboardSymbolRowsResId());
+        mSymbolsShiftedId = makeSymbolsId(getKeyboardSymbolShiftRowsResId());
     }
 
     /**
@@ -181,8 +193,8 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     }
 
     public void makeKeyboards(boolean forceCreate) {
-        mSymbolsId = makeSymbolsId(KBD_SYMBOLS);
-        mSymbolsShiftedId = makeSymbolsId(KBD_SYMBOLS_SHIFT);
+        mSymbolsId = makeSymbolsId(getKeyboardSymbolRowsResId());
+        mSymbolsShiftedId = makeSymbolsId(getKeyboardSymbolShiftRowsResId());
 
         if (forceCreate) mKeyboards.clear();
         // Configuration change is coming after the keyboard gets recreated. So don't rely on that.
@@ -304,15 +316,15 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
     }
 
     private KeyboardId getKeyboardId(int mode, int imeOptions, boolean isSymbols) {
-        // TODO: generalize for any KeyboardId
-        int keyboardRowsResId = KBD_QWERTY;
+    	int keyboardSymbolRowsResId = getKeyboardSymbolRowsResId();
+        int keyboardRowsResId = getKeyboardRowsResId();
         if (isSymbols) {
             if (mode == MODE_PHONE) {
                 return new KeyboardId(KBD_PHONE_SYMBOLS);
             } else if (mode == MODE_NUMBER) {
             	return new KeyboardId(KBD_NUMBER_SYMBOLS);
             } else {
-                return new KeyboardId(KBD_SYMBOLS, mHasSettingsKey || getHasLanguageKey() ?
+                return new KeyboardId(keyboardSymbolRowsResId, mHasSettingsKey || getHasLanguageKey() ?
                         KEYBOARDMODE_SYMBOLS_WITH_SETTINGS_KEY : KEYBOARDMODE_SYMBOLS,
                         false);
             }
@@ -327,7 +339,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
                         KEYBOARDMODE_NORMAL_WITH_SETTINGS_KEY : KEYBOARDMODE_NORMAL,
                         true);
             case MODE_SYMBOLS:
-                return new KeyboardId(KBD_SYMBOLS, mHasSettingsKey || getHasLanguageKey() ?
+                return new KeyboardId(keyboardSymbolRowsResId, mHasSettingsKey || getHasLanguageKey() ?
                         KEYBOARDMODE_SYMBOLS_WITH_SETTINGS_KEY : KEYBOARDMODE_SYMBOLS,
                         false);
             case MODE_PHONE:
@@ -348,6 +360,18 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
             	return new KeyboardId(KBD_NUMBER);
         }
         return null;
+    }
+    
+    private int getKeyboardRowsResId() {
+    	return isShowExtendedRow() ? KBD_QWERTY_5ROWS : KBD_QWERTY;
+    }
+    
+    private int getKeyboardSymbolRowsResId() {
+    	return isShowExtendedRow() ? KBD_SYMBOLS_5ROWS : KBD_SYMBOLS;
+    }
+    
+    private int getKeyboardSymbolShiftRowsResId() {
+    	return isShowExtendedRow() ? KBD_SYMBOLS_SHIFT_5ROWS : KBD_SYMBOLS_SHIFT;
     }
 
     public int getKeyboardMode() {
@@ -482,7 +506,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
                 }
             }
             
-            mInputView.setStyle(mThemedContext, mThemeResId);
+            mInputView.setStyle(mThemedContext, mThemeResId, mKeyboardBackgroundColor);
             mInputView.setAutoHideMiniKeyboard(mAutoHideMiniKeyboard);
             mInputView.setOnKeyboardActionListener(mInputMethodService);
             mLayoutId = newLayout;
@@ -508,6 +532,12 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         } else if (IMESettings.PREF_AUTO_HIDE_MINIKEYBOARD.equals(key)) {
         	updateAutoHideMiniKeyboardState(sharedPreferences);
         	recreateInputView();
+        } else if (IMESettings.PREF_EXTENDED_ROW.equals(key)) {
+        	updateExtendedRowState(sharedPreferences);
+        	recreateInputView();
+        } else if (IMESettings.PREF_KEYBOARD_BACKGROUND_COLOR.equals(key)) {
+        	updateKeyboardBackgroundColor(sharedPreferences);
+        	recreateInputView();
         }
     }
 
@@ -520,6 +550,7 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         }
     }
 
+    // SMM {
     private void updateSettingsKeyState(SharedPreferences prefs) {
         Resources resources = mInputMethodService.getResources();
         mHasSettingsKey = prefs.getBoolean(IMESettings.PREF_SETTINGS_KEY, resources.getBoolean(R.bool.default_show_settings_key));
@@ -535,7 +566,32 @@ public class KeyboardSwitcher implements SharedPreferences.OnSharedPreferenceCha
         mAutoHideMiniKeyboard = prefs.getBoolean(IMESettings.PREF_AUTO_HIDE_MINIKEYBOARD, resources.getBoolean(R.bool.default_auto_hide_minikeyboard));
     }
     
-    // SMM {
+    private void updateExtendedRowState(SharedPreferences prefs) {
+        Resources resources = mInputMethodService.getResources();
+        mShowExtendedRow = Integer.valueOf(prefs.getString(IMESettings.PREF_EXTENDED_ROW, resources.getString(R.string.enabled_extened_row_default_value)));
+    }
+    
+    private void updateKeyboardBackgroundColor(SharedPreferences prefs) {
+        Resources resources = mInputMethodService.getResources();
+        mKeyboardBackgroundColor = prefs.getInt(IMESettings.PREF_KEYBOARD_BACKGROUND_COLOR, resources.getColor(R.color.transparent));
+    }
+    
+    public boolean isShowExtendedRow() {
+    	if (mInputMethodService == null) {
+    		return false;
+    	}
+    	int orientation = mInputMethodService.getOrientation();
+    	switch(mShowExtendedRow) {
+    	case EXTENDED_ROW_SHOW_PORTRAIT:
+    		return (orientation != Configuration.ORIENTATION_LANDSCAPE);
+    	case EXTENDED_ROW_HIDE:
+    		return false;
+    	case EXTENDED_ROW_SHOW:
+    	default:
+    		return true;
+    	}
+    }
+    
     public LanguageSwitcher getLanguageSwitcher() {
     	return mLanguageSwitcher;
     }

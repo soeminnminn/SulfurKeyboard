@@ -29,6 +29,7 @@ import java.util.Map;
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -45,7 +46,6 @@ import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
@@ -119,7 +119,7 @@ public class LatinIME extends InputMethodService
     private static final int SUGGESTIONS_SHOW = 0;
     private static final int SUGGESTIONS_ONLY_PORTRAIT = 1;
     private static final int SUGGESTIONS_HIDE = 2;
-
+    
     //private SoftKeyboardView mInputView;
     private LinearLayout mCandidateViewContainer;
     private CandidateView mCandidateView;
@@ -2309,14 +2309,14 @@ public class LatinIME extends InputMethodService
     }
 
     protected void launchSettings() {
-        launchSettings(IMESettings.class);
+        launchSettings(IMESettingsActivity.class);
     }
 
     public void launchDebugSettings() {
-        launchSettings(IMEDebugSettings.class);
+        launchSettings(IMEDebugSettingsActivity.class);
     }
 
-    protected void launchSettings (Class<? extends PreferenceActivity> settingsClass) {
+    protected void launchSettings (Class<? extends Activity> settingsClass) {
         handleClose();
         Intent intent = new Intent();
         intent.setClass(LatinIME.this, settingsClass);

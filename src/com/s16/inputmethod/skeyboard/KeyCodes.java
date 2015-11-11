@@ -18,6 +18,7 @@ package com.s16.inputmethod.skeyboard;
 
 public final class KeyCodes {
 	
+	static final int KEYCODE_NULL = 0;
 	static final int KEYCODE_OPTIONS = -176; // KEYCODE_SETTINGS = 176;
     static final int KEYCODE_OPTIONS_LONGPRESS = -175; // KEYCODE_CAPTIONS = 175;
     static final int KEYCODE_VOICE = -94; // KEYCODE_PICTSYMBOLS = 94;

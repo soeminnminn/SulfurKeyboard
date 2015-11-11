@@ -20,6 +20,7 @@
 
 <resources>
     <dimen name="key_height">0.290in</dimen>
+    <dimen name="key_height_5row">0.220in</dimen>
     <dimen name="key_icon_text_size">20sp</dimen>
     <dimen name="key_icon_width">36dip</dimen>
     <dimen name="key_icon_height">34dip</dimen>

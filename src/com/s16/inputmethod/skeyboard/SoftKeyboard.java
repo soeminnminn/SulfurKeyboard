@@ -68,12 +68,9 @@ public class SoftKeyboard extends Keyboard {
     
     private Key mShiftKey;
     private Key mEnterKey;
-    private Key mEmojiKey;
     private Key mF1Key;
     private Key mSpaceKey;
     private Key m123Key;
-    private Key mDeleteKey;
-    private Key mTabKey;
     private Key mSettingsKey;
     
     /*
@@ -126,7 +123,6 @@ public class SoftKeyboard extends Keyboard {
 
     private static int sSpacebarVerticalCorrection;
     private static final float ICON_SIZE_ADJUST = 0.6f;
-    private float mIconSizeAdjust;
     
     private int mLanguageSwitchMode; 
     
@@ -158,14 +154,13 @@ public class SoftKeyboard extends Keyboard {
         mButtonArrowLeftIcon = res.getDrawable(R.drawable.sym_keyboard_language_arrows_left);
         mButtonArrowRightIcon = res.getDrawable(R.drawable.sym_keyboard_language_arrows_right);
         sSpacebarVerticalCorrection = res.getDimensionPixelOffset(R.dimen.spacebar_vertical_correction);
-        mIsAlphaKeyboard = xmlLayoutResId == R.xml.kbd_qwerty;
+        mIsAlphaKeyboard = xmlLayoutResId == KeyboardSwitcher.KBD_QWERTY || xmlLayoutResId == KeyboardSwitcher.KBD_QWERTY_5ROWS;
         mSpaceKeyIndex = indexOf(KeyCodes.KEYCODE_SPACE);
         
         // initializeNumberHintResources(context);
         
         // TODO remove this initialization after cleanup
         mVerticalGap = super.getVerticalGap();
-        mIconSizeAdjust = ICON_SIZE_ADJUST;
         
         initializeThemesIcons(context, styleResId);
     }
@@ -213,13 +208,10 @@ public class SoftKeyboard extends Keyboard {
     protected Key createKeyFromXml(Resources res, Row parent, int x, int y, 
             XmlResourceParser parser) {
         Key key = new LatinKey(res, parent, x, y, parser);
-        switch (key.codes[0]) {
+        switch (key.getCode()) {
 	        case KeyCodes.KEYCODE_ENTER:
 	        	mEnterKey = key;
 	        	break;
-	        case KeyCodes.KEYCODE_EMOJI:
-	        	mEmojiKey = key;
-	            break;
 	        case KeyCodes.KEYCODE_F1:
 	            mF1Key = key;
 	            break;
@@ -230,17 +222,14 @@ public class SoftKeyboard extends Keyboard {
 	            m123Key = key;
 	            m123Label = key.label;
 	            break;
-	        case KeyCodes.KEYCODE_DELETE:
-	        	mDeleteKey = key;
-	        	break;
 	        case KeyCodes.KEYCODE_OPTIONS:
 	        case KeyCodes.KEYCODE_LANGUAGE:
 	        	mSettingsKey = key;
 	        	break;
-	        case KeyCodes.KEYCODE_TAB:
-	        	mTabKey = key;
-	        	break;
 	    	default:
+	    		if (key.iconId != 0 && key.iconId != KeyboardTheme.ICON_HINT_POPUP) {
+	            	setIconicKey(key, KeyboardTheme.getIconicLabel(key.iconId), ICON_SIZE_ADJUST);
+	            }
 	    		break;
         }
         
@@ -279,6 +268,7 @@ public class SoftKeyboard extends Keyboard {
             mEnterKey.popupResId = 0;
             mEnterKey.text = null;
             mEnterKey.label = null;
+            mEnterKey.actionKey = !isPhoneOrNumber();
             
             switch (options & (EditorInfo.IME_MASK_ACTION | EditorInfo.IME_FLAG_NO_ENTER_ACTION)) {
                 case EditorInfo.IME_ACTION_GO:
@@ -297,7 +287,7 @@ public class SoftKeyboard extends Keyboard {
                     mEnterKey.iconic = true;
                     mEnterKey.iconKey = true;
                     mEnterKey.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_SEARCH_KEY);
-                    mEnterKey.iconSizeAdjust = mIconSizeAdjust;
+                    mEnterKey.iconSizeAdjust = ICON_SIZE_ADJUST;
                     break;
                 case EditorInfo.IME_ACTION_SEND:
                     mEnterKey.label = res.getText(R.string.label_send_key);
@@ -309,7 +299,7 @@ public class SoftKeyboard extends Keyboard {
                     mEnterKey.iconic = true;
                     mEnterKey.iconKey = true;
                     mEnterKey.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_RETURN_KEY);
-                    mEnterKey.iconSizeAdjust = mIconSizeAdjust;
+                    mEnterKey.iconSizeAdjust = ICON_SIZE_ADJUST;
                     break;
             }
             
@@ -376,7 +366,7 @@ public class SoftKeyboard extends Keyboard {
             	mShiftKey.iconic = true;
             	mShiftKey.iconKey = true;
             	mShiftKey.label = label;
-            	mShiftKey.iconSizeAdjust = mIconSizeAdjust;
+            	mShiftKey.iconSizeAdjust = ICON_SIZE_ADJUST;
             }
         }
     }
@@ -411,7 +401,7 @@ public class SoftKeyboard extends Keyboard {
             	mShiftKey.iconic = true;
             	mShiftKey.iconKey = true;
             	mShiftKey.label = label;
-            	mShiftKey.iconSizeAdjust = mIconSizeAdjust;
+            	mShiftKey.iconSizeAdjust = ICON_SIZE_ADJUST;
             }
         } else {
             return super.setShifted(shiftState);
@@ -427,7 +417,7 @@ public class SoftKeyboard extends Keyboard {
             return super.isShifted();
         }
     }
-
+    
     /* package */ boolean isAlphaKeyboard() {
         return mIsAlphaKeyboard;
     }
@@ -439,10 +429,6 @@ public class SoftKeyboard extends Keyboard {
         if (mSpaceKey != null) {
             updateSpaceBarForLocale(isAutoCompletion, textColor, shadowColor);
         }
-        
-        setIconicKey(mDeleteKey, KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_DELETE_KEY), mIconSizeAdjust);
-        setIconicKey(mTabKey, KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_TAB_KEY), ICON_SIZE_ADJUST);
-        //setIconicKey(mSettingsKey, KeyboardThemes.getIconicLabel(KeyboardThemes.ICON_SETTINGS_KEY), ICON_SIZE_ADJUST);
         updateSettingsKey();
         
         for(int i = 0; i < mKeys.size(); i++) {
@@ -463,19 +449,6 @@ public class SoftKeyboard extends Keyboard {
     private void updateDynamicKeys() {
         update123Key();
         updateF1Key();
-        updateEmojiKey();
-    }
-    
-    private void updateEmojiKey() {
-    	if (mEmojiKey != null) {
-        	mEmojiKey.iconic = true;
-        	mEmojiKey.iconKey = true;
-        	mEmojiKey.icon = null;
-        	mEmojiKey.iconId = KeyboardTheme.ICON_UNDEFINED;
-        	mEmojiKey.label = KeyboardTheme.getIconicLabel(KeyboardTheme.ICON_EMOJI);
-        	mEmojiKey.iconSizeAdjust = mIconSizeAdjust;
-        	mEmojiKey.popupResId = 0;
-        }
     }
 
     private void update123Key() {
@@ -510,9 +483,11 @@ public class SoftKeyboard extends Keyboard {
 
     private void setF1Key(Key key, String label, int popupResId) {
         key.label = label;
+        key.shiftLabel = null;
         key.iconic = false;
         key.iconKey = false;
         key.codes = new int[] { label.charAt(0) };
+        key.shiftCodes = null;
         key.popupResId = popupResId;
         key.icon = mKeyHintPopup;
         key.iconId = KeyboardTheme.ICON_HINT_POPUP;
@@ -526,6 +501,8 @@ public class SoftKeyboard extends Keyboard {
 		mSettingsKey.iconKey = true;
 		mSettingsKey.iconSizeAdjust = ICON_SIZE_ADJUST;
 		mSettingsKey.iconPreview = null;
+		mSettingsKey.shiftLabel = null;
+		mSettingsKey.shiftCodes = null;
 		
     	if (isLanguageSwitchToggleEnabled()) {
     		mSettingsKey.icon = mKeyHintPopup;
@@ -548,6 +525,7 @@ public class SoftKeyboard extends Keyboard {
     	if(key == null) return;
     	
     	key.label = label;
+    	key.shiftLabel = null;
     	key.iconic = true;
     	key.iconKey = true;
     	key.icon = null;
@@ -1007,6 +985,18 @@ public class SoftKeyboard extends Keyboard {
                 android.R.attr.state_single,
                 android.R.attr.state_pressed
         };
+        
+        private final int[] KEY_STATE_FUNCTIONAL_ACTIVE_NORMAL = {
+        		android.R.attr.state_single,
+                android.R.attr.state_active
+        };
+
+        // functional pressed state (with properties)
+        private final int[] KEY_STATE_FUNCTIONAL_ACTIVE_PRESSED = {
+                android.R.attr.state_single,
+                android.R.attr.state_active,
+                android.R.attr.state_pressed
+        };
 
         private boolean mShiftLockEnabled;
 
@@ -1027,6 +1017,11 @@ public class SoftKeyboard extends Keyboard {
         // the key will be treated as functional.
         private boolean isFunctionalKey() {
             return !sticky && modifier;
+        }
+        
+        @Override
+        public boolean isSpaceKey() {
+        	return super.isSpaceKey() && !isPhoneOrNumber();
         }
 
         @Override
@@ -1056,11 +1051,19 @@ public class SoftKeyboard extends Keyboard {
         @Override
         public int[] getCurrentDrawableState() {
             if (isFunctionalKey()) {
-                if (pressed) {
-                    return KEY_STATE_FUNCTIONAL_PRESSED;
-                } else {
-                    return KEY_STATE_FUNCTIONAL_NORMAL;
-                }
+            	if (actionKey) {
+            		if (pressed) {
+	                    return KEY_STATE_FUNCTIONAL_ACTIVE_PRESSED;
+	                } else {
+	                    return KEY_STATE_FUNCTIONAL_ACTIVE_NORMAL;
+	                }
+            	} else {
+	                if (pressed) {
+	                    return KEY_STATE_FUNCTIONAL_PRESSED;
+	                } else {
+	                    return KEY_STATE_FUNCTIONAL_NORMAL;
+	                }
+            	}
             }
             return super.getCurrentDrawableState();
         }
@@ -1095,6 +1098,7 @@ public class SoftKeyboard extends Keyboard {
         private String mCurrentLanguage;
         private String mNextLanguage;
         private String mPrevLanguage;
+        private ColorFilter mColorFilter;
 
         public SlidingLocaleDrawable(Drawable background, int width, int height) {
             mBackground = background;
@@ -1103,7 +1107,7 @@ public class SoftKeyboard extends Keyboard {
             mHeight = height;
             mTextPaint = new TextPaint();
             mTextPaint.setTextSize(getTextSizeFromTheme(android.R.style.TextAppearance_Medium, 18));
-           mTextPaint.setColor(mContext.getResources().getColor(R.color.transparent));
+            mTextPaint.setColor(mContext.getResources().getColor(R.color.transparent));
             mTextPaint.setTextAlign(Align.CENTER);
             mTextPaint.setAlpha(OPACITY_FULLY_OPAQUE);
             mTextPaint.setAntiAlias(true);
@@ -1150,6 +1154,12 @@ public class SoftKeyboard extends Keyboard {
                 // Draw language text with shadow
                 final float baseline = mHeight * SPACEBAR_LANGUAGE_BASELINE - paint.descent();
                 paint.setColor(mRes.getColor(R.color.language_feedback_text));
+                if (mColorFilter != null) {
+                	paint.setColorFilter(mColorFilter);
+                	rArrow.setColorFilter(mColorFilter);
+                	lArrow.setColorFilter(mColorFilter);
+                }
+                
                 canvas.drawText(mCurrentLanguage, width / 2 + diff, baseline, paint);
                 canvas.drawText(mNextLanguage, diff - width / 2, baseline, paint);
                 canvas.drawText(mPrevLanguage, diff + width + width / 2, baseline, paint);
@@ -1162,6 +1172,9 @@ public class SoftKeyboard extends Keyboard {
             }
             if (mBackground != null) {
                 canvas.translate(mMiddleX, 0);
+                if (mColorFilter != null) {
+                	mBackground.setColorFilter(mColorFilter);
+                }
                 mBackground.draw(canvas);
             }
             canvas.restore();
@@ -1179,7 +1192,8 @@ public class SoftKeyboard extends Keyboard {
 
         @Override
         public void setColorFilter(ColorFilter cf) {
-            // Ignore
+        	mColorFilter = cf;
+        	invalidateSelf();
         }
 
         @Override

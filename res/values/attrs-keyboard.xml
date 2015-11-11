@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
     <declare-styleable name="Keyboard">
         <!-- Default width of a key, in pixels or percentage of display width. -->
         <attr name="keyWidth" format="dimension|fraction" />
@@ -30,6 +31,13 @@
         <!-- Mode of the keyboard. If the mode doesn't match the
              requested keyboard mode, the row will be skipped. -->
         <attr name="keyboardMode" format="reference" />
+        <!-- Row type. -->
+        <attr name="rowType">
+            <!-- Normal row. -->
+            <flag name="normal" value="0" />
+            <!-- Extended row. -->
+            <flag name="extended" value="1" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="Keyboard_Key">
@@ -49,8 +57,12 @@
         <attr name="trailLabel" format="string" />
         <!-- The icon to show in the popup preview. -->
         <attr name="iconPreview" format="reference" />
+        <!-- Whether this is a spacer key. -->
+        <attr name="isSpacer" format="boolean" />
         <!-- Whether this is a toggle key. -->
         <attr name="isSticky" format="boolean" />
+        <!-- Whether this is a action key. -->
+        <attr name="isAction" format="boolean" />
         <!-- Disable text size. -->
         <attr name="fullTextSize" format="boolean" />
         <!-- Used Iconic font. -->
@@ -73,4 +85,5 @@
             <flag name="right" value="2" />
         </attr>
     </declare-styleable>
+    
 </resources>
