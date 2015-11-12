@@ -1,4 +1,4 @@
-Sulfur' Keyboard
+Sulfur's Keyboard
 ==============
 Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 
@@ -11,7 +11,9 @@ Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 
 ## Download
 
-You can get it from [Google Play](https://play.google.com/store/apps/details?id=com.s16.inputmethod.skeyboard).
+You can get it from
+
+[![Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.s16.inputmethod.skeyboard)
 
 ## Change Log
 
