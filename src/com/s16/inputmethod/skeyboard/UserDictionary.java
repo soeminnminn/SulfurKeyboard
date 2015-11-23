@@ -120,19 +120,21 @@ public class UserDictionary extends ExpandableDictionary {
     private void addWords(Cursor cursor) {
         clearDictionary();
 
-        final int maxWordLength = getMaxWordLength();
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                String word = cursor.getString(INDEX_WORD);
-                int frequency = cursor.getInt(INDEX_FREQUENCY);
-                // Safeguard against adding really long words. Stack may overflow due
-                // to recursion
-                if (word.length() < maxWordLength) {
-                    super.addWord(word, frequency);
-                }
-                cursor.moveToNext();
-            }
+        if (cursor != null) {
+        	final int maxWordLength = getMaxWordLength();
+	        if (cursor.moveToFirst()) {
+	            while (!cursor.isAfterLast()) {
+	                String word = cursor.getString(INDEX_WORD);
+	                int frequency = cursor.getInt(INDEX_FREQUENCY);
+	                // Safeguard against adding really long words. Stack may overflow due
+	                // to recursion
+	                if (word.length() < maxWordLength) {
+	                    super.addWord(word, frequency);
+	                }
+	                cursor.moveToNext();
+	            }
+	        }
+	        cursor.close();
         }
-        cursor.close();
     }
 }

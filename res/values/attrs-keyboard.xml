@@ -71,6 +71,8 @@
         <attr name="isRepeatable" format="boolean" />
         <!-- Whether this is a modifier key such as Alt or Shift. -->
         <attr name="isModifier" format="boolean" />
+        <!-- Hide popup preview. -->
+        <attr name="hidePopupPreview" format="boolean" />
         <!-- The XML keyboard layout of any popup keyboard. -->
         <attr name="popupKeyboard" format="reference" />
         <!-- The characters to display in the popup keyboard. -->

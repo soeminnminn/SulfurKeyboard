@@ -306,7 +306,8 @@ public class Keyboard {
         
         /** Iconic Key. */
         public boolean iconKey;
-        
+        /** Hide popup preview. */
+        public boolean hidePopupPreview;
         public float iconSizeAdjust;
         
         private float realWidth;
@@ -470,6 +471,7 @@ public class Keyboard {
             
             fullTextSize = a.getBoolean(R.styleable.Keyboard_Key_fullTextSize, false);
             iconic = a.getBoolean(R.styleable.Keyboard_Key_isIconic, false);
+            hidePopupPreview = a.getBoolean(R.styleable.Keyboard_Key_hidePopupPreview, false) || spacer;
             
             a.recycle();
             

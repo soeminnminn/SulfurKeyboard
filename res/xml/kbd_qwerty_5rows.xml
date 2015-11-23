@@ -133,6 +133,7 @@
         <Key
             android:codes="@integer/key_shift"
             android:keyIconId="@integer/icon_keyboard_shift"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:isSticky="true"
@@ -162,6 +163,7 @@
         <Key
             android:codes="@integer/key_delete"
             android:keyIconId="@integer/icon_keyboard_delete"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:isRepeatable="true"
@@ -174,6 +176,7 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
@@ -193,6 +196,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
@@ -204,6 +208,7 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
@@ -223,6 +228,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
@@ -234,6 +240,7 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
@@ -253,6 +260,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
@@ -264,6 +272,7 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
@@ -284,6 +293,7 @@
             android:keyLabel=":-)"
             android:keyOutputText=":-) "
             android:keyIconId="@integer/icon_keyboard_hint_popup"
+			android:hidePopupPreview="true"
             android:popupKeyboard="@xml/popup_smileys"
             android:keyWidth="20%p"
             android:isModifier="true"
@@ -296,6 +306,7 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
@@ -310,6 +321,7 @@
         <Key
             android:codes="@integer/key_tab"
             android:keyIconId="@integer/icon_keyboard_tab"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true" />
         <Key
@@ -320,6 +332,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
@@ -331,12 +344,14 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="@integer/key_settings"
             android:keyIconId="@integer/icon_keyboard_settings"
+			android:hidePopupPreview="true"
             android:isModifier="true" />
         <Key
             android:codes="@integer/key_f1"
@@ -357,6 +372,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
@@ -368,12 +384,14 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="@integer/key_settings"
             android:keyIconId="@integer/icon_keyboard_settings"
+			android:hidePopupPreview="true"
             android:isModifier="true" />
         <Key
             android:codes="@integer/key_f1"
@@ -394,6 +412,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
@@ -405,12 +424,14 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="@integer/key_settings"
             android:keyIconId="@integer/icon_keyboard_settings"
+			android:hidePopupPreview="true"
             android:isModifier="true" />
         <Key
             android:codes="@integer/key_f1"
@@ -431,6 +452,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
@@ -442,12 +464,14 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="@integer/key_settings"
             android:keyIconId="@integer/icon_keyboard_settings"
+			android:hidePopupPreview="true"
             android:isModifier="true" />
         <Key
             android:codes="@integer/key_f1"
@@ -469,6 +493,7 @@
             android:keyLabel=":-)"
             android:keyOutputText=":-) "
             android:keyIconId="@integer/icon_keyboard_hint_popup"
+			android:hidePopupPreview="true"
             android:popupKeyboard="@xml/popup_smileys"
             android:keyWidth="15%p"
             android:isModifier="true"
@@ -481,12 +506,14 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_symbol_key"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="@integer/key_settings"
             android:keyIconId="@integer/icon_keyboard_settings"
+			android:hidePopupPreview="true"
             android:isModifier="true" />
         <Key
             android:codes="@integer/key_f1"
@@ -499,6 +526,7 @@
         <Key
             android:codes="@integer/key_tab"
             android:keyIconId="@integer/icon_keyboard_tab"
+			android:hidePopupPreview="true"
             android:isModifier="true" />
         <Key
             android:keyLabel="."
@@ -508,6 +536,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />

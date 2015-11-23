@@ -1,12 +1,9 @@
 package com.s16.android;
 
-import com.s16.inputmethod.skeyboard.IMESettingsActivity;
-import com.s16.inputmethod.skeyboard.R;
-
-import android.os.Bundle;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.text.Spanned;
@@ -19,6 +16,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
+
+import com.s16.inputmethod.skeyboard.IMESettingsActivity;
+import com.s16.inputmethod.skeyboard.R;
 
 public class MainActivity extends FragmentActivity {
 
@@ -63,6 +63,17 @@ public class MainActivity extends FragmentActivity {
             }
         });
 		
+		if (KeyboardApp.isDebug()) {
+			btnShowSettings.setLongClickable(true);
+			btnShowSettings.setOnLongClickListener(new View.OnLongClickListener() {
+				
+				@Override
+				public boolean onLongClick(View v) {
+					return false;
+				}
+			});
+		}
+		
 		final Button btnShowInputTest = (Button)findViewById(R.id.btnShowConverter);
 		btnShowInputTest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -103,5 +114,4 @@ public class MainActivity extends FragmentActivity {
 	    }
 	    return super.onOptionsItemSelected(item);
 	}
-
 }

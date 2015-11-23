@@ -17,6 +17,9 @@ You can get it from
 
 ## Change Log
 
+#### Version 2.1.0.0
+- Bug Fix
+
 #### Version 2.0.0.0
 - Add 5 rows mode
 - Add 5 new themes (Samsung White, iOS Light, iOS Dark, Material Light & Material Dark)

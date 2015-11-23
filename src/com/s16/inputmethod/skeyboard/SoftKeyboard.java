@@ -264,6 +264,7 @@ public class SoftKeyboard extends Keyboard {
             mEnterKey.iconic = false;
             mEnterKey.iconKey = false;
             mEnterKey.iconId = KeyboardTheme.ICON_UNDEFINED;
+            mEnterKey.hidePopupPreview = true;
             mEnterKey.popupCharacters = null;
             mEnterKey.popupResId = 0;
             mEnterKey.text = null;
@@ -453,12 +454,15 @@ public class SoftKeyboard extends Keyboard {
 
     private void update123Key() {
         // Update KEYCODE_MODE_CHANGE key only on alphabet mode, not on symbol mode.
-        if (m123Key != null && mIsAlphaKeyboard) {
-        	m123Key.icon = null;
-            m123Key.iconId = KeyboardTheme.ICON_UNDEFINED;
-            m123Key.iconPreview = null;
-            m123Key.iconic = true;
-            m123Key.label = m123Label;
+        if (m123Key != null) {
+        	if (isAlphaKeyboard()) {
+	        	m123Key.icon = null;
+	            m123Key.iconId = KeyboardTheme.ICON_UNDEFINED;
+	            m123Key.iconPreview = null;
+	            m123Key.iconic = true;
+	            m123Key.label = m123Label;
+        	}
+            m123Key.hidePopupPreview = true;
         }
     }
 
@@ -468,7 +472,7 @@ public class SoftKeyboard extends Keyboard {
         if (mF1Key == null)
             return;
 
-        if (mIsAlphaKeyboard) {
+        if (isAlphaKeyboard()) {
             if (mMode == KeyboardSwitcher.MODE_URL) {
                 setF1Key(mF1Key, "/", R.xml.popup_settings);
             } else if (mMode == KeyboardSwitcher.MODE_EMAIL) {
@@ -501,6 +505,7 @@ public class SoftKeyboard extends Keyboard {
 		mSettingsKey.iconKey = true;
 		mSettingsKey.iconSizeAdjust = ICON_SIZE_ADJUST;
 		mSettingsKey.iconPreview = null;
+		mSettingsKey.hidePopupPreview = true;
 		mSettingsKey.shiftLabel = null;
 		mSettingsKey.shiftCodes = null;
 		
@@ -531,6 +536,7 @@ public class SoftKeyboard extends Keyboard {
     	key.icon = null;
     	key.iconId = KeyboardTheme.ICON_UNDEFINED;
     	key.iconSizeAdjust = iconSizeAdjust;
+    	key.hidePopupPreview = true;
     }
 
     public boolean isF1Key(Key key) {

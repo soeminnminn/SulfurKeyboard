@@ -14,9 +14,9 @@
      limitations under the License.
 -->
 
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base Themes -->
-    <style name="KeyboardBaseView">
+    <style name="KeyboardBaseView" parent="@android:style/Widget.KeyboardView">
         <item name="android:background">@drawable/keyboard_background</item>
 
         <item name="keyboardBackground">@drawable/keyboard_background</item>

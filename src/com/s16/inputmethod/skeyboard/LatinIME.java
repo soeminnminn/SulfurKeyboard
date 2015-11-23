@@ -2089,15 +2089,17 @@ public class LatinIME extends InputMethodService
         
         // SMM {
         final EditorInfo editorInfo = getCurrentInputEditorInfo();
-        final int variation = editorInfo.inputType & EditorInfo.TYPE_MASK_VARIATION;
-        if((editorInfo.inputType & EditorInfo.TYPE_MASK_CLASS) == EditorInfo.TYPE_CLASS_TEXT) {
-        	if (variation == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                    || variation == EditorInfo.TYPE_TEXT_VARIATION_PERSON_NAME
-                    || !mLanguageSwitcher.allowAutoSpace()) {
-                mAutoSpace = false;
-            } else {
-                mAutoSpace = true;
-            }
+        if (editorInfo != null) {
+	        final int variation = editorInfo.inputType & EditorInfo.TYPE_MASK_VARIATION;
+	        if((editorInfo.inputType & EditorInfo.TYPE_MASK_CLASS) == EditorInfo.TYPE_CLASS_TEXT) {
+	        	if (variation == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+	                    || variation == EditorInfo.TYPE_TEXT_VARIATION_PERSON_NAME
+	                    || !mLanguageSwitcher.allowAutoSpace()) {
+	                mAutoSpace = false;
+	            } else {
+	                mAutoSpace = true;
+	            }
+	        }
         }
         // } SMM
         

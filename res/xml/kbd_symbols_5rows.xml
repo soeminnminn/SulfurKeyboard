@@ -32,35 +32,43 @@
     >
         <Key
             android:codes="@integer/key_page_up"
+			android:hidePopupPreview="true"
 			android:isModifier="true"
             android:keyLabel="@string/label_page_up_key"
 			android:keyEdgeFlags="left" />
         <Key
             android:codes="@integer/key_page_down"
+			android:hidePopupPreview="true"
 			android:isModifier="true"
             android:keyLabel="@string/label_page_down_key" />
         <Key
             android:codes="@integer/key_home"
+			android:hidePopupPreview="true"
 			android:isModifier="true"
             android:keyLabel="@string/label_home_key" />
         <Key
             android:codes="@integer/key_end"
+			android:hidePopupPreview="true"
 			android:isModifier="true"
             android:keyLabel="@string/label_end_key" />
         <Key
             android:codes="@integer/key_dpad_up"
+			android:hidePopupPreview="true"
 			android:isModifier="true"
             android:keyIconId="@integer/icon_keyboard_dpad_up" />
         <Key
             android:codes="@integer/key_dpad_down"
+			android:hidePopupPreview="true"
 			android:isModifier="true"
             android:keyIconId="@integer/icon_keyboard_dpad_down" />
         <Key
             android:codes="@integer/key_dpad_left"
+			android:hidePopupPreview="true"
 			android:isModifier="true"
             android:keyIconId="@integer/icon_keyboard_dpad_left" />
         <Key
             android:codes="@integer/key_dpad_right"
+			android:hidePopupPreview="true"
 			android:isModifier="true"
             android:keyIconId="@integer/icon_keyboard_dpad_right"
             android:keyEdgeFlags="right" />
@@ -145,6 +153,7 @@
         <Key
             android:codes="@integer/key_shift"
             android:keyLabel="@string/label_alt_key"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:isSticky="true"
@@ -174,6 +183,7 @@
         <Key
             android:codes="@integer/key_delete"
             android:keyIconId="@integer/icon_keyboard_delete"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:isRepeatable="true"
@@ -186,6 +196,7 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_alpha_key"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
@@ -205,6 +216,7 @@
         <Key
             android:codes="@integer/key_return"
             android:keyIconId="@integer/icon_keyboard_return"
+			android:hidePopupPreview="true"
             android:keyWidth="20%p"
             android:isModifier="true"
             android:keyEdgeFlags="right" />
@@ -216,12 +228,14 @@
         <Key
             android:codes="@integer/key_symbol"
             android:keyLabel="@string/label_alpha_key"
+			android:hidePopupPreview="true"
             android:keyWidth="15%p"
             android:isModifier="true"
             android:keyEdgeFlags="left" />
         <Key
             android:codes="@integer/key_settings"
             android:keyIconId="@integer/icon_keyboard_settings"
+			android:hidePopupPreview="true"
             android:isModifier="true" />
         <Key
             android:codes="@integer/key_f1"
@@ -241,6 +255,7 @@
             android:isModifier="true" />
         <Key
             android:codes="@integer/key_return"
+			android:hidePopupPreview="true"
             android:keyIconId="@integer/icon_keyboard_return"
             android:keyWidth="15%p"
             android:isModifier="true"
