@@ -1,5 +1,9 @@
 Sulfur's Keyboard
 ==============
+
+> I was no longer support for this project. 
+> Please, don't send any message to me.
+
 Android Gingerbread Keyboard with Myanmar(Zawgyi-one) Language
 
 ![SulfurKeyboard Screenshot][1]
